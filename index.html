@@ -114,70 +114,231 @@
             position: absolute;
             z-index: 8;
             right: 16px;
-            bottom: 12px;
+            bottom: 10px;
             left: 16px;
-            display: grid;
-            grid-template-areas: "status speech";
-            grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.8fr);
-            align-items: end;
-            gap: 10px;
+            height: 140px;
+            display: none;
+            place-items: center;
         }
 
-        .mission-status-column {
-            grid-area: status;
+        .game-container.is-playing .game-info-layout { display: grid; }
+
+        .aircraft-dashboard { display: none; }
+
+        .game-playing-cards {
             display: grid;
-            min-width: 0;
+            grid-template-areas: "radar aircraft shield motor fuel rescued";
+            grid-template-columns: repeat(2, 90px) repeat(4, 70px);
+            grid-template-rows: 110px;
+            align-items: end;
             gap: 8px;
         }
 
-        .hud {
-            position: static;
-            display: flex;
-            width: 100%;
-            min-width: 0;
-            flex-shrink: 0;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 7px 12px;
-            border: 1px solid rgba(0, 255, 204, 0.7);
-            border-radius: 8px;
-            background: rgba(7, 17, 30, 0.96);
-            box-shadow: 0 0 12px rgba(0, 255, 204, 0.18);
-            color: #d9e6fa;
-            font-size: 0.76rem;
-            line-height: 1.35;
-            white-space: normal;
+        .game-playing-cards .credential-radar-card {
+            width: 90px;
+            height: 110px;
+            gap: 2px;
+            padding: 6px 3px;
         }
-
-        .route-message {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 7px 12px;
-            border: 1px solid rgba(0, 255, 204, 0.7);
-            border-radius: 8px;
-            background: rgba(7, 17, 30, 0.96);
-            box-shadow: 0 0 12px rgba(0, 255, 204, 0.18);
-            color: #d9e6fa;
-            font-size: 0.76rem;
-            white-space: nowrap;
+        .game-playing-cards .credential-radar-scope { width: 68px; height: 76px; }
+        .game-playing-cards .credential-aircraft-card {
+            width: 90px;
+            height: 110px;
+            gap: 2px;
+            padding: 6px 3px;
         }
-
-        .route-message {
-            min-width: 0;
-            height: 34px;
-            overflow-y: auto;
-        }
-
-        .route-message {
-            white-space: normal;
-            font-size: clamp(0.55rem, 0.8vw, 0.76rem);
-        }
-
-        .route-message-label {
-            flex-shrink: 0;
+        .game-playing-cards .credential-aircraft-card svg { width: 60px; height: 76px; }
+        .game-playing-cards .credential-gauge-label {
             color: #fff;
+            font-size: 0.52rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .game-playing-cards .credential-gauge {
+            width: 70px;
+            height: 110px;
+            gap: 6px;
+            padding: 8px 4px;
+        }
+        .game-playing-cards .credential-shield-icon { width: 44px; height: 64px; }
+        .game-playing-cards .credential-gauge-track {
+            width: 24px;
+            height: 70px;
+        }
+        .game-playing-cards .game-aircraft-impact-count {
+            font-size: 0.42rem;
+            letter-spacing: 0.02em;
+        }
+
+        .game-playing-cards .credential-radar-card,
+        .game-playing-cards .credential-aircraft-card,
+        .game-playing-cards .credential-gauge {
+            border-color: #fff;
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .game-playing-cards .credential-gauge-label { color: #fff; }
+        .game-playing-cards .credential-radar-grid { stroke: rgba(255, 255, 255, 0.55); }
+        .game-playing-cards .credential-radar-crosshair { stroke: rgba(255, 255, 255, 0.3); }
+        .game-playing-cards .radar-player-marker,
+        .game-playing-cards .radar-enemy-marker { filter: none; }
+        .game-playing-cards .credential-aircraft-card .dashboard-aircraft-shape {
+            fill: rgba(255, 255, 255, 0.08);
+            stroke: #fff;
+            filter: none;
+        }
+        .game-playing-cards .credential-aircraft-card .dashboard-aircraft-detail { stroke: #fff; }
+        .game-playing-cards .credential-gauge-track {
+            border-color: #fff;
+            box-shadow: none;
+        }
+        .game-playing-cards .credential-gauge-fill {
+            background: #fff;
+            box-shadow: none;
+        }
+        .game-playing-cards .credential-gauge--rescued .credential-gauge-fill {
+            background: #fff;
+            box-shadow: none;
+        }
+        .game-playing-cards .credential-shield-outline { stroke: #fff; }
+        .game-playing-cards .credential-shield-fill {
+            fill: #fff;
+            filter: none;
+        }
+
+        .credential-radar-card {
+            display: grid;
+            width: 116px;
+            height: 140px;
+            grid-area: radar;
+            align-content: center;
+            justify-items: center;
+            gap: 4px;
+            padding: 8px 4px;
+            border: 1px solid rgba(125, 232, 245, 0.9);
+            border-radius: 10px;
+            background: linear-gradient(160deg, rgba(9, 29, 49, 0.94), rgba(9, 29, 49, 0.72));
+            box-shadow: 0 0 18px rgba(0, 255, 204, 0.28), inset 0 0 15px rgba(56, 189, 248, 0.14);
+            color: #fff;
+            font-size: 0.54rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-align: center;
+        }
+
+        .credential-radar-scope {
+            width: 88px;
+            height: 94px;
+            overflow: visible;
+        }
+
+        .credential-radar-grid {
+            fill: rgba(3, 21, 33, 0.82);
+            stroke: rgba(125, 232, 245, 0.45);
+            stroke-width: 1;
+        }
+
+        .credential-radar-crosshair {
+            stroke: rgba(125, 232, 245, 0.24);
+            stroke-width: 0.7;
+        }
+
+        .radar-player-marker {
+            fill: #fff;
+            stroke: #fff;
+            stroke-width: 1;
+            filter: drop-shadow(0 0 3px #fff);
+        }
+
+        .radar-enemy-marker {
+            fill: #f04438;
+            stroke: #ff887d;
+            stroke-width: 0.8;
+            filter: drop-shadow(0 0 2px #f04438);
+        }
+
+        .dashboard-aircraft {
+            display: grid;
+            min-width: 0;
+            justify-items: center;
+            align-content: center;
+            gap: 2px;
+            border-right: 1px solid rgba(0, 255, 128, 0.35);
+            color: #54bd82;
+            font-size: 0.58rem;
+            letter-spacing: 0.08em;
+        }
+
+        .dashboard-aircraft svg {
+            width: 62px;
+            height: 94px;
+            overflow: visible;
+        }
+
+        .dashboard-aircraft-shape {
+            fill: rgba(0, 255, 128, 0.08);
+            stroke: #43ff9a;
+            stroke-linejoin: round;
+            stroke-width: 1.6;
+        }
+
+        .dashboard-aircraft-detail {
+            fill: none;
+            stroke: rgba(67, 255, 154, 0.7);
+            stroke-width: 1;
+        }
+
+        .aircraft-damage-marker {
+            fill: #ff554d;
+            stroke: #fff3a6;
+            stroke-width: 1.4;
+            filter: drop-shadow(0 0 4px #ff554d);
+        }
+
+        .dashboard-readouts {
+            display: grid;
+            min-width: 0;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-rows: auto auto 1fr;
+            gap: 4px 14px;
+            align-items: center;
+            font-size: clamp(0.58rem, 0.8vw, 0.76rem);
+        }
+
+        .dashboard-readout {
+            display: flex;
+            min-width: 0;
+            justify-content: space-between;
+            gap: 8px;
+            border-bottom: 1px solid rgba(0, 255, 128, 0.18);
+        }
+
+        .dashboard-readout-label { color: #54bd82; }
+        .dashboard-readout-value { color: #b6ffd2; text-align: right; }
+
+        .dashboard-route-readout { grid-column: 1 / -1; }
+
+        .dashboard-message {
+            grid-column: 1 / -1;
+            min-width: 0;
+            max-height: 34px;
+            overflow: auto;
+            color: #d3ffe2;
+            font-size: clamp(0.58rem, 0.8vw, 0.72rem);
+            line-height: 1.3;
+            text-transform: none;
+        }
+
+        .dashboard-message[hidden] { display: none; }
+
+        .dashboard-score {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
         }
 
         .route-message-text {
@@ -195,36 +356,6 @@
 
         .dorothy-sprite, .christina-sprite, .fei-fei-li-sprite {
             display: none;
-        }
-
-        .character-speech {
-            grid-area: speech;
-            display: flex;
-            min-width: 0;
-            height: 58px;
-            align-items: center;
-            margin: 0;
-            overflow-y: auto;
-            padding: 6px 9px;
-            border: 1px solid rgba(0, 255, 204, 0.7);
-            border-radius: 14px;
-            background: var(--panel);
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.14);
-            color: #e5f4ff;
-            font-size: clamp(0.72rem, 0.9vw, 0.85rem);
-            font-weight: normal;
-            line-height: 1.3;
-        }
-
-        .character-speech--curiosity {
-            display: block;
-            height: 70px;
-            overflow: hidden;
-            padding: 0 9px;
-            font-size: clamp(0.58rem, 0.75vw, 0.72rem);
-            line-height: 68px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .title-screen, .end-screen {
@@ -254,7 +385,7 @@
             position: absolute;
             z-index: 0;
             inset: 0;
-            background: url("img/air-rescue.jpeg") center / cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)), url("img/air-rescue.jpeg") center / cover no-repeat;
             content: "";
         }
 
@@ -262,7 +393,235 @@
             background: linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)), url("img/air-rescue-2.jpeg") center / cover no-repeat;
         }
 
-        .rescue-transition-screen::after {
+        .credential-gauges {
+            position: absolute;
+            z-index: 1;
+            bottom: 50px;
+            right: calc(min(480px, 40vw) + 44px);
+            display: grid;
+            grid-template-areas: "aircraft radar shield motor fuel";
+            grid-template-columns: repeat(2, 116px) repeat(3, 92px);
+            grid-template-rows: 140px;
+            align-items: end;
+            gap: 10px;
+        }
+
+        .credential-aircraft-card {
+            display: grid;
+            width: 116px;
+            height: 140px;
+            grid-area: aircraft;
+            align-content: center;
+            justify-items: center;
+            gap: 3px;
+            padding: 8px 4px;
+            border: 1px solid rgba(125, 232, 245, 0.9);
+            border-radius: 10px;
+            background: linear-gradient(160deg, rgba(9, 29, 49, 0.94), rgba(9, 29, 49, 0.72));
+            box-shadow: 0 0 18px rgba(0, 255, 204, 0.28), inset 0 0 15px rgba(56, 189, 248, 0.14);
+            color: #fff;
+            font-size: 0.54rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-align: center;
+        }
+
+        #credentialGauges .credential-radar-card { grid-area: radar; }
+
+        #credentialGauges .credential-radar-card.is-ready,
+        #credentialGauges .credential-aircraft-card.is-ready {
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 0 0 26px rgba(255, 255, 255, 0.95), inset 0 0 22px rgba(255, 255, 255, 0.32);
+        }
+
+        #credentialGauges .credential-radar-card.is-ready .credential-radar-grid,
+        #credentialGauges .credential-radar-card.is-ready .credential-radar-crosshair {
+            stroke: rgba(255, 255, 255, 0.9);
+        }
+
+        #credentialGauges .credential-radar-card.is-ready .credential-radar-grid {
+            filter: none;
+        }
+
+        #credentialGauges .credential-radar-card.is-ready .credential-radar-crosshair {
+            stroke: rgba(255, 255, 255, 0.3);
+            filter: none;
+        }
+
+        #credentialGauges .credential-radar-card.is-ready .radar-player-marker {
+            fill: #fff;
+            stroke: #fff;
+            filter: none;
+        }
+
+        #credentialGauges .credential-radar-card.is-ready .radar-enemy-marker {
+            filter: none;
+        }
+
+        #credentialGauges .credential-gauge.is-ready {
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 0 0 26px rgba(255, 255, 255, 0.95), inset 0 0 22px rgba(255, 255, 255, 0.32);
+        }
+
+        #credentialGauges .credential-gauge.is-ready .credential-gauge-label {
+            color: #fff;
+            text-shadow: 0 0 6px #fff;
+        }
+
+        #credentialGauges .credential-gauge.is-ready .credential-gauge-track {
+            border-color: #fff;
+            box-shadow: none;
+        }
+
+        #credentialGauges .credential-gauge.is-ready .credential-gauge-fill {
+            background: #fff;
+            box-shadow: none;
+        }
+
+        .credential-aircraft-card svg {
+            width: 72px;
+            height: 94px;
+            overflow: visible;
+        }
+
+        .credential-aircraft-card .dashboard-aircraft-shape {
+            fill: rgba(125, 232, 245, 0.08);
+            stroke: #fff;
+        }
+
+        .credential-aircraft-card .dashboard-aircraft-detail {
+            stroke: rgba(255, 255, 255, 0.75);
+        }
+
+        .credential-aircraft-card.is-ready .dashboard-aircraft-shape {
+            fill: rgba(255, 255, 255, 0.18);
+            stroke: #fff;
+            filter: drop-shadow(0 0 8px #fff);
+        }
+
+        .credential-aircraft-card.is-ready .dashboard-aircraft-detail {
+            stroke: #fff;
+            filter: drop-shadow(0 0 5px #fff);
+        }
+
+        .credential-aircraft-ready-status {
+            color: #fff;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-shadow: none;
+        }
+
+        .credential-radar-active-status {
+            color: #fff;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .game-aircraft-impact-count {
+            color: #fff;
+            font-size: 0.48rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .credential-gauge--shield { grid-area: shield; }
+        .credential-gauge--motor { grid-area: motor; }
+        .credential-gauge--fuel { grid-area: fuel; }
+        .credential-gauge--rescued { grid-area: rescued; }
+        .credential-gauge--rescued .credential-gauge-fill {
+            background: linear-gradient(to top, #c02678, #ff4fa3 70%, #ffc0e0);
+            box-shadow: 0 0 12px rgba(255, 79, 163, 0.75);
+        }
+
+        .credential-gauge {
+            position: relative;
+            display: grid;
+            width: 92px;
+            height: 140px;
+            align-content: start;
+            justify-items: center;
+            gap: 9px;
+            padding: 11px 8px;
+            border: 1px solid rgba(125, 232, 245, 0.9);
+            border-radius: 10px;
+            background: linear-gradient(160deg, rgba(9, 29, 49, 0.94), rgba(9, 29, 49, 0.72));
+            box-shadow: 0 0 18px rgba(0, 255, 204, 0.28), inset 0 0 15px rgba(56, 189, 248, 0.14);
+            color: #e5f4ff;
+            text-align: center;
+        }
+
+        .credential-gauge-label {
+            color: #7de8f5;
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+        }
+
+        .rescue-transition-screen .credential-gauge-label {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .credential-gauge-track {
+            position: relative;
+            width: 30px;
+            height: 94px;
+            overflow: hidden;
+            border: 1px solid rgba(125, 232, 245, 0.55);
+            border-radius: 5px;
+            background: repeating-linear-gradient(
+                to top,
+                rgba(125, 232, 245, 0.13) 0 1px,
+                transparent 1px 18px
+            ), rgba(3, 12, 27, 0.8);
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.55);
+        }
+
+        .credential-gauge-fill {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            transform: scaleY(var(--gauge-progress, 0));
+            transform-origin: bottom;
+            background: linear-gradient(to top, #00a88d, #00ffcc 70%, #b4fff1);
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.7);
+            transition: transform 80ms linear;
+        }
+
+        .credential-shield-icon {
+            width: 52px;
+            height: 78px;
+            overflow: visible;
+        }
+
+        .credential-shield-outline {
+            fill: rgba(3, 12, 27, 0.8);
+            stroke: rgba(125, 232, 245, 0.75);
+            stroke-width: 5;
+            stroke-linejoin: round;
+        }
+
+        .credential-shield-fill {
+            fill: #00ffcc;
+            transition: y 180ms ease-out, height 180ms ease-out;
+        }
+
+        .credential-gauge--shield.is-ready .credential-shield-outline {
+            stroke: #fff;
+        }
+
+        .credential-gauge--shield.is-ready .credential-shield-fill {
+            fill: #fff;
+            filter: none;
+        }
+
+        .opening-screen::after {
             position: absolute;
             z-index: 0;
             inset: 0;
@@ -364,25 +723,35 @@
             background: transparent;
         }
 
+        .rescue-transition-screen .survey-overlay { pointer-events: none; }
+
         .survey-panel {
-            width: min(420px, 36vw);
+            width: min(480px, 40vw);
+            min-height: min(410px, calc(100dvh - 180px));
             max-height: calc(100vh - 250px);
             overflow-y: auto;
             padding: 11px 12px 5px;
-            border: 1px solid rgba(255, 255, 255, 0.72);
+            border: 1px solid #7de8f5;
             border-radius: 12px;
-            background: rgba(9, 20, 38, 0.74);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.32);
-            color: #fff;
-            font-size: 0.64rem;
+            background: linear-gradient(160deg, rgba(9, 29, 49, 0.94), rgba(9, 29, 49, 0.72));
+            box-shadow: inset 0 0 20px rgba(0, 255, 128, 0.08), 0 0 12px rgba(0, 255, 128, 0.12);
+            color: #7de8f5;
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            pointer-events: auto;
         }
 
         .survey-panel h2 {
             margin: 0 0 8px;
-            color: #fff;
-            font-size: 0.84rem;
+            color: #7de8f5;
+            font-size: 1rem;
             letter-spacing: 0.08em;
             text-align: center;
+        }
+        .rescue-transition-screen .survey-panel,
+        .rescue-transition-screen .survey-panel h2 {
+            color: #fff;
+            font-weight: 700;
         }
         .survey-panel > p { line-height: 1.5; }
         .survey-fields {
@@ -394,17 +763,18 @@
         .survey-field input, .survey-field select {
             width: 100%;
             padding: 5px 6px;
-            border: 1px solid var(--blue);
+            border: 1px solid rgba(0, 255, 128, 0.45);
             border-radius: 5px;
-            background: #101c3a;
-            color: #fff;
+            background: rgba(9, 29, 49, 0.94);
+            color: #7de8f5;
             font: inherit;
         }
+        .survey-field input[name="name"] { color: #fff; }
         .survey-fieldset {
             min-width: 0;
             margin: 4px 0;
             padding: 4px 6px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(0, 255, 128, 0.3);
             border-radius: 6px;
         }
         .survey-fieldset legend { padding: 0 3px; }
@@ -413,30 +783,36 @@
             flex-wrap: wrap;
             gap: 3px 6px;
         }
+        #surveyForm .survey-fieldset--age .survey-radio-options {
+            flex-direction: column;
+            align-items: flex-start;
+        }
         .survey-radio-option {
             display: inline-flex;
             align-items: center;
             gap: 3px;
             cursor: pointer;
         }
-        .survey-radio-option input { accent-color: var(--cyan); }
+        .survey-radio-option input { accent-color: #fff; }
+        .survey-radio-option:has(input:checked) { color: #fff; }
+        .survey-field select:valid, .survey-field select option:checked { color: #fff; }
         .survey-fieldset:disabled { opacity: 0.45; }
         .survey-field input:focus, .survey-field select:focus {
-            border-color: #ff8c00;
-            outline: 2px solid #ff8c00;
+            border-color: #43ff9a;
+            outline: 2px solid #43ff9a;
             outline-offset: 1px;
         }
-        .survey-submit { width: 100%; margin-top: 3px; padding: 6px 10px; font-size: 0.64rem; }
+        .survey-submit { display: block; width: fit-content; margin: 3px auto 0; padding: 6px 10px; font-size: 0.8rem; }
         #surveySubmit {
-            border-color: #e67e00;
-            background: #e67e00;
+            border-color: #f97316;
+            background: #f97316;
             color: #000;
         }
         #surveySubmit:hover:not(:disabled) {
-            background: #cc6f00;
-            border-color: #cc6f00;
+            background: #ea580c;
+            border-color: #ea580c;
             color: #000;
-            box-shadow: 0 0 16px rgba(230, 126, 0, 0.6);
+            box-shadow: 0 0 16px rgba(249, 115, 22, 0.6);
         }
         .survey-submit:disabled { cursor: wait; opacity: 0.65; }
         .survey-error { min-height: 0; margin: 2px 0 0; color: #ff8d8d; }
@@ -447,13 +823,123 @@
         }
 
         @media (max-width: 980px) {
-            .game-info-layout {
-                grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.8fr);
-                gap: 8px;
+            .credential-gauges {
+                top: 12px;
+                right: auto;
+                bottom: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .rescue-transition-screen .survey-overlay {
+                padding-top: 164px;
+            }
+            .rescue-transition-screen .survey-panel {
+                max-height: calc(100dvh - 180px);
             }
         }
 
+        @media (min-width: 981px) and (max-width: 1100px) {
+            .credential-gauges {
+                right: auto;
+                bottom: 50px;
+                left: 16px;
+                grid-template-columns: repeat(2, 88px) repeat(3, 64px);
+                grid-template-rows: 120px;
+                gap: 6px;
+            }
+            .credential-radar-card {
+                width: 88px;
+                height: 120px;
+            }
+            .credential-radar-scope { width: 68px; height: 76px; }
+            .credential-aircraft-card {
+                width: 88px;
+                height: 120px;
+            }
+            .credential-gauge {
+                width: 64px;
+                height: 120px;
+                gap: 7px;
+                padding: 9px 5px;
+            }
+            .credential-gauge-track { height: 78px; }
+            .credential-gauge-label { font-size: 0.46rem; letter-spacing: 0; }
+        }
+
         @media (max-width: 680px) {
+            .game-info-layout {
+                right: 8px;
+                bottom: 8px;
+                left: 8px;
+                height: 100px;
+            }
+            .game-playing-cards {
+                grid-template-columns: repeat(2, clamp(42px, 13vw, 60px)) repeat(4, min(52px, calc((100vw - 144px) / 4)));
+                grid-template-rows: 98px;
+                gap: 4px;
+            }
+            .game-playing-cards .credential-radar-card {
+                width: clamp(42px, 13vw, 60px);
+                height: 98px;
+                gap: 2px;
+                padding: 5px 2px;
+            }
+            .game-playing-cards .credential-radar-scope { width: 38px; height: 58px; }
+            .game-playing-cards .credential-aircraft-card {
+                width: clamp(42px, 13vw, 60px);
+                height: 98px;
+            }
+            .game-playing-cards .credential-aircraft-card svg { width: 38px; height: 52px; }
+            .game-playing-cards .game-aircraft-impact-count { font-size: 0.3rem; letter-spacing: 0; }
+            .game-playing-cards .credential-gauge {
+                width: min(52px, calc((100vw - 144px) / 4));
+                height: 98px;
+                gap: 5px;
+                padding: 7px 3px;
+            }
+            .game-playing-cards .credential-gauge-label { font-size: 0.34rem; letter-spacing: 0; }
+            .game-playing-cards .credential-gauge-track { width: 21px; height: 60px; }
+            .game-playing-cards .credential-shield-icon { width: 30px; height: 46px; }
+            .credential-gauges {
+                top: 12px;
+                bottom: auto;
+                right: auto;
+                left: 50%;
+                grid-template-areas: "aircraft radar shield motor fuel";
+                grid-template-columns: repeat(2, clamp(50px, 10vw, 72px)) repeat(3, min(60px, calc((100vw - 68px) / 3)));
+                grid-template-rows: 120px;
+                gap: 4px;
+                transform: translateX(-50%);
+            }
+            .credential-radar-card {
+                width: clamp(50px, 10vw, 72px);
+                height: 120px;
+                padding: 7px 3px;
+                gap: 3px;
+            }
+            .credential-radar-scope { width: 44px; height: 76px; }
+            .credential-aircraft-card {
+                width: clamp(50px, 10vw, 72px);
+                height: 120px;
+            }
+            .credential-aircraft-card svg { width: 40px; height: 68px; }
+            .credential-gauge {
+                width: min(60px, calc((100vw - 68px) / 3));
+                height: 120px;
+                gap: 7px;
+                padding: 9px 5px;
+            }
+            .credential-gauge-label,
+            .credential-aircraft-ready-status { font-size: 0.42rem; letter-spacing: 0.02em; }
+            .credential-gauge-track { width: 25px; height: 78px; }
+            .credential-shield-icon { width: 42px; height: 64px; }
+            .rescue-transition-screen .survey-overlay {
+                align-items: flex-end;
+                padding: 144px 12px 12px;
+            }
+            .rescue-transition-screen .survey-panel {
+                max-height: calc(100dvh - 156px);
+            }
             .mission-objectives {
                 bottom: 232px;
                 right: 6px;
@@ -468,36 +954,13 @@
                 background: #000;
             }
             .game-info-layout {
-                top: 8px;
-                right: 8px;
-                bottom: 8px;
-                left: 8px;
-                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-                grid-template-areas: "status status" "speech speech";
-                align-content: end;
-                align-items: stretch;
-                gap: 6px;
-            }
-            .mission-status-column { gap: 6px; }
-            .hud {
-                justify-content: flex-start;
-                gap: 5px;
-                padding: 6px 9px;
-                font-size: 0.55rem;
-            }
-            .route-message {
-                width: 100%;
-                gap: 5px;
-                padding: 6px 9px;
-                font-size: 0.55rem;
+                top: auto;
             }
             .dorothy-sprite {
                 left: 2%;
                 width: clamp(210px, 58vw, 280px);
                 max-height: 55%;
             }
-            .character-speech { height: 70px; padding: 8px; font-size: 0.68rem; }
-            .character-speech--curiosity { height: 70px; padding: 0 8px; font-size: 0.58rem; line-height: 68px; }
             .arcade-canvas {
                 inset: 0 0 225px;
                 height: calc(100% - 225px);
@@ -508,10 +971,8 @@
         }
 
         @media (max-width: 400px) {
-            .game-info-layout {
-                grid-template-columns: minmax(0, 1fr);
-                grid-template-areas: "status" "speech";
-            }
+            .dashboard-readouts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .dashboard-route-readout { grid-column: 1 / -1; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -522,7 +983,7 @@
 <body>
 
 <main class="game-container">
-    <canvas id="arcadeCanvas" class="arcade-canvas" aria-label="Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. Em telas sensíveis ao toque, arraste para guiar." hidden></canvas>
+    <canvas id="arcadeCanvas" class="arcade-canvas" aria-label="Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar." hidden></canvas>
     <aside id="missionObjectives" class="mission-objectives" aria-labelledby="missionObjectivesTitle" aria-live="polite" hidden>
         <h2 id="missionObjectivesTitle">OBJETIVOS DA MISSÃO</h2>
         <ul>
@@ -545,16 +1006,87 @@
         </ul>
     </aside>
     <div class="game-info-layout">
-        <div class="mission-status-column">
-            <div class="route-message" aria-live="polite">
-                <span class="route-message-label">STATUS:</span>
-                <span id="routeMessage" class="route-message-text">AGUARDANDO CADASTRO</span>
+        <section class="aircraft-dashboard" aria-label="Painel de sistemas e danos da aeronave" aria-hidden="true">
+            <div class="dashboard-aircraft">
+                <span>SYS</span>
+                <svg viewBox="0 0 100 110" role="img" aria-label="Diagrama do caça branco com marcas de impacto">
+                    <path class="dashboard-aircraft-shape" d="M50 4 L57 30 L88 51 L88 62 L59 55 L62 79 L72 91 L72 97 L50 91 L28 97 L28 91 L38 79 L41 55 L12 62 L12 51 L43 30 Z"></path>
+                    <path class="dashboard-aircraft-detail" d="M50 12 L50 88 M42 43 L58 43 M40 71 L60 71"></path>
+                    <g id="aircraftDamageMarkers"></g>
+                </svg>
+                <span id="aircraftDamageCount">0 IMPACTOS</span>
             </div>
-            <div class="hud" aria-label="Status do combate">
-                <span id="scoreStatus" aria-live="polite">COMBATE NÃO INICIADO</span>
+            <div class="dashboard-readouts">
+                <div class="dashboard-readout">
+                    <span class="dashboard-readout-label">FUEL</span>
+                    <span class="dashboard-readout-value">100%</span>
+                </div>
+                <div class="dashboard-readout">
+                    <span class="dashboard-readout-label">SYS</span>
+                    <span id="aircraftLives" class="dashboard-readout-value">5/5</span>
+                </div>
+                <div class="dashboard-readout">
+                    <span class="dashboard-readout-label">WPN</span>
+                    <span id="aircraftWeapons" class="dashboard-readout-value">MÍSSEIS BLOQUEADOS</span>
+                </div>
+                <div class="dashboard-readout dashboard-route-readout">
+                    <span class="dashboard-readout-label">STAT</span>
+                    <span id="routeMessage" class="dashboard-readout-value route-message-text">AGUARDANDO CADASTRO</span>
+                </div>
+                <p id="characterSpeech" class="dashboard-message" aria-live="polite" hidden></p>
+                <span id="scoreStatus" class="dashboard-score" aria-live="polite">COMBATE NÃO INICIADO</span>
             </div>
-        </div>
-        <p id="characterSpeech" class="character-speech" aria-live="polite" hidden></p>
+        </section>
+        <section class="game-playing-cards" aria-label="Sistemas da aeronave durante a missão">
+            <div class="credential-radar-card" aria-label="Radar em tempo real">
+                <span class="credential-gauge-label">RADAR</span>
+                <svg class="credential-radar-scope" viewBox="0 0 100 100" role="img" aria-label="Ponto branco: aeronave; pontos vermelhos: naves inimigas">
+                    <circle class="credential-radar-grid" cx="50" cy="50" r="44"></circle>
+                    <path class="credential-radar-crosshair" d="M6 50h88 M50 6v88 M19 19l62 62 M81 19L19 81"></path>
+                    <circle class="radar-player-marker" cx="50" cy="80" r="3"></circle>
+                    <g class="radar-enemy-markers"></g>
+                </svg>
+            </div>
+            <div class="credential-aircraft-card" aria-label="Aeronave e impactos sofridos">
+                <span class="credential-gauge-label">AERONAVE</span>
+                <svg viewBox="0 0 100 110" role="img" aria-label="Diagrama do caça com marcas de impacto">
+                    <path class="dashboard-aircraft-shape" d="M50 4 L57 30 L88 51 L88 62 L59 55 L62 79 L72 91 L72 97 L50 91 L28 97 L28 91 L38 79 L41 55 L12 62 L12 51 L43 30 Z"></path>
+                    <path class="dashboard-aircraft-detail" d="M50 12 L50 88 M42 43 L58 43 M40 71 L60 71"></path>
+                    <g id="gameAircraftDamageMarkers"></g>
+                </svg>
+                <span id="gameAircraftDamageCount" class="game-aircraft-impact-count" aria-live="polite">0 IMPACTOS</span>
+            </div>
+            <div class="credential-gauge credential-gauge--shield" role="meter" aria-label="Escudos de força restantes" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3" aria-valuetext="3 de 3 escudos restantes">
+                <span class="credential-gauge-label">ESCUDO</span>
+                <svg class="credential-shield-icon" viewBox="0 0 100 110" aria-hidden="true">
+                    <defs>
+                        <clipPath id="gameShieldClip">
+                            <path d="M50 5 L91 20 V48 C91 75 73 96 50 106 C27 96 9 75 9 48 V20 Z"></path>
+                        </clipPath>
+                    </defs>
+                    <path class="credential-shield-outline" d="M50 5 L91 20 V48 C91 75 73 96 50 106 C27 96 9 75 9 48 V20 Z"></path>
+                    <rect class="credential-shield-fill" x="0" y="0" width="100" height="110" clip-path="url(#gameShieldClip)"></rect>
+                </svg>
+            </div>
+            <div class="credential-gauge credential-gauge--motor" role="meter" aria-label="Motor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                <span class="credential-gauge-label">MOTOR</span>
+                <div class="credential-gauge-track" aria-hidden="true">
+                    <div class="credential-gauge-fill" style="--gauge-progress: 1"></div>
+                </div>
+            </div>
+            <div class="credential-gauge credential-gauge--fuel" role="meter" aria-label="Combustível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                <span class="credential-gauge-label">COMBUSTÍVEL</span>
+                <div class="credential-gauge-track" aria-hidden="true">
+                    <div class="credential-gauge-fill" style="--gauge-progress: 1"></div>
+                </div>
+            </div>
+            <div class="credential-gauge credential-gauge--rescued" role="meter" aria-label="Pessoas resgatadas" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
+                <span class="credential-gauge-label">RESGATADOS</span>
+                <div class="credential-gauge-track" aria-hidden="true">
+                    <div class="credential-gauge-fill" style="--gauge-progress: 0"></div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <img class="dorothy-sprite" src="img/dorothyvaughan.png" alt="Dorothy Vaughan">
@@ -590,6 +1122,51 @@
 </section>
 
 <section id="rescueTransitionScreen" class="opening-screen rescue-transition-screen" aria-label="Credenciais do piloto" hidden>
+    <div id="credentialGauges" class="credential-gauges" aria-label="Sistemas da aeronave">
+        <div class="credential-radar-card" aria-label="Radar em tempo real">
+            <span class="credential-gauge-label">RADAR</span>
+            <svg class="credential-radar-scope" viewBox="0 0 100 100" role="img" aria-label="Ponto branco: aeronave; pontos vermelhos: naves inimigas">
+                <circle class="credential-radar-grid" cx="50" cy="50" r="44"></circle>
+                <path class="credential-radar-crosshair" d="M6 50h88 M50 6v88 M19 19l62 62 M81 19L19 81"></path>
+                <circle class="radar-player-marker" cx="50" cy="80" r="3"></circle>
+                <g class="radar-enemy-markers"></g>
+            </svg>
+            <span class="credential-radar-active-status" hidden>ATIVO</span>
+        </div>
+        <div class="credential-gauge credential-gauge--shield" role="meter" aria-label="Escudos de força restantes" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3" aria-valuetext="3 de 3 escudos restantes">
+            <span class="credential-gauge-label">ESCUDO</span>
+            <svg class="credential-shield-icon" viewBox="0 0 100 110" aria-hidden="true">
+                <defs>
+                    <clipPath id="credentialShieldClip">
+                        <path d="M50 5 L91 20 V48 C91 75 73 96 50 106 C27 96 9 75 9 48 V20 Z"></path>
+                    </clipPath>
+                </defs>
+                <path class="credential-shield-outline" d="M50 5 L91 20 V48 C91 75 73 96 50 106 C27 96 9 75 9 48 V20 Z"></path>
+                <rect class="credential-shield-fill" x="0" y="0" width="100" height="110" clip-path="url(#credentialShieldClip)"></rect>
+            </svg>
+        </div>
+        <div class="credential-aircraft-card" aria-label="Diagrama da aeronave">
+            <span class="credential-gauge-label">AERONAVE</span>
+            <svg viewBox="0 0 100 110" role="img" aria-label="Diagrama esquemático do caça">
+                <path class="dashboard-aircraft-shape" d="M50 4 L57 30 L88 51 L88 62 L59 55 L62 79 L72 91 L72 97 L50 91 L28 97 L28 91 L38 79 L41 55 L12 62 L12 51 L43 30 Z"></path>
+                <path class="dashboard-aircraft-detail" d="M50 12 L50 88 M42 43 L58 43 M40 71 L60 71"></path>
+                <g id="credentialAircraftDamageMarkers"></g>
+            </svg>
+            <span id="credentialAircraftReadyStatus" class="credential-aircraft-ready-status" hidden>PREPARADA</span>
+        </div>
+        <div class="credential-gauge credential-gauge--motor" role="meter" aria-label="Motor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span class="credential-gauge-label">MOTOR</span>
+            <div class="credential-gauge-track" aria-hidden="true">
+                <div class="credential-gauge-fill"></div>
+            </div>
+        </div>
+        <div class="credential-gauge credential-gauge--fuel" role="meter" aria-label="Combustível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span class="credential-gauge-label">COMBUSTÍVEL</span>
+            <div class="credential-gauge-track" aria-hidden="true">
+                <div class="credential-gauge-fill"></div>
+            </div>
+        </div>
+    </div>
     <div id="credentialProgress" class="opening-progress" role="progressbar" aria-label="Confirmação das credenciais" aria-valuemin="0" aria-valuemax="100" hidden>
         <div class="opening-progress-fill credential-progress-fill"></div>
     </div>
@@ -615,7 +1192,7 @@
                     <option value="E.M. SOTERO TEIXEIRA DE SOUZA">E.M. SOTERO TEIXEIRA DE SOUZA</option>
                 </select>
             </label>
-            <fieldset class="survey-fieldset">
+            <fieldset class="survey-fieldset survey-fieldset--age">
                 <legend>Faixa de Idade:</legend>
                 <div class="survey-radio-options">
                     <label class="survey-radio-option"><input type="radio" name="idade" value="7 a 8 anos" required>7 - 8 anos</label>
@@ -675,6 +1252,7 @@
         : 'http://127.0.0.1:8000';
     const arcadeCanvas = document.getElementById('arcadeCanvas');
     const arcadeContext = arcadeCanvas.getContext('2d');
+    const radarDisplays = [...document.querySelectorAll('.credential-radar-scope')];
     let gameAudioContext = null;
     const dorothyIslandSprite = document.querySelector('.dorothy-sprite');
     const christinaSprite = document.querySelector('.christina-sprite');
@@ -717,6 +1295,9 @@
     const pressedKeys = new Set();
     let arcadeActive = false;
     let mouseFiring = false;
+    const forceShieldMaxCharges = 3;
+    let forceShieldCharges = forceShieldMaxCharges;
+    let forceShieldUntil = 0;
     let arcadeAnimationFrame = 0;
     let arcadeLastFrame = 0;
     let arcadeWidth = 0;
@@ -729,7 +1310,9 @@
     let scenery = [];
     let explosions = [];
     let aircraftCarriers = [];
+    let sceneryFeaturesRecycled = 0;
     let lives = 5;
+    let playerDamageMarks = [];
     let criticalAlertInterval = 0;
     let targetsHit = 0;
     let targetsLost = 0;
@@ -751,7 +1334,6 @@
     const totalWaves = enemyTargetCount / enemiesPerWave;
     const rescueTargetCount = 20;
     const regularRescueTargetCount = rescueTargetCount - 3;
-    const minimumIslandDistance = 240;
     const minimumRockCharacterDistance = 340;
     const movementKeys = new Set([
         'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
@@ -819,8 +1401,8 @@
 
         const sounds = {
             playerShot: { type: 'square', startFrequency: 880, endFrequency: 260, duration: 0.09, volume: 0.09 },
-            rocket: { type: 'sawtooth', startFrequency: 190, endFrequency: 55, duration: 0.38, volume: 0.055 },
-            enemyShot: { type: 'triangle', startFrequency: 360, endFrequency: 145, duration: 0.15, volume: 0.09 }
+            missileLaunch: { type: 'sawtooth', startFrequency: 130, endFrequency: 420, duration: 0.32, volume: 0.06 },
+            enemyShot: { type: 'triangle', startFrequency: 520, endFrequency: 170, duration: 0.12, volume: 0.065 }
         };
         const settings = sounds[sound];
         if (!settings) return;
@@ -899,50 +1481,68 @@
         });
     }
 
-    function findSeparatedIslandX(feature) {
-        const margin = Math.min(80, arcadeWidth / 2);
-        const candidates = [
-            feature.x,
-            ...Array.from({ length: 24 }, () => margin + Math.random() * (arcadeWidth - margin * 2))
-        ];
-        return candidates.find((x) => scenery.every((other) =>
-            other === feature
-            || other.kind !== 'island'
-            || Math.hypot(x - other.x, feature.y - other.y) >= minimumIslandDistance
-        )) ?? null;
+    function getSceneryBounds(feature) {
+        return feature.kind === 'bridge'
+            ? { halfWidth: arcadeWidth * 0.41 + 82, halfHeight: 52 }
+            : { halfWidth: 80 * feature.size + 12, halfHeight: 50 * feature.size + 12 };
     }
 
-    function keepRocksAwayFromCharacters() {
-        const characters = scenery.filter((feature) =>
-            feature.character && !feature.character.rescued
-        );
-        if (!characters.length) return;
+    function sceneryFeaturesOverlap(first, firstX, firstY, second) {
+        const firstBounds = getSceneryBounds(first);
+        const secondBounds = getSceneryBounds(second);
+        return Math.abs(firstX - second.x) < firstBounds.halfWidth + secondBounds.halfWidth
+            && Math.abs(firstY - second.y) < firstBounds.halfHeight + secondBounds.halfHeight;
+    }
 
-        const firstCharacterY = Math.min(...characters.map((feature) => feature.y));
-        const margin = Math.min(80, arcadeWidth / 2);
-        scenery.forEach((feature, index) => {
-            if (
-                feature.kind !== 'rocks'
-                || !characters.some((character) =>
-                    Math.hypot(feature.x - character.x, feature.y - character.y) < minimumRockCharacterDistance
-                )
-            ) return;
-
-            const candidates = [
-                margin,
-                arcadeWidth - margin,
-                ...Array.from({ length: 24 }, () => margin + Math.random() * (arcadeWidth - margin * 2))
-            ];
-            const separatedX = candidates.find((x) => characters.every((character) =>
-                Math.hypot(x - character.x, feature.y - character.y) >= minimumRockCharacterDistance
-            ));
-            if (separatedX !== undefined) {
-                feature.x = separatedX;
-                return;
-            }
-
-            feature.y = firstCharacterY - minimumRockCharacterDistance - index * minimumIslandDistance;
+    function isSceneryPositionClearOfAircraftCarriers(feature, x, y) {
+        const sceneryBounds = getSceneryBounds(feature);
+        return aircraftCarriers.every((carrier) => {
+            if (!carrier.spawned || carrier.expired) return true;
+            return Math.abs(x - carrier.x) >= sceneryBounds.halfWidth + carrier.width / 2 + 12
+                || Math.abs(y - carrier.y) >= sceneryBounds.halfHeight + carrier.length / 2 + 12;
         });
+    }
+
+    function findSceneryPosition(feature, preferredY, otherFeatures) {
+        const bounds = getSceneryBounds(feature);
+        const minX = bounds.halfWidth;
+        const maxX = arcadeWidth - bounds.halfWidth;
+        const candidates = feature.kind === 'bridge'
+            ? [arcadeWidth / 2]
+            : [
+                feature.x,
+                minX,
+                maxX,
+                ...Array.from({ length: Math.max(1, Math.ceil((maxX - minX) / 24) - 1) }, (_, index) =>
+                    minX + (index + 1) * ((maxX - minX) / Math.ceil((maxX - minX) / 24))
+                )
+            ].filter((x) => x >= minX && x <= maxX);
+        const lastY = preferredY + Math.max(arcadeHeight, 1000) * 2;
+
+        for (let y = preferredY; y <= lastY; y += 12) {
+            const x = candidates.find((candidateX) =>
+                otherFeatures.every((other) => !sceneryFeaturesOverlap(feature, candidateX, y, other))
+                && isSceneryPositionClearOfAircraftCarriers(feature, candidateX, y)
+                && (
+                    feature.kind !== 'rocks'
+                    || otherFeatures.every((other) =>
+                        !other.character
+                        || other.character.rescued
+                        || Math.hypot(candidateX - other.x, y - other.y) >= minimumRockCharacterDistance
+                    )
+                )
+            );
+            if (x !== undefined) return { x, y };
+        }
+
+        return null;
+    }
+
+    function placeSceneryFeature(feature, preferredY, otherFeatures) {
+        const position = findSceneryPosition(feature, preferredY, otherFeatures);
+        if (!position) throw new Error('Não foi possível posicionar um elemento do cenário sem sobreposição.');
+        feature.x = position.x;
+        feature.y = position.y;
     }
 
     function resizeArcadeCanvas() {
@@ -964,7 +1564,7 @@
                         : arcadeWidth * (0.64 + Math.random() * 0.22),
                 y: (index / sceneryCount) * arcadeHeight,
                 size: 0.56 + Math.random() * 0.42,
-                kind: index % 5 === 2 ? 'bridge' : index % 3 === 0 ? 'island' : 'rocks',
+                kind: index % 3 === 0 ? 'island' : 'rocks',
                 seed: Math.random() * 10
             }));
             const dorothyIsland = scenery.find((feature) => feature.kind === 'island')
@@ -975,17 +1575,13 @@
                 dorothyIsland.size = Math.max(dorothyIsland.size, 0.95);
                 dorothyIsland.character = { key: 'dorothy', rescued: false };
             }
-            keepRocksAwayFromCharacters();
+            const placedScenery = [];
             scenery
-                .filter((feature) => feature.kind === 'island')
-                .sort((first, second) => Number(Boolean(second.character)) - Number(Boolean(first.character)))
+                .slice()
+                .sort((first, second) => first.y - second.y)
                 .forEach((feature) => {
-                    const separatedX = findSeparatedIslandX(feature);
-                    if (separatedX === null && !feature.character) {
-                        feature.kind = 'rocks';
-                        return;
-                    }
-                    if (separatedX !== null) feature.x = separatedX;
+                    placeSceneryFeature(feature, feature.y, placedScenery);
+                    placedScenery.push(feature);
                 });
             scenery.forEach((feature) => addRandomRescuee(feature));
             if (!scenery.some((feature) => feature.rescuee)) {
@@ -1421,11 +2017,6 @@
         arcadeContext.save();
         arcadeContext.translate(carrier.x, carrier.y);
 
-        arcadeContext.fillStyle = 'rgba(0, 12, 24, 0.5)';
-        arcadeContext.beginPath();
-        arcadeContext.roundRect(-width / 2 - 5, -length / 2 + 5, width + 10, length, width * 0.18);
-        arcadeContext.fill();
-
         arcadeContext.fillStyle = '#273744';
         arcadeContext.strokeStyle = '#d7e1e5';
         arcadeContext.lineWidth = 2;
@@ -1502,7 +2093,7 @@
         const length = width * 2.7;
         const firstCarrierDelay = 20000;
         const carrierSpawnInterval = 27000;
-        return [0.4, 0.62, 0.48].map((riverPosition, index) => ({
+        return [0.45, 0.55, 0.5].map((riverPosition, index) => ({
             x: arcadeWidth * riverPosition,
             y: -length / 2,
             width,
@@ -1514,18 +2105,51 @@
         }));
     }
 
+    function getShorelineX(y, isLeft) {
+        const sign = isLeft ? 1 : -1;
+        const coast = arcadeWidth * (isLeft ? 0.09 : 0.91)
+            + sign * (
+                Math.sin((y + sceneryOffset) / 150) * arcadeWidth * 0.027
+                + Math.sin(y / 87 + (isLeft ? 1 : 4)) * arcadeWidth * 0.014
+            );
+        return coast;
+    }
+
+    function isAircraftCarrierClear(carrier, y = carrier.y) {
+        const halfWidth = carrier.width / 2 + 12;
+        const halfHeight = carrier.length / 2 + 12;
+        const left = carrier.x - halfWidth;
+        const right = carrier.x + halfWidth;
+        const top = y - halfHeight;
+        const bottom = y + halfHeight;
+
+        for (let y = top; y <= bottom + 16; y += 16) {
+            if (left < getShorelineX(y, true) + 39 || right > getShorelineX(y, false) - 39) {
+                return false;
+            }
+        }
+
+        const carrierBounds = { halfWidth, halfHeight };
+        const overlapsScenery = scenery.some((feature) => {
+            const featureBounds = getSceneryBounds(feature);
+            return Math.abs(carrier.x - feature.x) < carrierBounds.halfWidth + featureBounds.halfWidth
+                && Math.abs(y - feature.y) < carrierBounds.halfHeight + featureBounds.halfHeight;
+        });
+        if (overlapsScenery) return false;
+
+        return aircraftCarriers.every((other) => {
+            if (other === carrier || !other.spawned || other.expired) return true;
+            return Math.abs(carrier.x - other.x) >= carrier.width / 2 + other.width / 2 + 24
+                || Math.abs(y - other.y) >= carrier.length / 2 + other.length / 2 + 24;
+        });
+    }
+
     function drawCoastalBanks() {
         ['left', 'right'].forEach((side) => {
             const isLeft = side === 'left';
             const sign = isLeft ? 1 : -1;
-            const shorelineX = (y, inset = 0) => {
-                const coast = arcadeWidth * (isLeft ? 0.09 : 0.91)
-                    + sign * (
-                        Math.sin((y + sceneryOffset) / 150) * arcadeWidth * 0.027
-                        + Math.sin(y / 87 + (isLeft ? 1 : 4)) * arcadeWidth * 0.014
-                    );
-                return coast + sign * inset;
-            };
+            const shorelineX = (y, inset = 0) =>
+                getShorelineX(y, isLeft) + (isLeft ? 1 : -1) * inset;
             const fillBank = (inset, color) => {
                 arcadeContext.beginPath();
                 arcadeContext.moveTo(isLeft ? 0 : arcadeWidth, -24);
@@ -1615,6 +2239,9 @@
             arcadeContext.stroke();
         }
         drawCoastalBanks();
+        aircraftCarriers.forEach((carrier) => {
+            if (carrier.spawned && !carrier.expired) drawAircraftCarrier(carrier);
+        });
         scenery.forEach((feature) => {
             if (feature.kind === 'bridge') {
                 drawBridge(feature.x, feature.y, arcadeWidth * 0.82);
@@ -1622,9 +2249,6 @@
             else drawIsland(feature.x, feature.y, feature.size, feature.seed, feature.kind === 'rocks');
             drawFeaturedCharacter(feature);
             drawRescuee(feature);
-        });
-        aircraftCarriers.forEach((carrier) => {
-            if (carrier.spawned && !carrier.expired) drawAircraftCarrier(carrier);
         });
         const light = arcadeContext.createRadialGradient(arcadeWidth * 0.2, arcadeHeight * 0.2, 4, arcadeWidth * 0.2, arcadeHeight * 0.2, arcadeWidth * 0.8);
         light.addColorStop(0, 'rgba(142, 240, 255, 0.16)');
@@ -1644,6 +2268,37 @@
 
     function drawEnemy(enemy, timestamp) {
         drawAircraft(enemy.x, enemy.y, true, timestamp);
+    }
+
+    function updateRadarDisplay() {
+        radarDisplays.forEach((radar) => {
+            const playerMarker = radar.querySelector('.radar-player-marker');
+            playerMarker.setAttribute('cx', String(6 + (playerShip.x / arcadeWidth) * 88));
+            playerMarker.setAttribute('cy', String(6 + (playerShip.y / arcadeHeight) * 88));
+
+            const enemyMarkers = radar.querySelector('.radar-enemy-markers');
+            if (enemyMarkers.childElementCount !== enemyShips.length) {
+                enemyMarkers.replaceChildren(...enemyShips.map(() => {
+                    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    marker.setAttribute('class', 'radar-enemy-marker');
+                    marker.setAttribute('r', '2.5');
+                    return marker;
+                }));
+            }
+
+            enemyShips.forEach((enemy, index) => {
+                const marker = enemyMarkers.children[index];
+                const isVisible = enemy.alive
+                    && enemy.x >= 0
+                    && enemy.x <= arcadeWidth
+                    && enemy.y >= 0
+                    && enemy.y <= arcadeHeight;
+                marker.toggleAttribute('hidden', !isVisible);
+                if (!isVisible) return;
+                marker.setAttribute('cx', String(6 + (enemy.x / arcadeWidth) * 88));
+                marker.setAttribute('cy', String(6 + (enemy.y / arcadeHeight) * 88));
+            });
+        });
     }
 
     function drawExplosion(explosion, timestamp) {
@@ -1680,6 +2335,7 @@
             if (enemy.alive) drawEnemy(enemy, timestamp);
         });
         explosions.forEach((explosion) => drawExplosion(explosion, timestamp));
+        drawForceShield(timestamp);
         if (timestamp >= invulnerableUntil || Math.floor(timestamp / 100) % 2 === 0) {
             drawAircraft(playerShip.x, playerShip.y, false, timestamp);
         }
@@ -1735,6 +2391,27 @@
         scenery.forEach(drawFeaturedCharacterSpeech);
     }
 
+    function drawForceShield(timestamp) {
+        if (timestamp >= forceShieldUntil) return;
+        const remaining = forceShieldUntil - timestamp;
+        const isWarning = remaining <= 4000;
+        const isBlinkOn = !isWarning || Math.floor(timestamp / 180) % 2 === 0;
+        if (!isBlinkOn) return;
+
+        arcadeContext.save();
+        arcadeContext.globalAlpha = isWarning ? 0.9 : 0.72;
+        arcadeContext.strokeStyle = isWarning ? '#ff4545' : '#ffffff';
+        arcadeContext.fillStyle = isWarning ? 'rgba(255, 35, 35, 0.12)' : 'rgba(255, 255, 255, 0.12)';
+        arcadeContext.lineWidth = 3;
+        arcadeContext.shadowColor = isWarning ? '#ff2525' : '#ffffff';
+        arcadeContext.shadowBlur = 22;
+        arcadeContext.beginPath();
+        arcadeContext.arc(playerShip.x, playerShip.y, 48, 0, Math.PI * 2);
+        arcadeContext.fill();
+        arcadeContext.stroke();
+        arcadeContext.restore();
+    }
+
     function overlaps(shot, target) {
         return Math.abs(shot.x - target.x) < target.width / 2 + 3
             && Math.abs(shot.y - target.y) < target.height / 2 + 5;
@@ -1753,6 +2430,51 @@
         enemiesSpawnedInWave = 0;
         nextEnemySpawnAt = 0;
         wavesSpawned = waveNumber;
+    }
+
+    function getEnemyShotDelay() {
+        const waveIndex = Math.max(0, wavesSpawned - 1);
+        const intervalFloor = Math.max(300, 650 - waveIndex * 35);
+        const intervalSpread = Math.max(200, 550 - waveIndex * 30);
+        return intervalFloor + Math.random() * intervalSpread;
+    }
+
+    function updateFormationEnemy(enemy, elapsed) {
+        if (enemy.formationPhase === 'side-descent') {
+            enemy.y += enemy.descentSpeed * elapsed;
+            if (enemy.y >= arcadeHeight * 0.48) {
+                enemy.formationPhase = 'curve-inward';
+                enemy.phaseElapsed = 0;
+                enemy.phaseStartX = enemy.x;
+                enemy.phaseStartY = enemy.y;
+            }
+        } else if (enemy.formationPhase === 'curve-inward') {
+            enemy.phaseElapsed += elapsed;
+            const progress = Math.min(enemy.phaseElapsed / 1.5, 1);
+            const curve = progress * progress * (3 - 2 * progress);
+            enemy.x = enemy.phaseStartX + (enemy.curveTargetX - enemy.phaseStartX) * curve;
+            enemy.y = enemy.phaseStartY + 76 * curve;
+            if (progress === 1) {
+                enemy.formationPhase = 'climb';
+                enemy.phaseElapsed = 0;
+                enemy.phaseStartX = enemy.x;
+                enemy.phaseStartY = enemy.y;
+            }
+        } else if (enemy.formationPhase === 'climb') {
+            enemy.phaseElapsed += elapsed;
+            const progress = Math.min(enemy.phaseElapsed / 1.7, 1);
+            const curve = progress * progress * (3 - 2 * progress);
+            enemy.x = enemy.phaseStartX + (enemy.attackLaneX - enemy.phaseStartX) * curve;
+            enemy.y = enemy.phaseStartY + (-enemy.height - enemy.phaseStartY) * curve;
+            if (progress === 1) {
+                enemy.formationPhase = 'attack-descent';
+                enemy.canShoot = true;
+            }
+        } else {
+            enemy.y += enemy.descentSpeed * 1.25 * elapsed;
+            enemy.x = enemy.attackLaneX + Math.sin(enemy.routeTime * 2.4 + enemy.phase) * 30;
+        }
+        enemy.routeTime += elapsed;
     }
 
     function updateArcade(timestamp) {
@@ -1793,21 +2515,37 @@
                         target
                     });
                 }
-                playArcadeSound('rocket');
+                playArcadeSound('missileLaunch');
                 lastPlayerMissile = timestamp;
             }
         }
 
         if (enemiesSpawnedInWave < enemiesPerWave && timestamp >= nextEnemySpawnAt) {
             const size = { width: 82, height: 84 };
-            enemyShips.push({
-                x: size.width / 2 + 8 + Math.random() * Math.max(0, arcadeWidth - size.width - 16),
-                y: -size.height / 2,
+            const formationIndex = enemiesSpawnedInWave;
+            const formationColumn = formationIndex % 2;
+            const isFormationWave = wavesSpawned === 3;
+            const enemy = {
+                x: isFormationWave
+                    ? arcadeWidth * (formationColumn === 0 ? 0.25 : 0.75)
+                    : size.width / 2 + 8 + Math.random() * Math.max(0, arcadeWidth - size.width - 16),
+                y: isFormationWave
+                    ? -size.height / 2 - Math.floor(formationIndex / 2) * 55
+                    : -size.height / 2,
                 ...size,
                 alive: true,
                 phase: Math.random() * Math.PI * 2,
-                descentSpeed: 125 + Math.random() * 70
-            });
+                descentSpeed: 125 + Math.random() * 70,
+                canShoot: !isFormationWave,
+                formationPhase: isFormationWave ? 'side-descent' : null,
+                phaseElapsed: 0,
+                phaseStartX: 0,
+                phaseStartY: 0,
+                curveTargetX: arcadeWidth * (formationColumn === 0 ? 0.43 : 0.57),
+                attackLaneX: arcadeWidth * (formationColumn === 0 ? 0.47 : 0.53),
+                routeTime: 0
+            };
+            enemyShips.push(enemy);
             enemiesSpawnedInWave++;
             nextEnemySpawnAt = timestamp + 650 + Math.random() * 550;
         }
@@ -1865,65 +2603,67 @@
                     feature.kind = 'island';
                     feature.size = Math.max(feature.size, 0.95);
                 }
-                const bridgeVisible = scenery.some((candidate) =>
-                    candidate !== feature
-                    && candidate.kind === 'bridge'
-                    && candidate.y > -80
-                    && candidate.y < arcadeHeight + 80
-                );
                 if (!feature.character) {
-                    feature.kind = !bridgeVisible && Math.random() < 0.2
+                    sceneryFeaturesRecycled++;
+                    feature.kind = sceneryFeaturesRecycled % 4 === 0
                         ? 'bridge'
                         : Math.random() < 0.5 ? 'island' : 'rocks';
                 }
+                feature.seed = Math.random() * 10;
+                const otherScenery = scenery.filter((other) => other !== feature);
+                const featureBounds = getSceneryBounds(feature);
+                const upstreamY = otherScenery.length
+                    ? Math.min(...otherScenery.map((other) => other.y - getSceneryBounds(other).halfHeight))
+                        - featureBounds.halfHeight
+                    : -80;
                 if (feature.kind === 'bridge') {
                     feature.x = arcadeWidth / 2;
-                } else if (feature.kind === 'island') {
-                    let separatedX = findSeparatedIslandX(feature);
-                    if (separatedX === null && feature.character) {
-                        scenery.forEach((other) => {
-                            if (other !== feature && other.kind === 'island' && !other.character) {
-                                other.kind = 'rocks';
-                                other.rescuee = null;
-                            }
-                        });
-                        separatedX = findSeparatedIslandX(feature);
-                    }
-                    if (separatedX === null) {
-                        feature.kind = 'rocks';
-                    } else {
-                        feature.x = separatedX;
+                    feature.y = Math.min(-featureBounds.halfHeight - 1, upstreamY);
+                    while (!isSceneryPositionClearOfAircraftCarriers(feature, feature.x, feature.y)) {
+                        feature.y -= 12;
                     }
                 } else {
-                    feature.x = Math.random() * arcadeWidth;
+                    placeSceneryFeature(feature, Math.min(-80, upstreamY), otherScenery);
                 }
-                feature.seed = Math.random() * 10;
                 addRandomRescuee(feature);
             }
         });
-        keepRocksAwayFromCharacters();
         aircraftCarriers.forEach((carrier) => {
             if (carrier.expired || timestamp < carrier.spawnAt) return;
             carrier.spawned = true;
-            carrier.y += 70 * elapsed;
+            const nextY = carrier.y + 70 * elapsed;
+            const steps = Math.max(1, Math.ceil(Math.abs(nextY - carrier.y) / 8));
+            let clearPath = true;
+            for (let step = 1; step <= steps; step++) {
+                const testY = carrier.y + (nextY - carrier.y) * (step / steps);
+                if (!isAircraftCarrierClear(carrier, testY)) {
+                    clearPath = false;
+                    break;
+                }
+            }
+            if (clearPath) carrier.y = nextY;
             if (carrier.y - carrier.length / 2 > arcadeHeight) carrier.expired = true;
         });
 
         enemyShips.forEach((enemy) => {
             if (!enemy.alive) return;
-            enemy.y += enemy.descentSpeed * elapsed;
+            if (enemy.formationPhase) {
+                updateFormationEnemy(enemy, elapsed);
+            } else {
+                enemy.y += enemy.descentSpeed * elapsed;
+                enemy.x += Math.sin(timestamp / 520 + enemy.phase) * 46 * elapsed;
+                enemy.x = Math.max(enemy.width / 2 + 8, Math.min(arcadeWidth - enemy.width / 2 - 8, enemy.x));
+            }
             if (enemy.y - enemy.height / 2 > arcadeHeight) {
                 enemy.alive = false;
                 targetsLost++;
                 updateCombatStatus();
                 return;
             }
-            enemy.x += Math.sin(timestamp / 520 + enemy.phase) * 46 * elapsed;
-            enemy.x = Math.max(enemy.width / 2 + 8, Math.min(arcadeWidth - enemy.width / 2 - 8, enemy.x));
         });
 
         if (timestamp >= nextEnemyShot) {
-            const activeEnemies = enemyShips.filter((enemy) => enemy.alive);
+            const activeEnemies = enemyShips.filter((enemy) => enemy.alive && enemy.canShoot);
             if (activeEnemies.length) {
                 const shooter = activeEnemies[Math.floor(Math.random() * activeEnemies.length)];
                 enemyShots.push({
@@ -1936,7 +2676,7 @@
                 });
                 playArcadeSound('enemyShot');
             }
-            nextEnemyShot = timestamp + 750 + Math.random() * 700;
+            nextEnemyShot = timestamp + getEnemyShotDelay();
         }
 
         playerShots.forEach((shot) => { shot.y -= 470 * elapsed; });
@@ -1971,11 +2711,30 @@
             explosions.push({ x: target.x, y: target.y, startedAt: timestamp });
             updateCombatStatus();
         };
-        const hitPlayer = () => {
+        const hitPlayer = (impactX = playerShip.x, impactY = playerShip.y) => {
+            if (timestamp < forceShieldUntil) return;
             explosions.push({ x: playerShip.x, y: playerShip.y, startedAt: timestamp });
             if (timestamp < invulnerableUntil) return;
             lives--;
             damageTaken = true;
+            const damageMark = {
+                x: Math.max(12, Math.min(88, 50 + (impactX - playerShip.x) * (76 / 74))),
+                y: Math.max(4, Math.min(97, 4 + (impactY - playerShip.y + 40) * (93 / 78)))
+            };
+            playerDamageMarks.push(damageMark);
+            document.querySelectorAll('#aircraftDamageMarkers, #credentialAircraftDamageMarkers, #gameAircraftDamageMarkers').forEach((markers) => {
+                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                marker.setAttribute('class', 'aircraft-damage-marker');
+                marker.setAttribute('cx', String(damageMark.x));
+                marker.setAttribute('cy', String(damageMark.y));
+                marker.setAttribute('r', '4');
+                marker.setAttribute('aria-hidden', 'true');
+                markers.append(marker);
+            });
+            const impactCount = `${playerDamageMarks.length} ${playerDamageMarks.length === 1 ? 'IMPACTO' : 'IMPACTOS'}`;
+            document.querySelectorAll('#aircraftDamageCount, #gameAircraftDamageCount').forEach((counter) => {
+                counter.textContent = impactCount;
+            });
             invulnerableUntil = timestamp + 1100;
             if (lives === 2) {
                 playCriticalStateSound();
@@ -2000,16 +2759,26 @@
             }
         });
         enemyShots.forEach((shot) => {
-            if (timestamp >= invulnerableUntil && overlaps(shot, playerShip)) {
+            if (overlaps(shot, playerShip)) {
+                const impactX = shot.x;
+                const impactY = shot.y;
                 shot.y = arcadeHeight + 20;
-                hitPlayer();
+                if (timestamp >= invulnerableUntil) hitPlayer(impactX, impactY);
             }
         });
 
         const collidingEnemy = enemyShips.find((enemy) => enemy.alive && overlaps(enemy, playerShip));
         if (collidingEnemy) {
             destroyEnemy(collidingEnemy);
-            hitPlayer();
+            const impactX = Math.max(
+                playerShip.x - playerShip.width / 2,
+                Math.min(collidingEnemy.x, playerShip.x + playerShip.width / 2)
+            );
+            const impactY = Math.max(
+                playerShip.y - playerShip.height / 2,
+                Math.min(collidingEnemy.y, playerShip.y + playerShip.height / 2)
+            );
+            hitPlayer(impactX, impactY);
         }
 
         if (arcadeActive && lives <= 2) {
@@ -2023,7 +2792,6 @@
             if (carrier) {
                 carrier.recovered = true;
                 lives = 5;
-                invulnerableUntil = Math.max(invulnerableUntil, timestamp + 1400);
                 stopCriticalAlert();
                 updateCombatStatus();
                 showCharacterSpeech('Reabastecimento concluído! O porta-aviões restaurou as cinco vidas.');
@@ -2054,6 +2822,7 @@
             spawnEnemyWave(nextWave);
             updateCombatStatus();
         }
+        updateRadarDisplay();
         drawArcadeFrame(timestamp);
         arcadeAnimationFrame = window.requestAnimationFrame(updateArcade);
     }
@@ -2061,12 +2830,15 @@
     function startArcadeGame() {
         stopCriticalAlert();
         getGameAudioContext();
+        document.querySelector('.game-container').classList.add('is-playing');
         arcadeCanvas.hidden = false;
         playerShip.x = 0;
         christinaSpawned = false;
         feiFeiLiSpawned = false;
         featuredCharactersPassed = false;
         scenery = [];
+        sceneryFeaturesRecycled = 0;
+        aircraftCarriers = [];
         resizeArcadeCanvas();
         aircraftCarriers = createAircraftCarriers(performance.now());
         enemyShips = [];
@@ -2076,7 +2848,17 @@
         explosions = [];
         pressedKeys.clear();
         mouseFiring = false;
+        forceShieldCharges = forceShieldMaxCharges;
+        forceShieldUntil = 0;
+        updateForceShieldMeters();
         lives = 5;
+        playerDamageMarks = [];
+        document.querySelectorAll('#aircraftDamageMarkers, #credentialAircraftDamageMarkers, #gameAircraftDamageMarkers').forEach((markers) => {
+            markers.replaceChildren();
+        });
+        document.querySelectorAll('#aircraftDamageCount, #gameAircraftDamageCount').forEach((counter) => {
+            counter.textContent = '0 IMPACTOS';
+        });
         targetsHit = 0;
         targetsLost = 0;
         peopleRescued = 0;
@@ -2088,12 +2870,17 @@
         nextEnemyShot = performance.now() + 700;
         invulnerableUntil = 0;
         arcadeActive = true;
-        document.getElementById('missionObjectives').hidden = false;
         spawnEnemyWave(1);
         updateCombatStatus();
         arcadeLastFrame = performance.now();
         characterSpeech.hidden = false;
-        showCharacterSpeech('Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo do mouse para disparar; no celular, arraste para guiar.');
+        arcadeCanvas.setAttribute(
+            'aria-label',
+            'Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar.'
+        );
+        showCharacterSpeech(
+            'Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo para atirar; clique com o botão direito para ativar um dos três escudos de força, com sete segundos de proteção cada. No celular, arraste para guiar.'
+        );
         document.getElementById('routeMessage').textContent = 'COMBATE EM ANDAMENTO';
         document.getElementById('routeMessage').classList.remove('route-message--detour');
         arcadeAnimationFrame = window.requestAnimationFrame(updateArcade);
@@ -2110,16 +2897,29 @@
         pressedKeys.clear();
         mouseFiring = false;
     });
+    const activateForceShield = () => {
+        const now = performance.now();
+        if (!arcadeActive || forceShieldCharges === 0 || now < forceShieldUntil) return;
+        forceShieldCharges--;
+        forceShieldUntil = now + 7000;
+        updateForceShieldMeters();
+    };
     arcadeCanvas.addEventListener('pointerdown', (event) => {
         if (!arcadeActive) return;
+        if (event.pointerType === 'mouse' && event.button === 2) {
+            event.preventDefault();
+            activateForceShield();
+            return;
+        }
         getGameAudioContext();
         arcadeCanvas.setPointerCapture(event.pointerId);
         if (event.pointerType === 'mouse' && event.button === 0) mouseFiring = true;
         moveShipToPointer(event);
     });
     arcadeCanvas.addEventListener('pointermove', (event) => {
-        if (arcadeActive && event.buttons) moveShipToPointer(event);
+        if (arcadeActive && (event.buttons & 1)) moveShipToPointer(event);
     });
+    arcadeCanvas.addEventListener('contextmenu', (event) => event.preventDefault());
     window.addEventListener('pointerup', (event) => {
         if (event.pointerType === 'mouse' && event.button === 0) mouseFiring = false;
     });
@@ -2136,12 +2936,35 @@
         playerShip.y = Math.max(arcadeHeight * 0.4, Math.min(arcadeHeight - playerShip.height / 2 - 8, playerShip.y));
     }
 
+    function updateForceShieldMeters(progress = forceShieldCharges / forceShieldMaxCharges) {
+        const fillProgress = Math.max(0, Math.min(1, progress));
+        document.querySelectorAll('.credential-gauge--shield').forEach((meter) => {
+            meter.setAttribute('aria-valuenow', String(forceShieldCharges));
+            meter.setAttribute('aria-valuetext', `${forceShieldCharges} de ${forceShieldMaxCharges} escudos restantes`);
+            meter.style.setProperty('--shield-progress', String(fillProgress));
+            const fill = meter.querySelector('.credential-shield-fill');
+            fill.setAttribute('y', String(110 * (1 - fillProgress)));
+            fill.setAttribute('height', String(110 * fillProgress));
+        });
+    }
+
     function updateCombatStatus() {
         const currentWave = Math.min(wavesSpawned || 1, totalWaves);
         const resolvedTargets = targetsHit + targetsLost;
         const missilesUnlocked = targetsHit >= enemiesPerWave ? 1 : 0;
+        const rescuedGauges = document.querySelectorAll('.credential-gauge--rescued');
+        rescuedGauges.forEach((gauge) => {
+            gauge.setAttribute('aria-valuenow', String(peopleRescued));
+            gauge.setAttribute('aria-valuetext', `${peopleRescued} de ${rescueTargetCount} pessoas resgatadas`);
+            gauge.querySelector('.credential-gauge-fill').style.setProperty(
+                '--gauge-progress',
+                String(peopleRescued / rescueTargetCount)
+            );
+        });
         document.getElementById('scoreStatus').textContent =
             `ONDA: ${currentWave}/${totalWaves} · ALVOS: ${resolvedTargets}/${enemyTargetCount} · ACERTADOS: ${targetsHit} · PERDIDOS: ${targetsLost} · RESGATADOS: ${peopleRescued} · VIDAS: ${lives}/5 · MÍSSEIS: ${missilesUnlocked}`;
+        document.getElementById('aircraftLives').textContent = `${lives}/5`;
+        document.getElementById('aircraftWeapons').textContent = missilesUnlocked ? 'MÍSSEIS OK' : 'BLOQUEADOS';
         updateMissionObjectives();
     }
 
@@ -2186,10 +3009,69 @@
         routeMessage.classList.toggle('route-message--detour', isDetour);
     }
 
+    function showAircraftReady() {
+        const aircraftCard = document.querySelector('.credential-aircraft-card');
+        const readyStatus = document.getElementById('credentialAircraftReadyStatus');
+        const radarActiveStatus = document.querySelector('#credentialGauges .credential-radar-active-status');
+        const credentialCards = [...document.querySelectorAll(
+            '#credentialGauges .credential-radar-card, #credentialGauges .credential-aircraft-card, #credentialGauges .credential-gauge'
+        )];
+        const finishSequence = () => {
+            credentialCards.forEach((card) => {
+                card.classList.add('is-ready');
+            });
+            readyStatus.hidden = false;
+            radarActiveStatus.hidden = false;
+        };
+
+        finishSequence();
+    }
+
+    function animateCredentialGauges() {
+        const gaugeContainer = document.getElementById('credentialGauges');
+        const gauges = [...gaugeContainer.querySelectorAll(
+            '.credential-gauge:not(.credential-gauge--rescued):not(.credential-gauge--shield)'
+        )];
+
+        const updateGaugeValues = (values, shieldProgress) => {
+            gauges.forEach((gauge, index) => {
+                const value = Array.isArray(values) ? values[index] : values;
+                gauge.setAttribute('aria-valuenow', String(value));
+                gauge.style.setProperty('--gauge-progress', String(value / 100));
+            });
+            updateForceShieldMeters(shieldProgress);
+        };
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            updateGaugeValues(100);
+            showAircraftReady();
+            return;
+        }
+
+        const startedAt = performance.now();
+        const duration = 2800;
+        const stagger = 250;
+        updateForceShieldMeters(0);
+        const animateValues = (timestamp) => {
+            const values = gauges.map((_, index) =>
+                Math.min(100, Math.floor(Math.max(0, timestamp - startedAt - index * stagger) / duration * 100))
+            );
+            const shieldProgress = Math.min(1, Math.max(0, timestamp - startedAt) / duration);
+            updateGaugeValues(values, shieldProgress);
+            if (values.some((value) => value < 100)) {
+                window.requestAnimationFrame(animateValues);
+            } else {
+                showAircraftReady();
+            }
+        };
+        window.requestAnimationFrame(animateValues);
+    }
+
     window.setTimeout(() => {
         openingScreen.hidden = true;
         const rescueTransitionScreen = document.getElementById('rescueTransitionScreen');
         rescueTransitionScreen.hidden = false;
+        animateCredentialGauges();
         registrationModal.hidden = false;
         registrationModal.setAttribute('aria-hidden', 'false');
         document.querySelector('#surveyForm [name="name"]').focus();
@@ -2207,7 +3089,6 @@
 
         titleScreen.hidden = true;
         updateStatusMessage('COMBATE EM ANDAMENTO');
-        showCharacterSpeech('Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo do mouse para disparar; no celular, arraste para guiar.');
         startArcadeGame();
     }
 
@@ -2220,6 +3101,7 @@
 
     function showMissionEnd(won) {
         arcadeActive = false;
+        document.querySelector('.game-container').classList.remove('is-playing');
         updateMissionObjectives(true);
         document.getElementById('missionObjectives').hidden = true;
         endCard.classList.toggle('won', won);
@@ -2235,6 +3117,7 @@
     document.getElementById('startButton').addEventListener('click', startMission);
     document.getElementById('restartButton').addEventListener('click', () => {
         arcadeActive = false;
+        document.querySelector('.game-container').classList.remove('is-playing');
         window.cancelAnimationFrame(arcadeAnimationFrame);
         pressedKeys.clear();
         arcadeCanvas.hidden = true;
@@ -2334,12 +3217,12 @@
             const surveyModal = document.getElementById('surveyModal');
             const rescueTransitionScreen = document.getElementById('rescueTransitionScreen');
             const credentialProgress = document.getElementById('credentialProgress');
-            surveyModal.hidden = true;
-            surveyModal.setAttribute('aria-hidden', 'true');
+            surveyModal.setAttribute('aria-busy', 'true');
             rescueTransitionScreen.classList.add('credential-confirmation-progress');
             credentialProgress.hidden = false;
             const progressDelay = new Promise((resolve) => window.setTimeout(resolve, 2000));
             await progressDelay;
+            surveyModal.setAttribute('aria-busy', 'false');
             rescueTransitionScreen.hidden = true;
             credentialProgress.hidden = true;
             rescueTransitionScreen.classList.remove('credential-confirmation-progress');
