@@ -1,7 +1,7 @@
 # dorothy
 # dorothy
 
-O cadastro registra os dados do jogador em `db/pesquisa.db`. O card de perguntas está temporariamente desativado; por enquanto, após o cadastro a missão começa diretamente.
+O cadastro registra os dados do jogador em `db/pesquisa.db`. Após salvar as credenciais, a tela de confirmação exibe uma barra de progresso e inicia a missão automaticamente. O card de perguntas está temporariamente desativado.
 
 Para jogar, execute `python3 server.py` e abra `http://127.0.0.1:8000`. O Live Server pode ser usado na porta 5500 com o servidor Python ativo; o cadastro e o jogo usam a API na porta 8000.
 

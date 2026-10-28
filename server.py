@@ -100,15 +100,17 @@ def initialize_database():
                     liked_game TEXT CHECK (liked_game IN ('S', 'N')),
                     expo_xp_rating INTEGER CHECK (expo_xp_rating BETWEEN 0 AND 10),
                     pontos INTEGER NOT NULL DEFAULT 0 CHECK (pontos BETWEEN 0 AND 999),
-                    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+                    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+                    education_level TEXT CHECK (education_level IN ('Ensino Fundamental', 'Ensino Médio')),
+                    grade_year TEXT CHECK (grade_year IN ('Ano 1', 'Ano 2', 'Ano 3', 'Ano 4', 'Ano 5', 'Ano 6', 'Ano 7', 'Ano 8', 'Ano 9'))
                 )
                 """
             )
             connection.execute(
                 """
                 INSERT INTO surveys_updated
-                    (id, name, school, grade, idade, liked_game, expo_xp_rating, pontos, created_at)
-                SELECT id, name, school, grade, idade, liked_game, expo_xp_rating, pontos, created_at
+                    (id, name, school, grade, idade, liked_game, expo_xp_rating, pontos, created_at, education_level, grade_year)
+                SELECT id, name, school, grade, idade, liked_game, expo_xp_rating, pontos, created_at, education_level, grade_year
                 FROM surveys
                 """
             )

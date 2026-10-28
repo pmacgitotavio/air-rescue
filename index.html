@@ -871,8 +871,8 @@
                 <legend>Faixa de Idade:</legend>
                 <div class="survey-radio-options">
                     <label class="survey-radio-option"><input type="radio" name="idade" value="7 a 8 anos" required>7 - 8 anos</label>
-                    <label class="survey-radio-option"><input type="radio" name="idade" value="9 a 11 anos" required>9 - 10 anos</label>
-                    <label class="survey-radio-option"><input type="radio" name="idade" value="12 a 14 anos" required>11 - 13 anos</label>
+                    <label class="survey-radio-option"><input type="radio" name="idade" value="9 a 11 anos" required>9 - 11 anos</label>
+                    <label class="survey-radio-option"><input type="radio" name="idade" value="12 a 14 anos" required>12 - 14 anos</label>
                     <label class="survey-radio-option"><input type="radio" name="idade" value="15 a 17 anos" required>15 - 17 anos</label>
                     <label class="survey-radio-option"><input type="radio" name="idade" value="18 ou mais" required>18 ou mais</label>
                 </div>
@@ -2946,7 +2946,7 @@
             rescueTransitionScreen.hidden = true;
             credentialProgress.hidden = true;
             rescueTransitionScreen.classList.remove('credential-confirmation-progress');
-            document.getElementById('startButton').focus();
+            await startMission();
         } catch (error) {
             errorMessage.textContent = error instanceof TypeError
                 ? 'Não foi possível conectar ao servidor do jogo. Execute python3 server.py na pasta do jogo e abra http://127.0.0.1:8000 no navegador.'
