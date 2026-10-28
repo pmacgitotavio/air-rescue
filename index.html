@@ -48,15 +48,6 @@
             box-shadow: 0 0 24px rgba(0, 255, 204, 0.18), inset 0 0 45px rgba(56, 189, 248, 0.05);
         }
 
-        .game-container::after {
-            position: absolute;
-            z-index: 1;
-            pointer-events: none;
-            content: "";
-            inset: 0;
-            opacity: 0;
-        }
-
         .arcade-canvas {
             position: absolute;
             z-index: 3;
@@ -126,8 +117,8 @@
             bottom: 12px;
             left: 16px;
             display: grid;
-            grid-template-areas: "status speech questions";
-            grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.8fr) minmax(0, 1.15fr);
+            grid-template-areas: "status speech";
+            grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.8fr);
             align-items: end;
             gap: 10px;
         }
@@ -155,37 +146,11 @@
             box-shadow: 0 0 12px rgba(0, 255, 204, 0.18);
             color: #d9e6fa;
             font-size: 0.76rem;
-            white-space: nowrap;
+            line-height: 1.35;
+            white-space: normal;
         }
 
-        .progress-track {
-            width: clamp(180px, 28vw, 340px);
-            height: 16px;
-            overflow: hidden;
-            border: 1px solid #ff1493;
-            border-radius: 10px;
-            background: #07111e;
-        }
-
-        .round-progress-fill {
-            width: 0;
-            height: 100%;
-            background: #ffea00;
-            box-shadow: 0 0 10px #ff1493;
-            transition: width 700ms ease;
-        }
-
-        .round-progress-percent { min-width: 3ch; }
-
-        .mission-status-cards {
-            display: flex;
-            min-width: 0;
-            align-items: center;
-            justify-content: stretch;
-            gap: 8px;
-        }
-
-        .fuel-card, .route-message {
+        .route-message {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -199,55 +164,10 @@
             white-space: nowrap;
         }
 
-        .fuel-card {
-            flex: 0.8 1 0;
-            min-width: 0;
-        }
-
         .route-message {
-            flex: 1.2 1 0;
             min-width: 0;
-        }
-
-        .route-message {
             height: 34px;
             overflow-y: auto;
-        }
-
-        .player-card {
-            position: absolute;
-            right: 0;
-            bottom: calc(100% + 10px);
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            min-width: 0;
-            width: min(360px, 36vw);
-            gap: 8px;
-            padding: 10px 12px;
-            border: 1px solid rgba(0, 255, 204, 0.7);
-            border-radius: 8px;
-            background: rgba(7, 17, 30, 0.96);
-            box-shadow: 0 0 12px rgba(0, 255, 204, 0.18);
-            color: #d9e6fa;
-            font-size: 0.76rem;
-        }
-
-        .player-card-item {
-            display: grid;
-            min-width: 0;
-            gap: 2px;
-        }
-
-        .player-card-name { grid-column: 1 / -1; }
-
-        .player-card-label {
-            color: var(--blue);
-            font-size: 0.64rem;
-        }
-
-        .player-card-value {
-            overflow-wrap: anywhere;
-            color: #fff;
         }
 
         .route-message {
@@ -271,22 +191,6 @@
 
         @keyframes route-message-blink {
             to { opacity: 0.35; }
-        }
-
-        .fuel-track {
-            width: 88px;
-            height: 10px;
-            overflow: hidden;
-            border: 1px solid #7dff74;
-            border-radius: 8px;
-            background: #07111e;
-        }
-
-        .fuel-fill {
-            width: 100%;
-            height: 100%;
-            background: #7dff74;
-            transition: width 400ms ease, background-color 400ms ease;
         }
 
         .dorothy-sprite, .christina-sprite, .fei-fei-li-sprite {
@@ -321,89 +225,6 @@
             line-height: 68px;
             text-overflow: ellipsis;
             white-space: nowrap;
-        }
-
-        .dialogue-panel {
-            position: static;
-            grid-area: questions;
-            z-index: 9;
-            width: 100%;
-            min-width: 0;
-            height: 70px;
-            overflow-y: auto;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            grid-template-rows: auto 1fr auto;
-            grid-template-areas: "meta options" "question options" "feedback feedback";
-            align-items: center;
-            column-gap: 8px;
-            padding: 5px 8px;
-            border: 1px solid rgba(0, 255, 204, 0.7);
-            border-radius: 14px;
-            background: var(--panel);
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.14);
-            font-size: 0.52rem;
-        }
-
-        .dialogue-panel h2 {
-            display: none;
-        }
-
-        .dialogue-meta {
-            grid-area: meta;
-            margin: 0 0 2px;
-            color: var(--blue);
-            font-size: 0.48rem;
-        }
-
-        .dialogue-question {
-            grid-area: question;
-            align-self: start;
-            margin: 0 0 2px;
-            font-size: 0.72rem;
-            line-height: 1.15;
-        }
-
-        .options {
-            grid-area: options;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            grid-template-rows: repeat(2, minmax(0, 1fr));
-            align-self: stretch;
-            gap: 3px;
-        }
-
-        .btn-option {
-            min-height: 20px;
-            padding: 2px 4px;
-            border: 1px solid rgba(0, 255, 204, 0.75);
-            border-radius: 5px;
-            background: rgba(12, 30, 45, 0.92);
-            color: #eafffb;
-            cursor: pointer;
-            text-align: left;
-            font-size: 0.6rem;
-            line-height: 1.05;
-            transition: background 160ms ease, color 160ms ease, transform 160ms ease;
-        }
-
-        .btn-option:hover:not(:disabled), .btn-option:focus-visible {
-            outline: none;
-            background: var(--cyan);
-            color: #061016;
-            transform: translateY(-2px);
-        }
-
-        .btn-option:disabled { cursor: default; }
-        .btn-option.wrong-answer { border-color: var(--pink); color: #ffb2c1; }
-        .btn-option.correct-answer { border-color: #7dff74; color: #7dff74; }
-
-        .dialogue-feedback {
-            grid-area: feedback;
-            margin: 1px 0 0;
-            color: #ffe58a;
-            font-weight: bold;
-            line-height: 1.5;
         }
 
         .title-screen, .end-screen {
@@ -619,8 +440,6 @@
         }
         .survey-submit:disabled { cursor: wait; opacity: 0.65; }
         .survey-error { min-height: 0; margin: 2px 0 0; color: #ff8d8d; }
-        .survey-success { display: none; color: #7dff74; font-weight: bold; }
-
         @media (max-width: 580px) {
             .survey-fields { grid-template-columns: minmax(0, 1fr); }
             .survey-overlay { align-items: center; justify-content: center; padding: 12px; }
@@ -629,7 +448,7 @@
 
         @media (max-width: 980px) {
             .game-info-layout {
-                grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.8fr) minmax(0, 1.05fr);
+                grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.8fr);
                 gap: 8px;
             }
         }
@@ -654,59 +473,30 @@
                 bottom: 8px;
                 left: 8px;
                 grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-                grid-template-areas: "status status" "speech questions";
+                grid-template-areas: "status status" "speech speech";
                 align-content: end;
                 align-items: stretch;
                 gap: 6px;
             }
             .mission-status-column { gap: 6px; }
             .hud {
+                justify-content: flex-start;
                 gap: 5px;
                 padding: 6px 9px;
                 font-size: 0.55rem;
-                flex-wrap: wrap;
-                white-space: normal;
             }
-            .mission-status-cards {
+            .route-message {
                 width: 100%;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 6px;
-            }
-            .route-message, .fuel-card { width: 100%; }
-            .route-message { height: 34px; flex-basis: auto; }
-            .fuel-card { justify-content: space-between; gap: 4px; }
-            .player-card {
-                bottom: calc(100% + 6px);
-                width: min(320px, 80vw);
-                gap: 5px;
-                padding: 7px 9px;
-                font-size: 0.55rem;
-            }
-            .player-card-label { font-size: 0.5rem; }
-            .fuel-card, .route-message {
                 gap: 5px;
                 padding: 6px 9px;
                 font-size: 0.55rem;
             }
-            .route-message { height: 34px; }
-            .fuel-track { width: 64px; height: 8px; }
-            .progress-track { width: clamp(70px, 18vw, 120px); height: 14px; }
-            .dialogue-panel {
-                height: 103px;
-                padding: 6px 8px;
-            }
-            .dialogue-panel h2 { display: none; }
-            .dialogue-panel .dialogue-meta { font-size: 0.48rem; }
-            .dialogue-panel .dialogue-question { font-size: 0.65rem; }
-            .dialogue-panel .options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .dialogue-panel .btn-option { min-height: 22px; padding: 3px 5px; font-size: 0.62rem; }
             .dorothy-sprite {
                 left: 2%;
                 width: clamp(210px, 58vw, 280px);
                 max-height: 55%;
             }
-            .character-speech { height: 103px; padding: 8px; font-size: 0.68rem; }
+            .character-speech { height: 70px; padding: 8px; font-size: 0.68rem; }
             .character-speech--curiosity { height: 70px; padding: 0 8px; font-size: 0.58rem; line-height: 68px; }
             .arcade-canvas {
                 inset: 0 0 225px;
@@ -720,7 +510,7 @@
         @media (max-width: 400px) {
             .game-info-layout {
                 grid-template-columns: minmax(0, 1fr);
-                grid-template-areas: "status" "speech" "questions";
+                grid-template-areas: "status" "speech";
             }
         }
 
@@ -756,57 +546,15 @@
     </aside>
     <div class="game-info-layout">
         <div class="mission-status-column">
-            <div class="mission-status-cards">
-                <div class="route-message" aria-live="polite">
-                    <span class="route-message-label">STATUS:</span>
-                    <span id="routeMessage" class="route-message-text">AGUARDANDO PERGUNTAS</span>
-                </div>
-                <div class="fuel-card" aria-label="Combustível da nave">
-                    <span>COMBUSTÍVEL</span>
-                    <div class="fuel-track" role="progressbar" aria-label="Nível de combustível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                        <div id="fuelFill" class="fuel-fill"></div>
-                    </div>
-                        <span id="fuelStatus" aria-live="polite">0%</span>
-                </div>
+            <div class="route-message" aria-live="polite">
+                <span class="route-message-label">STATUS:</span>
+                <span id="routeMessage" class="route-message-text">AGUARDANDO CADASTRO</span>
             </div>
-            <div class="hud" aria-label="Progresso da missão">
-                <span id="scoreStatus" aria-live="polite">ACERTOS: 0 · ERROS: 0</span>
-                <div class="progress-track" role="progressbar" aria-label="Progresso da missão" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                    <div id="roundProgressFill" class="round-progress-fill"></div>
-                </div>
-                <span id="roundProgressPercent" class="round-progress-percent">0%</span>
+            <div class="hud" aria-label="Status do combate">
+                <span id="scoreStatus" aria-live="polite">COMBATE NÃO INICIADO</span>
             </div>
         </div>
         <p id="characterSpeech" class="character-speech" aria-live="polite" hidden></p>
-        <aside class="player-card" aria-label="Estatísticas do jogador" aria-live="polite" hidden>
-            <div class="player-card-item player-card-name">
-                <span class="player-card-label">NOME DO JOGADOR:</span>
-                <strong id="playerName" class="player-card-value">—</strong>
-            </div>
-            <div class="player-card-item">
-                <span class="player-card-label">ESCOLA:</span>
-                <strong id="playerSchool" class="player-card-value">—</strong>
-            </div>
-            <div class="player-card-item" hidden>
-                <span class="player-card-label">NÚMERO DE JOGADAS:</span>
-                <strong id="playerGames" class="player-card-value">0</strong>
-            </div>
-            <div class="player-card-item">
-                <span class="player-card-label">PONTOS:</span>
-                <strong id="playerPoints" class="player-card-value">0</strong>
-            </div>
-            <div class="player-card-item" hidden>
-                <span class="player-card-label">POSIÇÃO NO RANKING:</span>
-                <strong id="playerRank" class="player-card-value">Ainda sem partidas</strong>
-            </div>
-        </aside>
-        <section id="dialoguePanel" class="dialogue-panel" aria-live="polite" hidden>
-            <h2 id="modalTitle">Desafio de Código</h2>
-            <p id="questionProgress" class="dialogue-meta"></p>
-            <p id="modalDesc" class="dialogue-question"></p>
-            <div class="options" id="modalOptions"></div>
-            <p id="dialogueFeedback" class="dialogue-feedback" role="status" hidden></p>
-        </section>
     </div>
 
     <img class="dorothy-sprite" src="img/dorothyvaughan.png" alt="Dorothy Vaughan">
@@ -818,8 +566,8 @@
             <h1>O CÓDIGO DE DOROTHY VAUGHAN</h1>
             <p class="subtitle">A Revolução dos Números na Era Espacial</p>
             <p>Faça seu cadastro e voe por uma missão de combate aéreo com rolagem vertical.</p>
-            <p id="registrationGateMessage" class="registration-gate-message" role="status">Card de perguntas temporariamente desativado.</p>
-            <button id="startButton" class="btn-start" type="button">[ PRESSIONE PARA INICIAR ]</button>
+            <p id="registrationGateMessage" class="registration-gate-message" role="status">Preencha as credenciais para iniciar a missão.</p>
+            <button id="startButton" class="btn-start" type="button">[ INICIAR MISSÃO ]</button>
             <footer class="credits-footer">
                 Desenvolvido por: <strong>Subsecretaria de Ciência e Tecnologia de Arraial do Cabo</strong>
             </footer>
@@ -835,7 +583,7 @@
     </section>
 </main>
 
-<section id="openingScreen" class="opening-screen" aria-labelledby="openingTitle">
+<section id="openingScreen" class="opening-screen" aria-label="Carregamento do jogo">
     <div class="opening-progress" role="progressbar" aria-label="Carregamento do jogo" aria-valuemin="0" aria-valuemax="100">
         <div class="opening-progress-fill"></div>
     </div>
@@ -914,305 +662,17 @@
 </section>
 
 <script>
-    const questionBank = [
-        { category: "Introdução à microinformática", title: "O computador", desc: "Para que serve um computador?", options: ["Para ajudar em tarefas", "Para lavar roupas", "Para cozinhar sopa", "Para regar plantas"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A tela", desc: "Onde vemos as imagens do computador?", options: ["No teclado", "No monitor", "No mouse", "Na impressora"], correct: 1 },
-        { category: "Introdução à microinformática", title: "O teclado", desc: "Qual peça usamos para escrever?", options: ["A caixa de som", "O monitor", "O teclado", "O carregador"], correct: 2 },
-        { category: "Introdução à microinformática", title: "O mouse", desc: "O que usamos para mover a setinha na tela?", options: ["O mouse", "A impressora", "O alto-falante", "A webcam"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O processador", desc: "Qual peça ajuda o computador a fazer tarefas?", options: ["O papel", "O processador", "O fone", "A cadeira"], correct: 1 },
-        { category: "Introdução à microinformática", title: "A impressora", desc: "Qual aparelho coloca textos no papel?", options: ["O monitor", "O teclado", "A impressora", "O mouse"], correct: 2 },
-        { category: "Introdução à microinformática", title: "O som", desc: "Qual peça toca sons do computador?", options: ["A caixa de som", "O teclado", "A webcam", "O carregador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O fone", desc: "O que usamos para ouvir sem incomodar os outros?", options: ["A impressora", "O fone de ouvido", "O mouse", "O monitor"], correct: 1 },
-        { category: "Introdução à microinformática", title: "O microfone", desc: "Qual aparelho usamos para gravar a voz?", options: ["O monitor", "O teclado", "O microfone", "A impressora"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A webcam", desc: "Qual câmera mostra o rosto no computador?", options: ["A webcam", "O mouse", "A caixa de som", "O teclado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O notebook", desc: "Qual computador podemos levar na mochila?", options: ["O monitor", "O notebook", "A impressora", "O teclado"], correct: 1 },
-        { category: "Introdução à microinformática", title: "O tablet", desc: "Em qual aparelho tocamos na tela para escolher?", options: ["Na impressora", "No mouse", "No tablet", "Na caixa de som"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A tela sensível ao toque", desc: "Como escolhemos algo numa tela de toque?", options: ["Tocando nela com o dedo", "Batendo com um lápis", "Assoprando", "Sacudindo o aparelho"], correct: 0 },
-        { category: "Introdução à microinformática", title: "As peças", desc: "O que é uma parte física do computador?", options: ["Um desenho", "O teclado", "Uma música", "Uma ideia"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Os programas", desc: "O que usamos para fazer tarefas no computador?", options: ["Os cabos", "As mesas", "Os programas", "As paredes"], correct: 2 },
-        { category: "Introdução à microinformática", title: "O desenho de um programa", desc: "O que um ícone na tela pode representar?", options: ["Um programa", "Um copo de água", "Uma janela de verdade", "Uma cadeira"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Um clique", desc: "O que fazemos para escolher um botão na tela?", options: ["Desligamos o monitor", "Clicamos nele", "Tiramos o teclado", "Fechamos os olhos"], correct: 1 },
-        { category: "Introdução à microinformática", title: "A rodinha do mouse", desc: "Para que serve a rodinha do mouse?", options: ["Para tocar música", "Para imprimir", "Para subir e descer a página", "Para escrever letras"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A barra de espaço", desc: "Qual tecla deixa um espaço entre as palavras?", options: ["A barra de espaço", "A tecla do mouse", "A tecla da tela", "A tecla de som"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A tecla Enter", desc: "Qual tecla pode começar uma linha nova?", options: ["Shift", "Enter", "Esc", "Caps Lock"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Apagar uma letra", desc: "Qual tecla apaga a letra que ficou antes?", options: ["Enter", "Espaço", "Backspace", "Tab"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Os números", desc: "Onde digitamos números no computador?", options: ["No teclado", "No monitor", "No mouse", "Na caixa de som"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Guardar o trabalho", desc: "O que fazemos para não perder um desenho?", options: ["Fechamos os olhos", "Salvamos o arquivo", "Desligamos da tomada", "Viramos o monitor"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Um arquivo", desc: "O que pode ficar guardado no computador?", options: ["Um brinquedo de verdade", "Uma banana", "Um texto ou desenho", "Uma cadeira"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Uma pasta", desc: "Para que serve uma pasta no computador?", options: ["Para organizar arquivos", "Para lavar o teclado", "Para tocar sons", "Para mover a setinha"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A área de trabalho", desc: "O que aparece na tela quando o computador começa?", options: ["Uma folha de papel", "A área de trabalho", "Uma janela de casa", "Uma televisão desligada"], correct: 1 },
-        { category: "Introdução à microinformática", title: "O botão direito do mouse", desc: "O que aparece ao clicar com o botão direito?", options: ["Um menu com opções", "Uma música nova", "Uma foto impressa", "Uma bateria carregada"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Desenhar", desc: "Qual programa pode ajudar a fazer desenhos?", options: ["Um programa de pintura", "Um despertador", "Uma calculadora de mesa", "Uma lanterna"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Fazer contas", desc: "Qual programa pode ajudar com contas?", options: ["A câmera", "A calculadora", "O microfone", "O teclado"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Ver páginas na internet", desc: "Qual programa usamos para abrir sites?", options: ["A calculadora", "A câmera", "O navegador", "A lixeira"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A internet", desc: "O que a internet ajuda a fazer?", options: ["Encontrar informações e conversar", "Lavar a tela", "Carregar a mochila", "Apagar o teclado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O e-mail", desc: "Para que serve um e-mail?", options: ["Para desenhar no papel", "Para enviar mensagens", "Para ligar o computador", "Para limpar o mouse"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Campo de senha", desc: "Onde digitamos a senha para acessar uma conta?", options: ["No campo de senha", "Na lixeira", "Na barra de tarefas", "No nome do arquivo"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Renomear um arquivo", desc: "O que fazemos para mudar o nome de um arquivo?", options: ["Aumentamos o volume", "Desligamos a tela", "Usamos a opção de renomear", "Tiramos uma foto"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Desligar com cuidado", desc: "Como desligamos o computador direitinho?", options: ["Puxando todos os fios", "Batendo no teclado", "Usando a opção de desligar", "Fechando os olhos"], correct: 2 },
-        { category: "Introdução à microinformática", title: "O carregador", desc: "O que ajuda a carregar a bateria do notebook?", options: ["O carregador", "O mouse", "O papel", "A impressora"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A bateria", desc: "O que dá energia ao notebook sem tomada?", options: ["A webcam", "A bateria", "O teclado", "O papel"], correct: 1 },
-        { category: "Introdução à microinformática", title: "A entrada USB", desc: "Onde podemos conectar alguns aparelhos e cabos?", options: ["Na tela", "Na tecla Enter", "Na entrada USB", "Na caixa de som"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Ligar o computador", desc: "O que apertamos para ligar o computador?", options: ["O botão de ligar", "A tecla de espaço", "A rodinha do mouse", "A folha da impressora"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O computador de mesa", desc: "Qual peça mostra imagens num computador de mesa?", options: ["O mouse", "O monitor", "O carregador", "O microfone"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Ventilação", desc: "O que ajuda a resfriar o processador?", options: ["O cooler", "O teclado", "O monitor", "O mouse"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Limpar a tela", desc: "Qual é uma forma cuidadosa de limpar a tela?", options: ["Com um pano macio e seco", "Com água derramada", "Com uma colher", "Com o dedo sujo"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Periférico", desc: "O que é um periférico do computador?", options: ["Um dispositivo conectado ao computador", "Um tipo de arquivo", "Um programa de texto", "Uma página da internet"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Unidade de arquivo", desc: "Qual unidade mede o tamanho de um arquivo?", options: ["Megabyte", "Metro", "Litro", "Grau"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Um documento", desc: "O que podemos escrever num documento?", options: ["Uma história", "Uma música tocando", "Uma cadeira", "Um cabo"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Uma foto", desc: "Onde podemos guardar uma foto no computador?", options: ["No teclado", "Num arquivo", "No mouse", "No carregador"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Copiar um texto", desc: "O que significa copiar um texto?", options: ["Apagar a tela", "Desligar o computador", "Fazer outra cópia do texto", "Tirar uma foto"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A lixeira", desc: "Onde costumam ficar arquivos que apagamos?", options: ["Na lixeira do computador", "No monitor", "No teclado", "No navegador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "As instruções", desc: "O que orienta o computador a executar uma tarefa?", options: ["Instruções dadas por uma pessoa ou por um programa", "Uma cadeira ao lado da mesa", "Uma folha em branco", "Um copo de água"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A memória RAM", desc: "O que a memória RAM guarda durante o uso?", options: ["Dados usados no momento", "Papéis impressos", "O som da sala", "A energia da tomada"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O pendrive", desc: "Qual dispositivo portátil guarda arquivos?", options: ["O monitor", "O pendrive", "O microfone", "A caixa de som"], correct: 1 },
-        { category: "Introdução à microinformática", title: "O projetor", desc: "Qual aparelho projeta a imagem do computador?", options: ["O projetor", "O teclado", "O microfone", "O scanner"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A tecla Shift", desc: "O que a tecla Shift pode ajudar a digitar?", options: ["Uma letra maiúscula", "Um som mais alto", "Uma imagem impressa", "Uma página da internet"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A tecla Esc", desc: "O que a tecla Esc pode fazer em um programa?", options: ["Salvar uma foto", "Aumentar o volume", "Fechar um menu", "Ligar a impressora"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A tecla Delete", desc: "O que a tecla Delete pode fazer?", options: ["Apagar algo selecionado", "Tocar uma música", "Abrir a câmera", "Ligar o computador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A miniatura de uma foto", desc: "O que uma miniatura de foto mostra?", options: ["Uma versão pequena da foto", "O nível da bateria", "A velocidade da internet", "O volume dos alto-falantes"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Um programa parou", desc: "O que fazer se um programa parar de responder?", options: ["Pedir ajuda a um adulto", "Bater no teclado", "Derramar água", "Puxar o cabo sem avisar"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Fechar uma janela", desc: "O que ocorre ao fechar uma janela de programa?", options: ["Aquela janela deixa de aparecer", "O computador vira um tablet", "A impressora ganha tinta", "A internet fica mais rápida"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O editor de texto", desc: "Qual programa usamos para escrever textos?", options: ["Um editor de texto", "Uma calculadora", "Uma câmera", "Um reprodutor de música"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Um endereço de site", desc: "O que um endereço de site ajuda a encontrar?", options: ["Uma cadeira", "Uma tecla", "Uma página na internet", "Um cabo USB"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Pesquisar na internet", desc: "O que digitamos para buscar um assunto?", options: ["Palavras-chave", "Uma senha", "O nome de todas as crianças", "Nada, precisamos bater na tela"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Uma página da internet", desc: "O que uma página da internet pode mostrar?", options: ["Só o teclado", "Textos, imagens e vídeos", "Somente tomadas", "A parte de dentro do computador"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Um link", desc: "O que pode acontecer quando clicamos num link?", options: ["O computador vira uma impressora", "A tela se quebra", "Uma página diferente pode abrir", "A bateria fica cheia"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Chamada de vídeo", desc: "Qual aplicativo permite conversar com vídeo?", options: ["Um app de chamada de vídeo", "Uma calculadora", "Um editor de texto", "Um programa de pintura"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Atualizar um programa", desc: "Por que um adulto pode atualizar um programa?", options: ["Para molhar o computador", "Para receber melhorias e correções", "Para apagar a tela", "Para trocar o mouse por papel"], correct: 1 },
-        { category: "Introdução à microinformática", title: "O volume do som", desc: "Onde podemos ajustar o volume do computador?", options: ["Na impressora", "Na webcam", "No controle de volume", "Na pasta de arquivos"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A bateria fraca", desc: "O que fazer quando a bateria está quase acabando?", options: ["Avisar um adulto e usar o carregador correto", "Derramar água no computador", "Puxar a bateria com força", "Apertar todas as teclas"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O touchpad", desc: "Qual peça move o ponteiro no notebook?", options: ["Usando o touchpad", "Apertando a tela do monitor", "Mexendo na impressora", "Girando o carregador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O cabo de energia", desc: "Para que serve o cabo de energia do computador?", options: ["Para levar energia ao aparelho", "Para escrever palavras", "Para mostrar fotos", "Para limpar a tela"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Rede local", desc: "Qual aparelho encaminha dados entre redes?", options: ["Um roteador", "Um editor de texto", "Uma webcam", "Uma planilha"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A impressora sem fio", desc: "Como uma impressora sem fio recebe arquivos?", options: ["Pelo teclado", "Pela tela", "Por uma conexão sem fio", "Por uma folha em branco"], correct: 2 },
-        { category: "Introdução à microinformática", title: "O scanner", desc: "O que um scanner pode fazer com uma foto de papel?", options: ["Criar uma cópia digital no computador", "Tocar a foto como música", "Lavar a foto", "Transformá-la em teclado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A cópia de segurança", desc: "Para que serve uma cópia de segurança?", options: ["Para deixar o arquivo invisível", "Para recuperar um arquivo perdido", "Para aumentar o brilho", "Para desligar a internet"], correct: 1 },
-        { category: "Introdução à microinformática", title: "O nome de um arquivo", desc: "Por que damos um nome a um arquivo?", options: ["Para ele tocar música", "Para ele ficar maior", "Para encontrá-lo com mais facilidade", "Para ligar o monitor"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Uma apresentação", desc: "O que mostramos em uma apresentação digital?", options: ["Uma tomada", "Ideias em páginas com texto e imagens", "Um mouse de verdade", "Uma bateria carregada"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Uma planilha", desc: "O que uma planilha pode ajudar a organizar?", options: ["A tela do computador", "Os cabos da tomada", "Números e informações em tabelas", "As teclas do teclado"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Um vídeo", desc: "Qual programa usamos para assistir a vídeos?", options: ["Um programa de vídeo", "A lixeira", "O teclado desligado", "Uma pasta de papel"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Pausar um vídeo", desc: "O que o botão de pausa faz durante um vídeo?", options: ["Apaga o computador", "Para o vídeo por um momento", "Imprime uma foto", "Muda o teclado"], correct: 1 },
-        { category: "Introdução à microinformática", title: "A tecla de seta", desc: "Para que as teclas com setas podem servir?", options: ["Para carregar a bateria", "Para imprimir um texto", "Para mover o cursor ou escolher algo", "Para gravar a voz"], correct: 2 },
-        { category: "Introdução à microinformática", title: "O cursor", desc: "O que é o cursor quando estamos digitando?", options: ["A marca que mostra onde a próxima letra vai aparecer", "O botão que liga a impressora", "O som do computador", "Uma pasta de fotos"], correct: 0 },
-        { category: "Introdução à microinformática", title: "A tecla Caps Lock", desc: "O que acontece quando ativamos Caps Lock?", options: ["O computador desliga", "As letras podem ficar maiúsculas", "A tela fica maior", "O mouse para de funcionar"], correct: 1 },
-        { category: "Introdução à microinformática", title: "A tecla Tab", desc: "O que a tecla Tab pode fazer em um formulário?", options: ["Tocar uma música", "Apagar o computador", "Levar o cursor ao próximo espaço", "Abrir a impressora"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Desfazer uma ação", desc: "Para que serve o comando Desfazer?", options: ["Para voltar atrás numa ação", "Para desligar a tela", "Para imprimir tudo", "Para tirar uma foto"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O botão imprimir", desc: "O que pode acontecer ao escolher Imprimir?", options: ["O texto vira uma pasta", "O monitor toca música", "A impressora pode colocar o trabalho no papel", "A webcam tira uma foto"], correct: 2 },
-        { category: "Introdução à microinformática", title: "A conexão com a internet", desc: "O que conecta um computador à internet?", options: ["Uma conexão de rede", "Uma folha de papel", "A tecla Backspace", "Uma caixa vazia"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O Wi-Fi", desc: "O que é o Wi-Fi?", options: ["Um tipo de impressora", "Uma forma sem fio de conectar aparelhos a uma rede", "Um botão para apagar arquivos", "Uma tecla de espaço"], correct: 1 },
-        { category: "Introdução à microinformática", title: "Programa sem internet", desc: "Um programa instalado pode funcionar sem internet?", options: ["Nunca funciona", "Só funciona com mouse", "Sim, pode funcionar sem conexão", "Só funciona para imprimir"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Aviso do sistema", desc: "Onde aparece um aviso do computador?", options: ["Em uma janela na tela", "Dentro do teclado", "No cabo de energia", "Na caixa de som"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Extensão de arquivo", desc: "O que a extensão ajuda a identificar?", options: ["O tipo de arquivo", "A marca do teclado", "A cor do monitor", "A velocidade do mouse"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Campo de senha", desc: "Onde digitamos a senha para acessar uma conta?", options: ["No campo de senha", "Na lixeira", "Na barra de tarefas", "No nome do arquivo"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Barra de tarefas", desc: "Onde ficam atalhos para programas abertos?", options: ["Na barra de tarefas", "Na impressora", "No cabo USB", "Na área da bateria"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Rede sem fio", desc: "Qual tecnologia conecta aparelhos sem cabos?", options: ["Wi-Fi", "USB", "HDMI", "VGA"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Hardware e software", desc: "Qual é um exemplo de hardware?", options: ["O teclado", "Um desenho", "Uma ideia", "Uma música"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Sistema operacional", desc: "Qual programa controla funções básicas do PC?", options: ["O sistema operacional", "O editor de imagens", "A calculadora", "O navegador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O brilho da tela", desc: "O que ajustar se a tela estiver clara demais?", options: ["A impressora", "O brilho da tela", "O nome do arquivo", "A rodinha do mouse"], correct: 1 },
-        { category: "Introdução à microinformática", title: "A lupa da tela", desc: "Para que serve a ferramenta de zoom?", options: ["Para aumentar o som", "Para apagar uma pasta", "Para ver palavras ou imagens maiores", "Para carregar o notebook"], correct: 2 },
-        { category: "Introdução à microinformática", title: "O ícone da bateria", desc: "O que o ícone da bateria costuma mostrar?", options: ["Quanta carga ainda resta", "Quantas fotos foram impressas", "Qual programa está desenhando", "Quantas teclas tem o teclado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Formato de imagem", desc: "Qual extensão é comum em arquivos de imagem?", options: [".jpg", ".mp3", ".txt", ".exe"], correct: 0 },
-        { category: "Introdução à microinformática", title: "O computador ajuda a criar", desc: "Qual destas coisas podemos criar num computador?", options: ["Um animal de verdade", "Uma árvore de verdade", "Uma história com palavras e desenhos", "Uma tomada"], correct: 2 },
-        { category: "Introdução à microinformática", title: "Minimizar uma janela", desc: "O que acontece ao minimizar uma janela?", options: ["Ela fica oculta, mas continua aberta", "O computador desliga", "O arquivo é impresso", "A bateria carrega"], correct: 0 }
-    ];
-
-    const questionsForAges9To11 = [
-        { category: "Introdução à microinformática", title: "O processador", desc: "Qual componente executa instruções?", options: ["O processador", "O monitor", "O teclado", "A impressora"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Memória RAM", desc: "O que a RAM mantém enquanto o PC está ligado?", options: ["Dados temporários", "Arquivos impressos", "Cabos conectados", "A cor da tela"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Armazenamento", desc: "Onde ficam arquivos salvos após desligar o PC?", options: ["No SSD ou HD", "Na memória RAM", "No teclado", "No monitor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Periféricos", desc: "Qual destes dispositivos é usado para digitar?", options: ["Teclado", "Monitor", "Caixa de som", "Projetor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Dispositivo de saída", desc: "Qual dispositivo exibe imagens do computador?", options: ["Monitor", "Mouse", "Microfone", "Scanner"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Sistema operacional", desc: "Qual programa controla as funções básicas do PC?", options: ["Sistema operacional", "Editor de texto", "Calculadora", "Navegador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Programa", desc: "O que é um programa de computador?", options: ["Um conjunto de instruções", "Uma peça do monitor", "Um tipo de cabo", "Uma pasta física"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Extensão de arquivo", desc: "O que a extensão indica em um nome de arquivo?", options: ["Seu tipo ou formato", "A cor do computador", "A marca do teclado", "O tamanho do monitor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Organização de arquivos", desc: "Como uma pasta ajuda a organizar arquivos?", options: ["Reúne arquivos relacionados", "Aumenta o volume", "Liga o monitor", "Conecta à internet"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Lixeira", desc: "Para onde vai um arquivo apagado inicialmente?", options: ["Para a lixeira", "Para o teclado", "Para o navegador", "Para a memória RAM"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Navegador", desc: "Qual programa abre páginas da internet?", options: ["Navegador", "Planilha", "Calculadora", "Editor de imagens"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Conexão Wi-Fi", desc: "Como o Wi-Fi conecta um computador à rede?", options: ["Sem fio", "Por papel", "Pela impressora", "Pelo teclado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Porta USB", desc: "O que conectamos a uma porta USB?", options: ["Dispositivos e acessórios", "Uma página da internet", "Um arquivo de texto", "Uma senha"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Cópia de segurança", desc: "Qual recurso ajuda a recuperar um arquivo perdido?", options: ["Uma cópia de segurança", "O brilho da tela", "O idioma do sistema", "O navegador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Planilha", desc: "Para que serve uma fórmula em uma planilha?", options: ["Fazer cálculos", "Tocar músicas", "Abrir pastas", "Desenhar com o mouse"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Editor de texto", desc: "Qual programa é usado para escrever documentos?", options: ["Editor de texto", "Navegador", "Reprodutor de áudio", "Calculadora"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Atalho de teclado", desc: "Para que serve um atalho de teclado?", options: ["Executar um comando rapidamente", "Carregar a bateria", "Limpar a tela", "Imprimir sem impressora"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Armazenamento portátil", desc: "Qual dispositivo pequeno transporta arquivos?", options: ["Pendrive", "Monitor", "Teclado", "Caixa de som"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Impressora", desc: "Qual periférico transfere documentos para o papel?", options: ["Impressora", "Webcam", "Mouse", "Microfone"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Unidade de medida", desc: "Qual unidade mede o espaço de um arquivo?", options: ["Megabyte", "Metro", "Litro", "Grau"], correct: 0 }
-    ];
-
-    const questionsForAges12To14 = [
-        { category: "Introdução à microinformática", title: "Núcleos do processador", desc: "O que vários núcleos permitem ao processador?", options: ["Executar tarefas em paralelo", "Guardar arquivos permanentemente", "Exibir imagens sem monitor", "Conectar cabos USB"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Memória cache", desc: "Para que serve a memória cache do processador?", options: ["Acelerar o acesso a dados frequentes", "Armazenar arquivos apagados", "Exibir páginas da internet", "Carregar a bateria"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Memória RAM", desc: "O que ocorre com os dados da RAM ao desligar?", options: ["São apagados", "Viraram arquivos de texto", "São impressos", "Ficam no monitor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "SSD e HD", desc: "Qual característica diferencia um SSD de um HD?", options: ["O SSD usa memória flash", "O SSD precisa de discos giratórios", "O HD não armazena arquivos", "O HD é sempre portátil"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Placa-mãe", desc: "Qual é a função principal da placa-mãe?", options: ["Conectar componentes do computador", "Imprimir documentos", "Armazenar sites", "Exibir imagens"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Placa de vídeo", desc: "Qual componente processa gráficos e imagens?", options: ["Placa de vídeo", "Placa de som", "Fonte de alimentação", "Disco rígido"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Sistema operacional", desc: "Como o sistema operacional ajuda os programas?", options: ["Gerencia recursos do computador", "Substitui o processador", "Aumenta o espaço físico", "Conecta o monitor à tomada"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Driver", desc: "Para que serve o driver de um dispositivo?", options: ["Permitir a comunicação com o sistema", "Compactar todos os arquivos", "Criar uma pasta", "Aumentar a resolução da tela"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Caminho de arquivo", desc: "O que indica o caminho de um arquivo?", options: ["Sua localização nas pastas", "Sua cor na tela", "A velocidade da internet", "A marca do computador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Formato de arquivo", desc: "O que costuma indicar a extensão .pdf?", options: ["Um documento PDF", "Um arquivo de áudio", "Uma planilha", "Um programa instalado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Compactação", desc: "O que a compactação faz com arquivos?", options: ["Agrupa e reduz o tamanho", "Aumenta a resolução", "Desliga o sistema", "Conecta à rede"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Resolução da tela", desc: "O que indica a resolução de uma tela?", options: ["A quantidade de pixels", "A velocidade do processador", "O espaço do disco", "O número de portas USB"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Rede local", desc: "O que conecta computadores em uma rede local?", options: ["Um roteador ou switch", "Uma impressora sem papel", "Um editor de texto", "Um cabo de energia apenas"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Endereço IP", desc: "Para que serve um endereço IP em uma rede?", options: ["Identificar um dispositivo", "Nomear uma pasta", "Medir a resolução", "Abrir um arquivo compactado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Bits e bytes", desc: "Quantos bits formam um byte?", options: ["8 bits", "2 bits", "16 bits", "100 bits"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Entrada e saída", desc: "O que caracteriza um dispositivo de entrada?", options: ["Envia dados ao computador", "Recebe apenas impressões", "Armazena energia", "Exibe somente imagens"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Multitarefa", desc: "O que significa executar tarefas em multitarefa?", options: ["Manter vários programas ativos", "Usar vários teclados ao mesmo tempo", "Salvar um arquivo em várias pastas", "Desligar o computador rapidamente"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Área de transferência", desc: "Onde fica um conteúdo após ser copiado?", options: ["Na área de transferência", "Na placa de vídeo", "No driver", "Na lixeira física"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Atualização de software", desc: "O que uma atualização pode corrigir?", options: ["Erros e falhas", "A posição do monitor", "A quantidade de teclas", "O tamanho da mesa"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Tipo de arquivo", desc: "Qual extensão identifica um arquivo de áudio?", options: [".mp3", ".txt", ".png", ".pdf"], correct: 0 }
-    ];
-
-    const questionsForAges15To17 = [
-        { category: "Introdução à microinformática", title: "Arquitetura do processador", desc: "Qual função a unidade de controle exerce na CPU?", options: ["Coordena a execução de instruções", "Armazena arquivos permanentemente", "Converte texto em impressão", "Controla o brilho do monitor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Clock do processador", desc: "O que a frequência do processador mede?", options: ["Ciclos por segundo", "Espaço livre no SSD", "Pixels do monitor", "Portas disponíveis"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Memória virtual", desc: "O que o sistema usa como memória virtual?", options: ["Parte do armazenamento", "A memória da impressora", "A placa de rede", "A tela do computador"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Barramento", desc: "O que um barramento da placa-mãe transporta?", options: ["Dados entre componentes", "Energia da bateria ao monitor", "Papel para a impressora", "Som para os alto-falantes"], correct: 0 },
-        { category: "Introdução à microinformática", title: "GPU", desc: "Qual tarefa é acelerada principalmente pela GPU?", options: ["Processamento de gráficos", "Digitação de textos", "Armazenamento de arquivos", "Conexão do teclado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Sistema de arquivos", desc: "O que um sistema de arquivos organiza?", options: ["Dados em unidades de armazenamento", "Janelas abertas no monitor", "Cabos na placa-mãe", "Contas de usuário na internet"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Partição de disco", desc: "O que uma partição representa em um disco?", options: ["Uma divisão lógica do armazenamento", "Um núcleo do processador", "Uma tecla do teclado", "Um tipo de monitor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Firmware", desc: "Onde costuma ficar armazenado o firmware?", options: ["Em memória não volátil do dispositivo", "Na área de transferência", "Na memória do monitor", "Em uma pasta temporária"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Inicialização", desc: "O que ocorre durante a inicialização?", options: ["O sistema é carregado", "Os arquivos são impressos", "A tela é fabricada", "A rede é desconectada"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Cache do processador", desc: "Por que a CPU usa memória cache?", options: ["Para acessar dados frequentes mais rapidamente", "Para guardar arquivos desligada", "Para aumentar o tamanho da tela", "Para conectar à rede sem fio"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Resolução de imagem", desc: "Como a quantidade de pixels afeta uma imagem?", options: ["Define o nível de detalhe possível", "Indica a velocidade da rede", "Mede a memória RAM", "Conta as portas USB"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Protocolo de rede", desc: "O que um protocolo de rede define?", options: ["Regras para troca de dados", "A posição dos arquivos no disco", "O formato físico do monitor", "A velocidade das teclas"], correct: 0 },
-        { category: "Introdução à microinformática", title: "DNS", desc: "O que o DNS associa a um nome de domínio?", options: ["Um endereço IP", "Um arquivo de imagem", "Uma tecla de atalho", "Um número de série do monitor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Largura de banda", desc: "O que a largura de banda indica em uma conexão?", options: ["A capacidade de transmissão de dados", "O tamanho físico do roteador", "A memória disponível no PC", "A resolução da webcam"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Virtualização", desc: "O que a virtualização permite executar?", options: ["Sistemas virtuais em um computador", "Um monitor sem energia", "Um teclado sem teclas", "Arquivos sem armazenamento"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Compactação sem perdas", desc: "O que caracteriza uma compactação sem perdas?", options: ["O arquivo original pode ser reconstruído", "O arquivo vira um programa", "A imagem perde pixels", "O computador apaga a RAM"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Fonte de alimentação", desc: "Qual é a função da fonte do computador?", options: ["Fornecer energia aos componentes", "Armazenar arquivos", "Processar gráficos", "Controlar o sistema operacional"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Interface gráfica", desc: "O que compõe uma interface gráfica?", options: ["Janelas, ícones e menus", "Processador, cooler e fonte", "Cabos, parafusos e tomadas", "Bits, bytes e endereços IP"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Taxa de transferência", desc: "Em que unidade a taxa de rede costuma ser medida?", options: ["Bits por segundo", "Pixels por centímetro", "Graus por minuto", "Volts por arquivo"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Endereço MAC", desc: "O que identifica uma interface de rede?", options: ["Um endereço MAC", "Uma extensão de arquivo", "Uma fórmula", "Uma resolução"], correct: 0 }
-    ];
-
-    const questionsForAdults = [
-        { category: "Introdução à microinformática", title: "Componentes do computador", desc: "Quais componentes formam um PC básico?", options: ["CPU, memória, armazenamento e placa-mãe", "Mouse, mesa, cadeira e impressora", "Navegador, site, conta e senha", "Monitor, papel, tinta e scanner"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Processador e memória", desc: "Qual componente mantém dados temporários em uso?", options: ["Memória RAM", "SSD", "Placa de rede", "Fonte"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Armazenamento persistente", desc: "Qual dispositivo preserva arquivos sem energia?", options: ["SSD ou HD", "Memória RAM", "Cache da CPU", "Área de transferência"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Sistema operacional", desc: "Qual é a função central de um sistema operacional?", options: ["Gerenciar hardware e programas", "Substituir todos os aplicativos", "Aumentar a capacidade física do disco", "Converter qualquer arquivo em imagem"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Sistema de arquivos", desc: "O que o sistema de arquivos controla?", options: ["A organização dos dados no armazenamento", "A velocidade do processador", "A resolução do monitor", "A tensão da fonte"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Partições", desc: "O que uma partição permite fazer em um disco?", options: ["Dividir logicamente o armazenamento", "Adicionar memória RAM física", "Aumentar a frequência da CPU", "Criar portas USB"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Drivers", desc: "Qual é o papel de um driver de dispositivo?", options: ["Intermediar a comunicação com o sistema", "Compactar documentos", "Armazenar cópias de segurança", "Controlar a resolução de arquivos"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Firmware", desc: "O que é firmware em um equipamento?", options: ["Software básico integrado ao dispositivo", "Um tipo de memória removível", "Um formato de documento", "Uma conexão sem fio"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Inicialização do PC", desc: "O que o processo de boot carrega?", options: ["O sistema operacional", "A impressora", "Uma página web", "Um arquivo de áudio"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Processo", desc: "O que caracteriza um processo no sistema?", options: ["Um programa em execução", "Um arquivo compactado", "Uma partição do disco", "Um periférico desconectado"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Memória cache", desc: "Qual é o objetivo da cache da CPU?", options: ["Reduzir o tempo de acesso a dados usados", "Guardar arquivos após desligar", "Aumentar o espaço do SSD", "Transmitir dados pela rede"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Memória virtual", desc: "Como o sistema implementa memória virtual?", options: ["Usando parte do armazenamento", "Usando a placa de vídeo como monitor", "Convertendo arquivos em pastas", "Aumentando a memória física instalada"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Unidades de dados", desc: "Quantos bytes há em um kibibyte (KiB)?", options: ["1.024 bytes", "100 bytes", "8 bytes", "1 milhão de bytes"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Endereço IP", desc: "Qual função um endereço IP exerce em uma rede?", options: ["Identifica uma interface de rede", "Nomeia um arquivo local", "Mede a resolução da tela", "Indica a capacidade da RAM"], correct: 0 },
-        { category: "Introdução à microinformática", title: "DNS", desc: "Qual serviço associa domínios a endereços IP?", options: ["DNS", "USB", "RAM", "HDMI"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Roteador", desc: "Qual é a função comum de um roteador?", options: ["Encaminhar dados entre redes", "Executar instruções da CPU", "Armazenar arquivos locais", "Exibir imagens na tela"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Largura de banda", desc: "O que a largura de banda descreve?", options: ["Capacidade de transmissão de dados", "Espaço disponível no disco", "Quantidade de memória cache", "Tamanho físico do monitor"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Virtualização", desc: "O que uma máquina virtual permite executar?", options: ["Um sistema isolado sobre outro sistema", "Um computador sem processador", "Arquivos sem armazenamento", "Um monitor sem placa de vídeo"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Fonte de alimentação", desc: "Qual é a função da fonte em um computador?", options: ["Converter energia para os componentes", "Armazenar dados", "Processar gráficos", "Controlar arquivos"], correct: 0 },
-        { category: "Introdução à microinformática", title: "Unidades de dados", desc: "Quantos bytes há em um kibibyte (KiB)?", options: ["1.024 bytes", "100 bytes", "8 bytes", "1 milhão de bytes"], correct: 0 }
-    ];
-
-    const questionBanksByAge = {
-        "7 a 8 anos": questionBank.map((question, id) => ({
-            ...question,
-            id,
-            category: "Introdução à microinformática"
-        })),
-        "9 a 11 anos": questionsForAges9To11,
-        "12 a 14 anos": questionsForAges12To14,
-        "15 a 17 anos": questionsForAges15To17,
-        "18 ou mais": questionsForAdults
-    };
-    for (const questionBankForAge of Object.values(questionBanksByAge)) {
-        questionBankForAge.forEach((question, id) => {
-            const correctAnswer = question.options[question.correct];
-            question.id = id;
-            question.options = shuffleItems(question.options);
-            question.correct = question.options.indexOf(correctAnswer);
-        });
-    }
-
     const titleScreen = document.getElementById('titleScreen');
     const openingScreen = document.getElementById('openingScreen');
     const registrationModal = document.getElementById('surveyModal');
-    const dialoguePanel = document.getElementById('dialoguePanel');
     const characterSpeech = document.getElementById('characterSpeech');
     const endScreen = document.getElementById('endScreen');
     const endCard = document.getElementById('endCard');
-    let activeQuestion = null;
-    let answerLocked = false;
-    let nextQuestionIndex = 0;
-    let correctAnswers = 0;
-    let wrongAnswers = 0;
-    let fuelLevel = 0;
-    let currentPlayerId = null;
-    let currentAge = null;
     let playerFirstName = '';
-    let currentRoundToken = null;
-    let gameResultSaved = false;
+    let registrationSaved = false;
     const apiBaseUrl = window.location.port === '8000'
         ? window.location.origin
         : 'http://127.0.0.1:8000';
-    let questionTransitionTimeout = 0;
-    const questionsPerRound = 4;
-    const quizEnabled = false;
-
-    function shuffleItems(items) {
-        const shuffledItems = [...items];
-        for (let index = shuffledItems.length - 1; index > 0; index--) {
-            const randomIndex = Math.floor(Math.random() * (index + 1));
-            [shuffledItems[index], shuffledItems[randomIndex]] = [shuffledItems[randomIndex], shuffledItems[index]];
-        }
-        return shuffledItems;
-    }
-
-    function createQuestionOrder(age = currentAge) {
-        const questionBankForAge = questionBanksByAge[age];
-        if (!questionBankForAge || questionBankForAge.length < questionsPerRound) {
-            throw new Error('Não foi possível carregar as perguntas desta faixa etária.');
-        }
-        return shuffleItems(questionBankForAge).slice(0, questionsPerRound);
-    }
-
-    async function reserveQuestionOrder() {
-        if (!currentPlayerId || !currentAge || !currentRoundToken) {
-            throw new Error('Cadastre o jogador e selecione uma faixa etária antes de iniciar.');
-        }
-
-        for (let attempt = 0; attempt < 100; attempt++) {
-            const candidateOrder = createQuestionOrder(currentAge);
-            const response = await fetch(`${apiBaseUrl}/api/question-round`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    player_id: currentPlayerId,
-                    round_token: currentRoundToken,
-                    question_ids: candidateOrder.map((question) => question.id)
-                })
-            });
-            if (response.status === 409) {
-                await response.text();
-                continue;
-            }
-
-            const result = await readApiResponse(response, 'reservar as perguntas');
-            if (
-                result.idade !== currentAge
-                || !Array.isArray(result.question_ids)
-                || result.question_ids.length !== questionsPerRound
-                || !result.question_ids.every((id) => Number.isSafeInteger(id) && id >= 0 && id < questionBanksByAge[currentAge].length)
-                || new Set(result.question_ids).size !== questionsPerRound
-                || !Number.isSafeInteger(result.players_in_age_group)
-                || result.players_in_age_group < 1
-            ) {
-                throw new Error('O servidor retornou uma rodada de perguntas inválida.');
-            }
-
-            questionOrder = result.question_ids.map((id) => questionBanksByAge[currentAge][id]);
-            return result;
-        }
-
-        throw new Error('Não foi possível encontrar uma combinação inédita. Tente iniciar novamente.');
-    }
-
-    let questionOrder = createQuestionOrder("7 a 8 anos");
     const arcadeCanvas = document.getElementById('arcadeCanvas');
     const arcadeContext = arcadeCanvas.getContext('2d');
     let gameAudioContext = null;
@@ -1268,7 +728,9 @@
     let enemyShots = [];
     let scenery = [];
     let explosions = [];
-    let lives = 3;
+    let aircraftCarriers = [];
+    let lives = 5;
+    let criticalAlertInterval = 0;
     let targetsHit = 0;
     let targetsLost = 0;
     let peopleRescued = 0;
@@ -1345,6 +807,12 @@
         });
     }
 
+    function stopCriticalAlert() {
+        if (!criticalAlertInterval) return;
+        window.clearInterval(criticalAlertInterval);
+        criticalAlertInterval = 0;
+    }
+
     function playArcadeSound(sound) {
         const audio = getGameAudioContext();
         if (!audio) return;
@@ -1372,7 +840,7 @@
         oscillator.stop(now + settings.duration);
     }
 
-    function playRescueSound() {
+    function playCriticalStateSound() {
         const audio = getGameAudioContext();
         if (!audio) return;
 
@@ -1661,6 +1129,30 @@
         arcadeContext.arc(-33, 8, 2, 0, Math.PI * 2);
         arcadeContext.arc(33, 8, 2, 0, Math.PI * 2);
         arcadeContext.fill();
+        if (!isEnemy && lives <= 2 && lives > 0) {
+            const blink = Math.floor(timestamp / 150) % 2 === 0;
+            arcadeContext.save();
+            arcadeContext.beginPath();
+            arcadeContext.moveTo(0, -40);
+            arcadeContext.lineTo(7, -18);
+            arcadeContext.lineTo(31, 4);
+            arcadeContext.lineTo(29, 9);
+            arcadeContext.lineTo(8, 4);
+            arcadeContext.lineTo(5, 22);
+            arcadeContext.lineTo(13, 31);
+            arcadeContext.lineTo(0, 27);
+            arcadeContext.lineTo(-13, 31);
+            arcadeContext.lineTo(-5, 22);
+            arcadeContext.lineTo(-8, 4);
+            arcadeContext.lineTo(-29, 9);
+            arcadeContext.lineTo(-31, 4);
+            arcadeContext.lineTo(-7, -18);
+            arcadeContext.closePath();
+            arcadeContext.clip();
+            arcadeContext.fillStyle = `rgba(255, 115, 0, ${blink ? 0.72 : 0.2})`;
+            arcadeContext.fillRect(-40, -42, 80, 76);
+            arcadeContext.restore();
+        }
         arcadeContext.restore();
     }
 
@@ -1923,6 +1415,105 @@
         arcadeContext.restore();
     }
 
+    function drawAircraftCarrier(carrier) {
+        const width = carrier.width;
+        const length = carrier.length;
+        arcadeContext.save();
+        arcadeContext.translate(carrier.x, carrier.y);
+
+        arcadeContext.fillStyle = 'rgba(0, 12, 24, 0.5)';
+        arcadeContext.beginPath();
+        arcadeContext.roundRect(-width / 2 - 5, -length / 2 + 5, width + 10, length, width * 0.18);
+        arcadeContext.fill();
+
+        arcadeContext.fillStyle = '#273744';
+        arcadeContext.strokeStyle = '#d7e1e5';
+        arcadeContext.lineWidth = 2;
+        arcadeContext.beginPath();
+        arcadeContext.moveTo(0, -length / 2);
+        arcadeContext.lineTo(width * 0.32, -length * 0.4);
+        arcadeContext.lineTo(width * 0.48, length * 0.38);
+        arcadeContext.lineTo(width * 0.34, length / 2);
+        arcadeContext.lineTo(-width * 0.34, length / 2);
+        arcadeContext.lineTo(-width * 0.48, length * 0.38);
+        arcadeContext.lineTo(-width * 0.32, -length * 0.4);
+        arcadeContext.closePath();
+        arcadeContext.fill();
+        arcadeContext.stroke();
+
+        arcadeContext.fillStyle = '#687984';
+        arcadeContext.beginPath();
+        arcadeContext.moveTo(0, -length * 0.47);
+        arcadeContext.lineTo(width * 0.36, -length * 0.36);
+        arcadeContext.lineTo(width * 0.39, length * 0.36);
+        arcadeContext.lineTo(width * 0.28, length * 0.44);
+        arcadeContext.lineTo(-width * 0.28, length * 0.44);
+        arcadeContext.lineTo(-width * 0.39, length * 0.36);
+        arcadeContext.lineTo(-width * 0.36, -length * 0.36);
+        arcadeContext.closePath();
+        arcadeContext.fill();
+
+        arcadeContext.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+        arcadeContext.lineWidth = 2;
+        arcadeContext.setLineDash([length * 0.025, length * 0.018]);
+        arcadeContext.beginPath();
+        arcadeContext.moveTo(0, -length * 0.34);
+        arcadeContext.lineTo(0, length * 0.36);
+        arcadeContext.stroke();
+        arcadeContext.setLineDash([]);
+
+        arcadeContext.fillStyle = '#f6d46b';
+        arcadeContext.fillRect(-width * 0.21, -length * 0.31, width * 0.42, 3);
+        arcadeContext.fillRect(-width * 0.21, length * 0.3, width * 0.42, 3);
+
+        arcadeContext.fillStyle = '#d8e0e3';
+        arcadeContext.fillRect(width * 0.13, -length * 0.12, width * 0.22, length * 0.2);
+        arcadeContext.fillStyle = '#263843';
+        arcadeContext.fillRect(width * 0.17, -length * 0.08, width * 0.14, length * 0.12);
+        arcadeContext.fillStyle = '#e34b3f';
+        arcadeContext.fillRect(width * 0.13, -length * 0.12, width * 0.22, 4);
+        arcadeContext.fillStyle = carrier.recovered ? '#7dff74' : '#ffe58a';
+        arcadeContext.font = `bold ${Math.max(7, width * 0.09)}px "Courier New", monospace`;
+        arcadeContext.textAlign = 'center';
+        arcadeContext.fillText(carrier.recovered ? 'APOIO USADO' : 'APOIO', 0, length * 0.4);
+
+        const planeYPositions = [-0.24, -0.02, 0.2];
+        planeYPositions.forEach((position) => {
+            const planeY = length * position;
+            arcadeContext.fillStyle = '#e8eff0';
+            arcadeContext.beginPath();
+            arcadeContext.moveTo(-width * 0.18, planeY - 5);
+            arcadeContext.lineTo(-width * 0.15, planeY - 1);
+            arcadeContext.lineTo(-width * 0.08, planeY);
+            arcadeContext.lineTo(-width * 0.15, planeY + 1);
+            arcadeContext.lineTo(-width * 0.18, planeY + 5);
+            arcadeContext.lineTo(-width * 0.2, planeY + 1);
+            arcadeContext.lineTo(-width * 0.25, planeY);
+            arcadeContext.lineTo(-width * 0.2, planeY - 1);
+            arcadeContext.closePath();
+            arcadeContext.fill();
+        });
+
+        arcadeContext.restore();
+    }
+
+    function createAircraftCarriers(gameStartedAt) {
+        const width = Math.min(arcadeWidth * 0.23, 148);
+        const length = width * 2.7;
+        const firstCarrierDelay = 20000;
+        const carrierSpawnInterval = 27000;
+        return [0.4, 0.62, 0.48].map((riverPosition, index) => ({
+            x: arcadeWidth * riverPosition,
+            y: -length / 2,
+            width,
+            length,
+            spawnAt: gameStartedAt + firstCarrierDelay + carrierSpawnInterval * index,
+            spawned: false,
+            recovered: false,
+            expired: false
+        }));
+    }
+
     function drawCoastalBanks() {
         ['left', 'right'].forEach((side) => {
             const isLeft = side === 'left';
@@ -2032,6 +1623,9 @@
             drawFeaturedCharacter(feature);
             drawRescuee(feature);
         });
+        aircraftCarriers.forEach((carrier) => {
+            if (carrier.spawned && !carrier.expired) drawAircraftCarrier(carrier);
+        });
         const light = arcadeContext.createRadialGradient(arcadeWidth * 0.2, arcadeHeight * 0.2, 4, arcadeWidth * 0.2, arcadeHeight * 0.2, arcadeWidth * 0.8);
         light.addColorStop(0, 'rgba(142, 240, 255, 0.16)');
         light.addColorStop(0.45, 'rgba(50, 173, 211, 0.035)');
@@ -2076,7 +1670,7 @@
         const currentWave = Math.min(wavesSpawned || 1, totalWaves);
         arcadeContext.font = 'bold 13px "Courier New", monospace';
         arcadeContext.textAlign = 'left';
-        const combatLabel = `ONDA ${currentWave}/${totalWaves}  ${resolvedTargets}/${enemyTargetCount}  A:${targetsHit} P:${targetsLost}  RES:${peopleRescued}  VIDAS:${lives}`;
+        const combatLabel = `ONDA ${currentWave}/${totalWaves}  ${resolvedTargets}/${enemyTargetCount}  A:${targetsHit} P:${targetsLost}  RES:${peopleRescued}  VIDAS:${lives}/5`;
         const combatLabelWidth = arcadeContext.measureText(combatLabel).width + 20;
         arcadeContext.fillStyle = 'rgba(7, 24, 43, 0.75)';
         arcadeContext.fillRect(12, 10, combatLabelWidth, 28);
@@ -2148,6 +1742,7 @@
 
     function endArcadeGame(won) {
         arcadeActive = false;
+        stopCriticalAlert();
         pressedKeys.clear();
         mouseFiring = false;
         window.cancelAnimationFrame(arcadeAnimationFrame);
@@ -2228,7 +1823,6 @@
                 && Math.abs(playerShip.y - (feature.y - 10 * feature.size)) < 44 * feature.size
             ) {
                 feature.character.rescued = true;
-                playRescueSound();
                 const characterName = featuredCharacters[feature.character.key].name;
                 peopleRescued++;
                 updateCombatStatus();
@@ -2246,7 +1840,6 @@
                 && Math.abs(playerShip.y - (feature.y + feature.rescuee.y * feature.size)) < 30
             ) {
                 feature.rescuee.rescued = true;
-                playRescueSound();
                 peopleRescued++;
                 updateCombatStatus();
                 showCharacterSpeech(peopleRescued === rescueTargetCount
@@ -2309,6 +1902,12 @@
             }
         });
         keepRocksAwayFromCharacters();
+        aircraftCarriers.forEach((carrier) => {
+            if (carrier.expired || timestamp < carrier.spawnAt) return;
+            carrier.spawned = true;
+            carrier.y += 70 * elapsed;
+            if (carrier.y - carrier.length / 2 > arcadeHeight) carrier.expired = true;
+        });
 
         enemyShips.forEach((enemy) => {
             if (!enemy.alive) return;
@@ -2378,6 +1977,10 @@
             lives--;
             damageTaken = true;
             invulnerableUntil = timestamp + 1100;
+            if (lives === 2) {
+                playCriticalStateSound();
+                criticalAlertInterval = window.setInterval(playCriticalStateSound, 350);
+            }
             updateCombatStatus();
             if (lives <= 0) endArcadeGame(false);
         };
@@ -2409,6 +2012,25 @@
             hitPlayer();
         }
 
+        if (arcadeActive && lives <= 2) {
+            const carrier = aircraftCarriers.find((candidate) =>
+                candidate.spawned
+                && !candidate.expired
+                && !candidate.recovered
+                && Math.abs(playerShip.x - candidate.x) < candidate.width / 2 + playerShip.width / 2
+                && Math.abs(playerShip.y - candidate.y) < candidate.length / 2 + playerShip.height / 2
+            );
+            if (carrier) {
+                carrier.recovered = true;
+                lives = 5;
+                invulnerableUntil = Math.max(invulnerableUntil, timestamp + 1400);
+                stopCriticalAlert();
+                updateCombatStatus();
+                showCharacterSpeech('Reabastecimento concluído! O porta-aviões restaurou as cinco vidas.');
+                updateStatusMessage('ESTADO CRÍTICO ENCERRADO · 5 VIDAS RESTAURADAS');
+            }
+        }
+
         if (!arcadeActive) return;
         const resolvedTargets = targetsHit + targetsLost;
         if (resolvedTargets >= enemyTargetCount) {
@@ -2437,9 +2059,7 @@
     }
 
     function startArcadeGame() {
-        if (quizEnabled && (nextQuestionIndex < questionsPerRound || fuelLevel !== 100)) {
-            throw new Error('Responda às quatro perguntas para liberar o jogo.');
-        }
+        stopCriticalAlert();
         getGameAudioContext();
         arcadeCanvas.hidden = false;
         playerShip.x = 0;
@@ -2448,6 +2068,7 @@
         featuredCharactersPassed = false;
         scenery = [];
         resizeArcadeCanvas();
+        aircraftCarriers = createAircraftCarriers(performance.now());
         enemyShips = [];
         playerShots = [];
         playerMissiles = [];
@@ -2455,7 +2076,7 @@
         explosions = [];
         pressedKeys.clear();
         mouseFiring = false;
-        lives = 3;
+        lives = 5;
         targetsHit = 0;
         targetsLost = 0;
         peopleRescued = 0;
@@ -2520,7 +2141,7 @@
         const resolvedTargets = targetsHit + targetsLost;
         const missilesUnlocked = targetsHit >= enemiesPerWave ? 1 : 0;
         document.getElementById('scoreStatus').textContent =
-            `ONDA: ${currentWave}/${totalWaves} · ALVOS: ${resolvedTargets}/${enemyTargetCount} · ACERTADOS: ${targetsHit} · PERDIDOS: ${targetsLost} · RESGATADOS: ${peopleRescued} · VIDAS: ${lives} · MÍSSEIS: ${missilesUnlocked}`;
+            `ONDA: ${currentWave}/${totalWaves} · ALVOS: ${resolvedTargets}/${enemyTargetCount} · ACERTADOS: ${targetsHit} · PERDIDOS: ${targetsLost} · RESGATADOS: ${peopleRescued} · VIDAS: ${lives}/5 · MÍSSEIS: ${missilesUnlocked}`;
         updateMissionObjectives();
     }
 
@@ -2559,87 +2180,11 @@
         );
     }
 
-    function updateRoundProgress() {
-        const progress = Math.round((nextQuestionIndex / questionOrder.length) * 100);
-        document.getElementById('roundProgressFill').style.width = `${progress}%`;
-        document.querySelector('.progress-track').setAttribute('aria-valuenow', String(progress));
-        document.getElementById('roundProgressPercent').textContent = `${progress}%`;
-        document.getElementById('scoreStatus').textContent = arcadeActive
-            ? `ONDA: ${Math.min(wavesSpawned || 1, totalWaves)}/${totalWaves} · ALVOS: ${targetsHit + targetsLost}/${enemyTargetCount} · ACERTADOS: ${targetsHit} · PERDIDOS: ${targetsLost} · RESGATADOS: ${peopleRescued} · VIDAS: ${lives} · MÍSSEIS: ${targetsHit >= enemiesPerWave ? 1 : 0}`
-            : `ACERTOS: ${correctAnswers} · ERROS: ${wrongAnswers}`;
-    }
-
-    function updateFuelLevel() {
-        const fuelFill = document.getElementById('fuelFill');
-        const fuelTrack = fuelFill.parentElement;
-        fuelFill.style.width = `${fuelLevel}%`;
-        fuelFill.style.backgroundColor = fuelLevel <= 25 ? '#ff5577' : fuelLevel <= 50 ? '#ffe58a' : '#7dff74';
-        fuelTrack.setAttribute('aria-valuenow', String(fuelLevel));
-        document.getElementById('fuelStatus').textContent = `${fuelLevel}%`;
-    }
-
-    function displayPlayerRanking(ranking) {
-        document.getElementById('playerName').textContent = ranking.name;
-        playerFirstName = ranking.name.trim().split(/\s+/)[0];
-        document.getElementById('playerSchool').textContent = ranking.school;
-        document.getElementById('playerGames').textContent = String(ranking.games);
-        document.getElementById('playerPoints').textContent = String(ranking.points).padStart(3, '0');
-        document.getElementById('playerRank').textContent = ranking.position
-            ? `#${ranking.position}`
-            : 'Ainda sem partidas';
-    }
-
-    async function readApiResponse(response, action) {
-        const responseText = await response.text();
-        if (response.status === 404 && action === 'consultar o total de inscrições') {
-            throw new Error('O servidor do jogo está desatualizado. Pare-o e execute python3 server.py novamente na pasta do jogo.');
-        }
-
-        let result;
-        try {
-            result = JSON.parse(responseText);
-        } catch {
-            throw new Error(`Resposta inválida do servidor ao ${action}. Confirme que python3 server.py está executando na porta 8000.`);
-        }
-
-        if (!response.ok) {
-            throw new Error(result?.error || `Não foi possível ${action} (HTTP ${response.status}).`);
-        }
-        return result;
-    }
-
-    async function loadPlayerRanking() {
-        if (!currentPlayerId) return;
-
-        const response = await fetch(`${apiBaseUrl}/api/player-ranking/${currentPlayerId}`);
-        const result = await readApiResponse(response, 'consultar o ranking');
-        displayPlayerRanking(result);
-    }
-
-    async function saveGameResult() {
-        if (!currentPlayerId || gameResultSaved) return;
-
-        const response = await fetch(`${apiBaseUrl}/api/game-results`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ player_id: currentPlayerId, points: correctAnswers })
-        });
-        const result = await readApiResponse(response, 'salvar a pontuação');
-        if (!result?.ranking) {
-            throw new Error('O servidor não retornou a classificação atualizada.');
-        }
-        gameResultSaved = true;
-        displayPlayerRanking(result.ranking);
-    }
-
     function updateStatusMessage(message, isDetour = false) {
         const routeMessage = document.getElementById('routeMessage');
         routeMessage.textContent = message;
         routeMessage.classList.toggle('route-message--detour', isDetour);
     }
-
-    updateRoundProgress();
-    updateFuelLevel();
 
     window.setTimeout(() => {
         openingScreen.hidden = true;
@@ -2650,59 +2195,20 @@
         document.querySelector('#surveyForm [name="name"]').focus();
     }, 7000);
 
-    async function startMission() {
-        const startButton = document.getElementById('startButton');
+    function startMission() {
         const registrationGateMessage = document.getElementById('registrationGateMessage');
-        if (!currentPlayerId || !currentAge) {
-            registrationGateMessage.textContent = 'Cadastre seu jogador antes de iniciar a missão.';
+        if (!registrationSaved) {
+            registrationGateMessage.textContent = 'Cadastre suas credenciais antes de iniciar a missão.';
             registrationModal.hidden = false;
             registrationModal.setAttribute('aria-hidden', 'false');
             document.querySelector('#surveyForm [name="name"]').focus();
             return;
         }
 
-        startButton.disabled = true;
-
-        try {
-            gameResultSaved = false;
-            correctAnswers = 0;
-            wrongAnswers = 0;
-            titleScreen.hidden = true;
-            dialoguePanel.hidden = true;
-
-            if (!quizEnabled) {
-                fuelLevel = 100;
-                updateFuelLevel();
-                updateStatusMessage('COMBATE EM ANDAMENTO');
-                showCharacterSpeech('Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo do mouse para disparar; no celular, arraste para guiar.');
-                startArcadeGame();
-                return;
-            }
-
-            currentRoundToken ||= crypto.randomUUID();
-            const round = await reserveQuestionOrder();
-            if (round.players_in_age_group === round.players_before_repeat) {
-                registrationGateMessage.textContent = `${currentAge}: esta é a ${round.players_before_repeat}ª partida; as combinações podem se repetir a partir da próxima.`;
-            } else if (round.players_in_age_group > round.players_before_repeat) {
-                registrationGateMessage.textContent = `${currentAge}: as primeiras ${round.players_before_repeat} partidas já ocorreram; as combinações podem se repetir nesta partida.`;
-            } else {
-                registrationGateMessage.textContent = `${currentAge}: ${round.players_in_age_group} de ${round.players_before_repeat} partidas. As combinações não se repetem até a ${round.players_before_repeat}ª partida.`;
-            }
-
-            nextQuestionIndex = 0;
-            fuelLevel = 0;
-            updateRoundProgress();
-            updateFuelLevel();
-            showCharacterSpeech('Responda às quatro perguntas para abastecer a nave.');
-            openChallenge();
-        } catch (error) {
-            console.error('Não foi possível reservar as perguntas ou iniciar a partida.', error);
-            registrationGateMessage.textContent = error instanceof TypeError
-                ? 'Não foi possível conectar ao servidor. Confirme que python3 server.py está executando na porta 8000.'
-                : error.message || 'Não foi possível reservar as perguntas. Tente novamente.';
-        } finally {
-            startButton.disabled = false;
-        }
+        titleScreen.hidden = true;
+        updateStatusMessage('COMBATE EM ANDAMENTO');
+        showCharacterSpeech('Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo do mouse para disparar; no celular, arraste para guiar.');
+        startArcadeGame();
     }
 
     function showCharacterSpeech(message) {
@@ -2712,97 +2218,17 @@
         characterSpeech.hidden = false;
     }
 
-    function openChallenge() {
-        if (activeQuestion || !document.getElementById('surveyModal').hidden || endScreen.hidden === false) return;
-        if (nextQuestionIndex >= questionOrder.length) return;
-
-        activeQuestion = questionOrder[nextQuestionIndex];
-        answerLocked = false;
-        document.getElementById('modalTitle').textContent = activeQuestion.title;
-        document.getElementById('questionProgress').textContent = `PERGUNTA ${nextQuestionIndex + 1} DE ${questionOrder.length} · ${activeQuestion.category.toUpperCase()}`;
-        document.getElementById('modalDesc').textContent = activeQuestion.desc;
-        document.getElementById('dialogueFeedback').hidden = true;
-
-        const optionsDiv = document.getElementById('modalOptions');
-        optionsDiv.replaceChildren();
-        dialoguePanel.scrollTop = 0;
-        activeQuestion.options.forEach((opt, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'btn-option';
-            btn.type = 'button';
-            btn.textContent = opt;
-            btn.addEventListener('click', () => checkAnswer(idx));
-            optionsDiv.appendChild(btn);
-        });
-        dialoguePanel.hidden = false;
-    }
-
-    function checkAnswer(selected) {
-        if (!activeQuestion || answerLocked) return;
-        answerLocked = true;
-        const answerButtons = [...document.querySelectorAll('#modalOptions .btn-option')];
-        answerButtons.forEach((button) => { button.disabled = true; });
-        const isCorrect = selected === activeQuestion.correct;
-        if (isCorrect) {
-            answerButtons[selected].classList.add('correct-answer');
-            correctAnswers++;
-            updateStatusMessage('RESPOSTA CORRETA');
-        } else {
-            answerButtons[selected].classList.add('wrong-answer');
-            answerButtons[activeQuestion.correct].classList.add('correct-answer');
-            wrongAnswers++;
-            updateStatusMessage('RESPOSTA INCORRETA', true);
-        }
-        nextQuestionIndex++;
-        updateRoundProgress();
-        const feedback = document.getElementById('dialogueFeedback');
-        feedback.textContent = isCorrect
-            ? 'Resposta certa! A nave continua abastecendo.'
-            : `Resposta correta: ${activeQuestion.options[activeQuestion.correct]}. Continue para liberar o combustível.`;
-        feedback.hidden = false;
-        window.clearTimeout(questionTransitionTimeout);
-        questionTransitionTimeout = window.setTimeout(() => {
-            activeQuestion = null;
-            if (nextQuestionIndex >= questionsPerRound) {
-                document.getElementById('modalTitle').textContent = 'COMBUSTÍVEL LIBERADO';
-                document.getElementById('questionProgress').textContent = '4 PERGUNTAS RESPONDIDAS';
-                document.getElementById('modalDesc').textContent = `Seu caça está abastecido. Enfrente ${totalWaves} formações de dez alvos. Depois de abater a primeira formação, mísseis são acoplados às asas e a próxima leva aparece.`;
-                document.getElementById('modalOptions').replaceChildren();
-                feedback.hidden = true;
-                fuelLevel = 100;
-                updateFuelLevel();
-                updateStatusMessage('NAVE ABASTECIDA');
-                questionTransitionTimeout = window.setTimeout(() => {
-                    dialoguePanel.hidden = true;
-                    startArcadeGame();
-                }, 1400);
-            } else {
-                openChallenge();
-            }
-        }, 1100);
-    }
-
-    async function showMissionEnd(won) {
+    function showMissionEnd(won) {
         arcadeActive = false;
         updateMissionObjectives(true);
         document.getElementById('missionObjectives').hidden = true;
         endCard.classList.toggle('won', won);
         document.getElementById('endTitle').textContent = won ? 'MISSÃO CONCLUÍDA!' : 'CAÇA DESTRUÍDO';
         const targetSummary = `Alvos acertados: ${targetsHit} · perdidos: ${targetsLost}. Pessoas resgatadas: ${peopleRescued}.`;
-        document.getElementById('endMessage').textContent = quizEnabled
-            ? won
-                ? `Você concluiu a missão. ${targetSummary} Acertos no quiz: ${correctAnswers} · erros: ${wrongAnswers}.`
-                : `O caça foi atingido três vezes. ${targetSummary} Acertos no quiz: ${correctAnswers} · erros: ${wrongAnswers}.`
-            : won
-                ? `Você concluiu as oito levas. ${targetSummary}`
-                : `O caça foi atingido três vezes. ${targetSummary}`;
+        document.getElementById('endMessage').textContent = won
+            ? `Você concluiu as oito levas. ${targetSummary}`
+            : `O caça perdeu suas cinco vidas. ${targetSummary}`;
         document.getElementById('restartButton').textContent = '[ JOGAR NOVAMENTE ]';
-        try {
-            await saveGameResult();
-        } catch (error) {
-            console.error('Não foi possível registrar a pontuação da partida.', error);
-            document.getElementById('playerRank').textContent = error.message;
-        }
         endScreen.hidden = false;
     }
 
@@ -2813,26 +2239,14 @@
         pressedKeys.clear();
         arcadeCanvas.hidden = true;
         document.getElementById('missionObjectives').hidden = true;
-        activeQuestion = null;
-        answerLocked = false;
-        currentRoundToken = null;
-        nextQuestionIndex = 0;
-        correctAnswers = 0;
-        wrongAnswers = 0;
-        fuelLevel = 0;
-        questionOrder = createQuestionOrder();
         enemyShips = [];
         playerShots = [];
         playerMissiles = [];
         enemyShots = [];
         endScreen.hidden = true;
-        dialoguePanel.hidden = true;
         characterSpeech.hidden = true;
-        window.clearTimeout(questionTransitionTimeout);
         titleScreen.hidden = false;
-        updateRoundProgress();
-        updateFuelLevel();
-        updateStatusMessage('AGUARDANDO PERGUNTAS');
+        updateStatusMessage('MISSÃO PRONTA');
     });
 
     document.querySelectorAll('#surveyForm input[name="name"]').forEach((input) => {
@@ -2909,17 +2323,14 @@
                 if (response.status === 405) {
                     throw new Error('O servidor aberto não aceita o cadastro. Pare o servidor atual, execute python3 server.py na pasta do jogo e abra http://127.0.0.1:8000 novamente.');
                 }
-                throw new Error(result?.error || `Não foi possível salvar a pesquisa (HTTP ${response.status}).`);
+                throw new Error(result?.error || `Não foi possível salvar as credenciais (HTTP ${response.status}).`);
             }
             if (!result || typeof result !== 'object' || !result.id) {
-                throw new Error('O servidor não confirmou o salvamento da pesquisa. Tente novamente.');
+                throw new Error('O servidor não confirmou o salvamento das credenciais. Tente novamente.');
             }
 
-            currentPlayerId = result.id;
-            currentAge = payload.idade;
-            currentRoundToken = null;
-            questionOrder = createQuestionOrder(currentAge);
-            gameResultSaved = false;
+            registrationSaved = true;
+            playerFirstName = payload.name.trim().split(/\s+/)[0];
             const surveyModal = document.getElementById('surveyModal');
             const rescueTransitionScreen = document.getElementById('rescueTransitionScreen');
             const credentialProgress = document.getElementById('credentialProgress');
@@ -2928,25 +2339,11 @@
             rescueTransitionScreen.classList.add('credential-confirmation-progress');
             credentialProgress.hidden = false;
             const progressDelay = new Promise((resolve) => window.setTimeout(resolve, 2000));
-            displayPlayerRanking({
-                name: payload.name,
-                school: payload.school,
-                games: 0,
-                points: 0,
-                position: null
-            });
-            try {
-                await loadPlayerRanking();
-            } catch (error) {
-                console.error('Não foi possível carregar a classificação inicial do jogador.', error);
-                document.getElementById('playerRank').textContent = 'Indisponível';
-            }
-
             await progressDelay;
             rescueTransitionScreen.hidden = true;
             credentialProgress.hidden = true;
             rescueTransitionScreen.classList.remove('credential-confirmation-progress');
-            await startMission();
+            startMission();
         } catch (error) {
             errorMessage.textContent = error instanceof TypeError
                 ? 'Não foi possível conectar ao servidor do jogo. Execute python3 server.py na pasta do jogo e abra http://127.0.0.1:8000 no navegador.'
