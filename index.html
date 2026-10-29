@@ -555,6 +555,55 @@
             letter-spacing: 0.03em;
         }
 
+        .aircraft-shield-meter {
+            width: 100%;
+            display: grid;
+            gap: 4px;
+            margin-top: 2px;
+            padding: 0 8px;
+        }
+
+        .aircraft-shield-meter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            color: #7de8f5;
+            font-size: 0.46rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .aircraft-shield-meter-value {
+            color: #dffcff;
+            font-size: 0.42rem;
+            letter-spacing: 0.06em;
+        }
+
+        .aircraft-shield-meter-track {
+            position: relative;
+            width: 100%;
+            height: 7px;
+            overflow: hidden;
+            border: 1px solid rgba(125, 232, 245, 0.7);
+            border-radius: 999px;
+            background: rgba(3, 12, 27, 0.8);
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.45);
+        }
+
+        .aircraft-shield-meter-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 100%;
+            border-radius: inherit;
+            transform: scaleX(var(--shield-progress, 0));
+            transform-origin: left center;
+            background: linear-gradient(90deg, #00ffcc, #8af7ff 60%, #e8ffff);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.7);
+            transition: transform 140ms ease-out;
+        }
+
         .credential-gauge--shield { grid-area: shield; }
         .credential-gauge--motor { grid-area: motor; }
         .credential-gauge--fuel { grid-area: fuel; gap: 6px; }
@@ -702,12 +751,12 @@
             background: #ffea00;
             transform: scaleX(0);
             transform-origin: left center;
-            animation: opening-progress-fill 7s linear forwards;
+            animation: opening-progress-fill 4s linear forwards;
         }
 
         .credential-progress-fill { animation: none; }
         .credential-confirmation-progress .credential-progress-fill {
-            animation: opening-progress-fill 2s linear forwards;
+            animation: opening-progress-fill 1.5s linear forwards;
         }
 
         @keyframes opening-progress-fill {
@@ -1117,6 +1166,15 @@
                     <g id="gameAircraftDamageMarkers"></g>
                 </svg>
                 <span id="gameAircraftDamageCount" class="game-aircraft-impact-count" aria-live="polite">0 AVARIAS</span>
+                <div class="aircraft-shield-meter" aria-label="Nível do escudo de força da aeronave" aria-live="polite">
+                    <div class="aircraft-shield-meter-header">
+                        <span>ESCUDO</span>
+                        <span class="aircraft-shield-meter-value">3/3</span>
+                    </div>
+                    <div class="aircraft-shield-meter-track" aria-hidden="true">
+                        <div class="aircraft-shield-meter-fill" style="--shield-progress: 1"></div>
+                    </div>
+                </div>
             </div>
             <div class="credential-gauge credential-gauge--shield" role="meter" aria-label="Escudos de força restantes" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3" aria-valuetext="3 de 3 escudos restantes">
                 <span class="credential-gauge-label">ESCUDO</span>
@@ -1319,6 +1377,8 @@
 <script>
     const titleScreen = document.getElementById('titleScreen');
     const openingScreen = document.getElementById('openingScreen');
+    const rescueTransitionScreen = document.getElementById('rescueTransitionScreen');
+    const openingProgressFill = openingScreen.querySelector('.opening-progress-fill');
     const registrationModal = document.getElementById('surveyModal');
     const characterSpeech = document.getElementById('characterSpeech');
     const endScreen = document.getElementById('endScreen');
@@ -2499,6 +2559,60 @@
     }
 
     function drawEnemy(enemy, timestamp) {
+        if (enemy.isGiant) {
+            arcadeContext.save();
+            arcadeContext.translate(enemy.x, enemy.y);
+            arcadeContext.rotate(Math.sin(timestamp / 600) * 0.12);
+
+            arcadeContext.fillStyle = 'rgba(53, 12, 16, 0.85)';
+            arcadeContext.fillRect(-92, 18, 184, 28);
+
+            arcadeContext.fillStyle = '#d7282d';
+            arcadeContext.beginPath();
+            arcadeContext.moveTo(-120, 12);
+            arcadeContext.lineTo(120, 12);
+            arcadeContext.lineTo(92, 72);
+            arcadeContext.lineTo(-92, 72);
+            arcadeContext.closePath();
+            arcadeContext.fill();
+
+            arcadeContext.fillStyle = '#f85748';
+            arcadeContext.beginPath();
+            arcadeContext.moveTo(-82, -8);
+            arcadeContext.lineTo(82, -8);
+            arcadeContext.lineTo(54, 54);
+            arcadeContext.lineTo(-54, 54);
+            arcadeContext.closePath();
+            arcadeContext.fill();
+
+            arcadeContext.fillStyle = '#7d160d';
+            arcadeContext.fillRect(-12, -32, 24, 64);
+            arcadeContext.fillStyle = '#fef0af';
+            arcadeContext.fillRect(-26, -18, 52, 14);
+
+            arcadeContext.fillStyle = '#f6c05e';
+            for (let rocketIndex = 0; rocketIndex < 6; rocketIndex++) {
+                const x = -54 + rocketIndex * 22;
+                arcadeContext.fillRect(x - 4, 42, 8, 26);
+            }
+
+            arcadeContext.fillStyle = '#fff5d1';
+            arcadeContext.beginPath();
+            arcadeContext.arc(0, 4, 12, 0, Math.PI * 2);
+            arcadeContext.fill();
+
+            arcadeContext.strokeStyle = '#fff1b0';
+            arcadeContext.lineWidth = 2;
+            arcadeContext.beginPath();
+            arcadeContext.moveTo(-18, -42);
+            arcadeContext.lineTo(18, -42);
+            arcadeContext.moveTo(-8, -54);
+            arcadeContext.lineTo(8, -54);
+            arcadeContext.stroke();
+
+            arcadeContext.restore();
+            return;
+        }
         drawAircraft(enemy.x, enemy.y, true, timestamp);
     }
 
@@ -2899,6 +3013,33 @@
 
         enemyShips.forEach((enemy) => {
             if (!enemy.alive) return;
+            if (enemy.isGiant) {
+                enemy.y += enemy.descentSpeed * elapsed;
+                enemy.x += Math.sin(timestamp / 420 + enemy.phase) * 120 * elapsed;
+                enemy.x = Math.max(enemy.width / 2 + 20, Math.min(arcadeWidth - enemy.width / 2 - 20, enemy.x));
+                if (timestamp >= enemy.nextRocketAt) {
+                    for (let index = 0; index < 12; index++) {
+                        const angle = (Math.PI * 2 * index) / 12 + Math.PI / 12;
+                        const speed = 200 + index * 6;
+                        enemyShots.push({
+                            x: enemy.x + Math.cos(angle) * 28,
+                            y: enemy.y + enemy.height / 2,
+                            velocityX: Math.cos(angle) * speed,
+                            velocityY: Math.sin(angle) * speed + 90,
+                            width: 6,
+                            height: 18
+                        });
+                    }
+                    playArcadeSound('missileLaunch');
+                    enemy.nextRocketAt = timestamp + 1200;
+                }
+                if (enemy.y - enemy.height / 2 > arcadeHeight + 90) {
+                    enemy.alive = false;
+                    targetsLost++;
+                    updateCombatStatus();
+                }
+                return;
+            }
             if (enemy.formationPhase) {
                 updateFormationEnemy(enemy, elapsed);
             } else {
@@ -2910,9 +3051,26 @@
                 enemy.alive = false;
                 targetsLost++;
                 updateCombatStatus();
-                return;
             }
         });
+
+        const giantBossAliveInCombat = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
+        if (targetsHit + targetsLost >= enemyTargetCount && !giantBossAliveInCombat) {
+            enemyShips.push({
+                x: arcadeWidth / 2,
+                y: -180,
+                width: 210,
+                height: 120,
+                alive: true,
+                isGiant: true,
+                phase: Math.random() * Math.PI * 2,
+                descentSpeed: 92,
+                canShoot: true,
+                nextRocketAt: performance.now() + 1100
+            });
+            showCharacterSpeech('Aeronave inimiga gigante em aproximação! Destrua a nave-mãe antes que ela alcance a linha de combate.');
+            updateStatusMessage('NAVE-MÃE INIMIGA · COMBATE FINAL');
+        }
 
         if (timestamp >= nextEnemyShot) {
             const activeEnemies = enemyShips.filter((enemy) => enemy.alive && enemy.canShoot);
@@ -2954,12 +3112,21 @@
         playerMissiles = playerMissiles.filter((missile) =>
             missile.target?.alive && missile.y > -24 && missile.y < arcadeHeight + 24
         );
-        enemyShots = enemyShots.filter((shot) => shot.y < arcadeHeight + 12);
+        enemyShots = enemyShots.filter((shot) =>
+            shot.y < arcadeHeight + 24
+            && shot.y > -40
+            && shot.x > -40
+            && shot.x < arcadeWidth + 40
+        );
 
         const destroyEnemy = (target) => {
             if (!target?.alive) return;
             target.alive = false;
             targetsHit++;
+            if (target.isGiant) {
+                showCharacterSpeech('Aeronave gigante inimiga destruída! Missão cumprida.');
+                updateStatusMessage('NAVE-MÃE DESTRUIDA · MISSÃO CONCLUÍDA');
+            }
             explosions.push({ x: target.x, y: target.y, startedAt: timestamp });
             updateCombatStatus();
         };
@@ -3053,7 +3220,8 @@
 
         if (!arcadeActive) return;
         const resolvedTargets = targetsHit + targetsLost;
-        if (resolvedTargets >= enemyTargetCount) {
+        const giantBossAlive = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
+        if (resolvedTargets >= enemyTargetCount && !giantBossAlive) {
             endArcadeGame(true);
             return;
         }
@@ -3198,6 +3366,16 @@
 
     function updateForceShieldMeters(progress = forceShieldCharges / forceShieldMaxCharges) {
         const fillProgress = Math.max(0, Math.min(1, progress));
+        const aircraftShieldValue = document.querySelector('.credential-aircraft-card .aircraft-shield-meter-value');
+        const aircraftShieldFill = document.querySelector('.credential-aircraft-card .aircraft-shield-meter-fill');
+
+        if (aircraftShieldValue) {
+            aircraftShieldValue.textContent = `${forceShieldCharges}/${forceShieldMaxCharges}`;
+        }
+        if (aircraftShieldFill) {
+            aircraftShieldFill.style.setProperty('--shield-progress', String(fillProgress));
+        }
+
         document.querySelectorAll('.credential-gauge--shield').forEach((meter) => {
             meter.setAttribute('aria-valuenow', String(forceShieldCharges));
             meter.setAttribute('aria-valuetext', `${forceShieldCharges} de ${forceShieldMaxCharges} escudos restantes`);
@@ -3331,15 +3509,31 @@
         window.requestAnimationFrame(animateValues);
     }
 
-    window.setTimeout(() => {
+    let openingTransitionTriggered = false;
+    const showRescueTransitionScreen = () => {
+        if (openingTransitionTriggered) return;
+        openingTransitionTriggered = true;
+
         openingScreen.hidden = true;
-        const rescueTransitionScreen = document.getElementById('rescueTransitionScreen');
+        openingScreen.setAttribute('aria-hidden', 'true');
         rescueTransitionScreen.hidden = false;
+        rescueTransitionScreen.setAttribute('aria-hidden', 'false');
         animateCredentialGauges();
         registrationModal.hidden = false;
         registrationModal.setAttribute('aria-hidden', 'false');
-        document.querySelector('#surveyForm [name="name"]').focus();
-    }, 7000);
+
+        const nameInput = document.querySelector('#surveyForm [name="name"]');
+        if (nameInput) nameInput.focus();
+    };
+
+    if (openingProgressFill) {
+        openingProgressFill.addEventListener('animationend', showRescueTransitionScreen, { once: true });
+    }
+    window.setTimeout(() => {
+        if (!openingTransitionTriggered) {
+            showRescueTransitionScreen();
+        }
+    }, 4500);
 
     function startMission() {
         const registrationGateMessage = document.getElementById('registrationGateMessage');
