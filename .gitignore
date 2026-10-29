@@ -1,0 +1,14 @@
+# Arquivos temporários do Python
+__pycache__/
+*.py[cod]
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Arquivos com segredos
+.env
+.env.*
+
+# Backup local do banco de dados
+db/pesquisa-backup.db
