@@ -127,8 +127,8 @@
 
         .game-playing-cards {
             display: grid;
-            grid-template-areas: "radar aircraft shield motor fuel rescued";
-            grid-template-columns: repeat(2, 90px) repeat(4, 70px);
+            grid-template-areas: "radar aircraft shield motor rescued";
+            grid-template-columns: repeat(2, 90px) repeat(3, 70px);
             grid-template-rows: 110px;
             align-items: end;
             gap: 8px;
@@ -159,14 +159,6 @@
             height: 110px;
             gap: 6px;
             padding: 8px 4px;
-        }
-        .game-playing-cards .credential-gauge--fuel { gap: 4px; }
-        .game-playing-cards .credential-fuel-drop { width: 44px; height: 68px; }
-        .game-playing-cards .credential-fuel-value {
-            color: #fff;
-            font-size: 0.46rem;
-            font-weight: 700;
-            line-height: 1;
         }
         .game-playing-cards .credential-shield-icon { width: 44px; height: 64px; }
         .game-playing-cards .credential-gauge-track {
@@ -205,12 +197,6 @@
             background: #fff;
             box-shadow: none;
         }
-        .game-playing-cards .credential-fuel-drop-base {
-            fill: rgba(255, 255, 255, 0.1);
-            stroke: #fff;
-        }
-        .game-playing-cards .credential-fuel-drop-level { fill: #fff; }
-        .game-playing-cards .credential-fuel-drop-outline { stroke: #fff; }
         .game-playing-cards .credential-gauge--rescued .credential-gauge-fill {
             background: #fff;
             box-shadow: none;
@@ -413,8 +399,8 @@
             bottom: 50px;
             right: calc(min(480px, 40vw) + 44px);
             display: grid;
-            grid-template-areas: "aircraft radar shield motor fuel";
-            grid-template-columns: repeat(2, 116px) repeat(3, 92px);
+            grid-template-areas: "aircraft radar shield motor";
+            grid-template-columns: repeat(2, 116px) repeat(2, 92px);
             grid-template-rows: 140px;
             align-items: end;
             gap: 10px;
@@ -492,19 +478,6 @@
         #credentialGauges .credential-gauge.is-ready .credential-gauge-fill {
             background: #fff;
             box-shadow: none;
-        }
-
-        #credentialGauges .credential-gauge--fuel.is-ready .credential-fuel-drop-base {
-            fill: rgba(255, 255, 255, 0.1);
-            stroke: #fff;
-        }
-
-        #credentialGauges .credential-gauge--fuel.is-ready .credential-fuel-drop-level {
-            fill: #fff;
-        }
-
-        #credentialGauges .credential-gauge--fuel.is-ready .credential-fuel-drop-outline {
-            stroke: #fff;
         }
 
         .credential-aircraft-card svg {
@@ -606,34 +579,6 @@
 
         .credential-gauge--shield { grid-area: shield; }
         .credential-gauge--motor { grid-area: motor; }
-        .credential-gauge--fuel { grid-area: fuel; gap: 6px; }
-        .credential-fuel-drop {
-            display: block;
-            width: 54px;
-            height: 82px;
-            overflow: visible;
-            filter: drop-shadow(0 0 6px rgba(0, 255, 204, 0.55));
-        }
-        .credential-fuel-drop-base {
-            fill: rgba(0, 255, 204, 0.12);
-            stroke: #7de8f5;
-            stroke-width: 3;
-        }
-        .credential-fuel-drop-level {
-            fill: #00ffcc;
-        }
-        .credential-fuel-drop-outline {
-            fill: none;
-            stroke: #d9faff;
-            stroke-linejoin: round;
-            stroke-width: 3;
-        }
-        .credential-fuel-value {
-            color: #7de8f5;
-            font-size: 0.52rem;
-            font-weight: 700;
-            line-height: 1;
-        }
         .credential-gauge--rescued { grid-area: rescued; }
         .credential-gauge--rescued .credential-gauge-fill {
             background: linear-gradient(to top, #c02678, #ff4fa3 70%, #ffc0e0);
@@ -946,7 +891,7 @@
                 right: auto;
                 bottom: 50px;
                 left: 16px;
-                grid-template-columns: repeat(2, 88px) repeat(3, 64px);
+                grid-template-columns: repeat(2, 88px) repeat(2, 64px);
                 grid-template-rows: 120px;
                 gap: 6px;
             }
@@ -965,8 +910,6 @@
                 gap: 7px;
                 padding: 9px 5px;
             }
-            .credential-gauge--fuel { gap: 4px; }
-            .credential-fuel-drop { width: 42px; height: 64px; }
             .credential-gauge-track { height: 78px; }
             .credential-gauge-label { font-size: 0.46rem; letter-spacing: 0; }
         }
@@ -979,7 +922,7 @@
                 height: 100px;
             }
             .game-playing-cards {
-                grid-template-columns: repeat(2, clamp(42px, 13vw, 60px)) repeat(4, min(52px, calc((100vw - 144px) / 4)));
+                grid-template-columns: repeat(2, clamp(42px, 13vw, 60px)) repeat(3, min(52px, calc((100vw - 144px) / 3)));
                 grid-template-rows: 98px;
                 gap: 4px;
             }
@@ -997,14 +940,11 @@
             .game-playing-cards .credential-aircraft-card svg { width: 38px; height: 52px; }
             .game-playing-cards .game-aircraft-impact-count { font-size: 0.3rem; letter-spacing: 0; }
             .game-playing-cards .credential-gauge {
-                width: min(52px, calc((100vw - 144px) / 4));
+                width: min(52px, calc((100vw - 144px) / 3));
                 height: 98px;
                 gap: 5px;
                 padding: 7px 3px;
             }
-            .game-playing-cards .credential-gauge--fuel { gap: 2px; }
-            .game-playing-cards .credential-fuel-drop { width: 36px; height: 56px; }
-            .game-playing-cards .credential-fuel-value { font-size: 0.3rem; }
             .game-playing-cards .credential-gauge-label { font-size: 0.34rem; letter-spacing: 0; }
             .game-playing-cards .credential-gauge-track { width: 21px; height: 60px; }
             .game-playing-cards .credential-shield-icon { width: 30px; height: 46px; }
@@ -1013,8 +953,8 @@
                 bottom: auto;
                 right: auto;
                 left: 50%;
-                grid-template-areas: "aircraft radar shield motor fuel";
-                grid-template-columns: repeat(2, clamp(50px, 10vw, 72px)) repeat(3, min(60px, calc((100vw - 68px) / 3)));
+                grid-template-areas: "aircraft radar shield motor";
+                grid-template-columns: repeat(2, clamp(50px, 10vw, 72px)) repeat(2, min(60px, calc((100vw - 68px) / 2)));
                 grid-template-rows: 120px;
                 gap: 4px;
                 transform: translateX(-50%);
@@ -1032,7 +972,7 @@
             }
             .credential-aircraft-card svg { width: 40px; height: 68px; }
             .credential-gauge {
-                width: min(60px, calc((100vw - 68px) / 3));
+                width: min(60px, calc((100vw - 68px) / 2));
                 height: 120px;
                 gap: 7px;
                 padding: 9px 5px;
@@ -1040,9 +980,6 @@
             .credential-gauge-label,
             .credential-aircraft-ready-status { font-size: 0.42rem; letter-spacing: 0.02em; }
             .credential-gauge-track { width: 25px; height: 78px; }
-            .credential-gauge--fuel { gap: 4px; }
-            .credential-fuel-drop { width: 42px; height: 64px; }
-            .credential-fuel-value { font-size: 0.42rem; }
             .credential-shield-icon { width: 42px; height: 64px; }
             .rescue-transition-screen .survey-overlay {
                 align-items: flex-end;
@@ -1129,10 +1066,6 @@
             </div>
             <div class="dashboard-readouts">
                 <div class="dashboard-readout">
-                    <span class="dashboard-readout-label">FUEL</span>
-                    <span id="fuelReadout" class="dashboard-readout-value">100%</span>
-                </div>
-                <div class="dashboard-readout">
                     <span class="dashboard-readout-label">SYS</span>
                     <span id="aircraftLives" class="dashboard-readout-value">5/5</span>
                 </div>
@@ -1193,20 +1126,6 @@
                 <div class="credential-gauge-track" aria-hidden="true">
                     <div class="credential-gauge-fill" style="--gauge-progress: 1"></div>
                 </div>
-            </div>
-            <div class="credential-gauge credential-gauge--fuel" role="meter" aria-label="Combustível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-                <span class="credential-gauge-label">COMBUSTÍVEL</span>
-                <svg class="credential-fuel-drop" viewBox="0 0 64 80" aria-hidden="true">
-                    <defs>
-                        <clipPath id="gameFuelDropClip">
-                            <path d="M32 5C25 18 12 34 12 50a20 20 0 0 0 40 0C52 34 39 18 32 5Z"></path>
-                        </clipPath>
-                    </defs>
-                    <path class="credential-fuel-drop-base" d="M32 5C25 18 12 34 12 50a20 20 0 0 0 40 0C52 34 39 18 32 5Z"></path>
-                    <rect class="credential-fuel-drop-level" x="0" y="5" width="64" height="65" clip-path="url(#gameFuelDropClip)" style="--gauge-progress: 1"></rect>
-                    <path class="credential-fuel-drop-outline" d="M32 5C25 18 12 34 12 50a20 20 0 0 0 40 0C52 34 39 18 32 5Z"></path>
-                </svg>
-                <span class="credential-fuel-value" aria-hidden="true">100%</span>
             </div>
             <div class="credential-gauge credential-gauge--rescued" role="meter" aria-label="Pessoas resgatadas" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
                 <span class="credential-gauge-label">RESGATADOS</span>
@@ -1287,20 +1206,6 @@
             <div class="credential-gauge-track" aria-hidden="true">
                 <div class="credential-gauge-fill"></div>
             </div>
-        </div>
-        <div class="credential-gauge credential-gauge--fuel" role="meter" aria-label="Combustível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <span class="credential-gauge-label">COMBUSTÍVEL</span>
-            <svg class="credential-fuel-drop" viewBox="0 0 64 80" aria-hidden="true">
-                <defs>
-                    <clipPath id="credentialFuelDropClip">
-                        <path d="M32 5C25 18 12 34 12 50a20 20 0 0 0 40 0C52 34 39 18 32 5Z"></path>
-                    </clipPath>
-                </defs>
-                <path class="credential-fuel-drop-base" d="M32 5C25 18 12 34 12 50a20 20 0 0 0 40 0C52 34 39 18 32 5Z"></path>
-                <rect class="credential-fuel-drop-level" x="0" y="5" width="64" height="65" clip-path="url(#credentialFuelDropClip)"></rect>
-                <path class="credential-fuel-drop-outline" d="M32 5C25 18 12 34 12 50a20 20 0 0 0 40 0C52 34 39 18 32 5Z"></path>
-            </svg>
-            <span class="credential-fuel-value" aria-hidden="true">0%</span>
         </div>
     </div>
     <div id="credentialProgress" class="opening-progress" role="progressbar" aria-label="Confirmação das credenciais" aria-valuemin="0" aria-valuemax="100" hidden>
@@ -1446,14 +1351,10 @@
     let playerMissiles = [];
     let enemyShots = [];
     let scenery = [];
-    let fuelStations = [];
     let explosions = [];
     let aircraftCarriers = [];
     let sceneryFeaturesRecycled = 0;
     let lives = 5;
-    let fuelLevel = 100;
-    let fuelWarningShown = false;
-    let pendingFuelDistance = 0;
     let playerDamageMarks = [];
     let criticalAlertInterval = 0;
     let targetsHit = 0;
@@ -1473,15 +1374,12 @@
     let sceneryOffset = 0;
     const enemyTargetCount = 80;
     const enemiesPerWave = 10;
+    const giantBossSpawnWave = 5;
+    const giantBossSpawnTarget = enemiesPerWave * giantBossSpawnWave;
     const totalWaves = enemyTargetCount / enemiesPerWave;
     const rescueTargetCount = 20;
     const regularRescueTargetCount = rescueTargetCount - 3;
     const minimumRockCharacterDistance = 340;
-    const fuelCapacity = 100;
-    const fuelBurnPerPixel = 0.012;
-    const fuelBurnPerForwardPixel = 0.04;
-    const fuelStationScrollSpeed = 70;
-    const fuelStationScale = 3;
     const movementKeys = new Set([
         'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
         'KeyA', 'KeyD', 'KeyW', 'KeyS', 'Space'
@@ -1740,150 +1638,6 @@
         playerShip.y = Math.max(arcadeHeight * 0.74, arcadeHeight - 52);
         enemyShips.forEach((enemy) => {
             enemy.x = Math.max(enemy.width / 2 + 8, Math.min(enemy.x, arcadeWidth - enemy.width / 2 - 8));
-        });
-    }
-
-    function createFuelStations() {
-        const spacing = getFuelStationSpacing();
-        return Array.from({ length: 4 }, (_, index) => ({
-            side: index % 2 === 0 ? 'left' : 'right',
-            y: -100 - index * spacing,
-            used: false,
-            entered: false
-        }));
-    }
-
-    function getFuelStationSpacing() {
-        return Math.max(360, Math.min(520, arcadeHeight * 0.68));
-    }
-
-    function getFuelStationPosition(station) {
-        const isLeft = station.side === 'left';
-        const halfWidth = 26 * fuelStationScale;
-        const shorelineX = getShorelineX(station.y, isLeft);
-        return {
-            x: Math.max(
-                halfWidth,
-                Math.min(
-                    arcadeWidth - halfWidth,
-                    shorelineX + (isLeft ? -halfWidth : halfWidth)
-                )
-            ),
-            y: station.y
-        };
-    }
-
-    function drawFuelStation(station) {
-        const { x, y } = getFuelStationPosition(station);
-        arcadeContext.save();
-        arcadeContext.translate(x, y);
-        arcadeContext.scale(fuelStationScale, fuelStationScale);
-        const accent = station.used ? '#7de8f5' : '#00ffcc';
-        arcadeContext.shadowColor = station.used ? 'rgba(125, 232, 245, 0.2)' : 'rgba(0, 255, 204, 0.55)';
-        arcadeContext.shadowBlur = station.used ? 3 : 8;
-        arcadeContext.fillStyle = '#29485a';
-        arcadeContext.strokeStyle = '#d9faff';
-        arcadeContext.lineWidth = 1.5;
-        arcadeContext.beginPath();
-        arcadeContext.moveTo(-26, -8);
-        arcadeContext.lineTo(0, -27);
-        arcadeContext.lineTo(26, -8);
-        arcadeContext.closePath();
-        arcadeContext.fill();
-        arcadeContext.stroke();
-        arcadeContext.fillStyle = '#183647';
-        arcadeContext.beginPath();
-        arcadeContext.rect(-22, -9, 44, 34);
-        arcadeContext.fill();
-        arcadeContext.stroke();
-        arcadeContext.shadowBlur = 0;
-        arcadeContext.fillStyle = '#b4fff1';
-        arcadeContext.fillRect(-16, -3, 10, 9);
-        arcadeContext.fillRect(6, -3, 10, 9);
-        arcadeContext.strokeStyle = '#7de8f5';
-        arcadeContext.lineWidth = 1;
-        arcadeContext.strokeRect(-16, -3, 10, 9);
-        arcadeContext.strokeRect(6, -3, 10, 9);
-        arcadeContext.fillStyle = '#102b32';
-        arcadeContext.fillRect(-4, 8, 9, 17);
-        arcadeContext.strokeStyle = '#7de8f5';
-        arcadeContext.strokeRect(-4, 8, 9, 17);
-        arcadeContext.fillStyle = '#d9faff';
-        arcadeContext.fillRect(2, 16, 1, 1);
-        arcadeContext.fillStyle = station.used ? '#354f54' : '#063d37';
-        arcadeContext.strokeStyle = accent;
-        arcadeContext.lineWidth = 1.5;
-        arcadeContext.beginPath();
-        arcadeContext.roundRect(-19, -22, 38, 12, 2);
-        arcadeContext.fill();
-        arcadeContext.stroke();
-        arcadeContext.fillStyle = station.used ? '#b9c9cc' : '#b4fff1';
-        arcadeContext.font = 'bold 8px "Courier New", monospace';
-        arcadeContext.textAlign = 'center';
-        arcadeContext.fillText('POSTO', 0, -13);
-        arcadeContext.fillStyle = station.used ? '#70888c' : '#00ffcc';
-        arcadeContext.fillRect(-22, 24, 44, 3);
-        arcadeContext.restore();
-    }
-
-    function setFuelGaugeProgress(meter, progress) {
-        const fill = meter.querySelector('.credential-fuel-drop-level');
-        if (!fill) return;
-        const dropTop = 5;
-        const dropHeight = 65;
-        const fillHeight = dropHeight * Math.max(0, Math.min(1, progress));
-        fill.setAttribute('y', String(dropTop + dropHeight - fillHeight));
-        fill.setAttribute('height', String(fillHeight));
-    }
-
-    function updateFuelMeters() {
-        const displayedFuel = Math.round(fuelLevel);
-        document.querySelectorAll('.credential-gauge--fuel').forEach((meter) => {
-            setFuelGaugeProgress(meter, fuelLevel / fuelCapacity);
-            if (meter.getAttribute('aria-valuenow') !== String(displayedFuel)) {
-                meter.setAttribute('aria-valuenow', String(displayedFuel));
-                meter.setAttribute('aria-valuetext', `${displayedFuel}% de combustível`);
-            }
-            const percentage = meter.querySelector('.credential-fuel-value');
-            if (percentage && percentage.textContent !== `${displayedFuel}%`) {
-                percentage.textContent = `${displayedFuel}%`;
-            }
-        });
-        const fuelReadout = document.getElementById('fuelReadout');
-        if (fuelReadout.textContent !== `${displayedFuel}%`) {
-            fuelReadout.textContent = `${displayedFuel}%`;
-        }
-        if (fuelLevel <= 25 && fuelLevel > 0 && !fuelWarningShown) {
-            fuelWarningShown = true;
-            updateStatusMessage('COMBUSTÍVEL BAIXO · PROCURE UM POSTO');
-        }
-    }
-
-    function updateFuelStations(elapsed) {
-        fuelStations.forEach((station) => {
-            station.y += fuelStationScrollSpeed * elapsed;
-            if (station.y <= arcadeHeight) station.entered = true;
-            if (!station.entered || station.y <= arcadeHeight + 48) return;
-            station.y = Math.min(...fuelStations
-                .filter((other) => other !== station)
-                .map((other) => other.y)) - getFuelStationSpacing();
-            station.used = false;
-            station.entered = false;
-        });
-
-        fuelStations.forEach((station) => {
-            if (station.used || fuelLevel >= fuelCapacity) return;
-            const position = getFuelStationPosition(station);
-            if (
-                Math.abs(playerShip.x - position.x) >= 26 * fuelStationScale + playerShip.width / 2
-                || Math.abs(playerShip.y - position.y) >= 27 * fuelStationScale + playerShip.height / 2
-            ) return;
-            station.used = true;
-            fuelLevel = fuelCapacity;
-            fuelWarningShown = false;
-            updateFuelMeters();
-            showCharacterSpeech('Abastecimento concluído! Tanque cheio. Continue a missão!');
-            updateStatusMessage('COMBUSTÍVEL REABASTECIDO · TANQUE CHEIO');
         });
     }
 
@@ -2530,7 +2284,6 @@
             arcadeContext.stroke();
         }
         drawCoastalBanks();
-        fuelStations.forEach(drawFuelStation);
         aircraftCarriers.forEach((carrier) => {
             if (carrier.spawned && !carrier.expired) drawAircraftCarrier(carrier);
         });
@@ -2763,13 +2516,13 @@
             && Math.abs(shot.y - target.y) < target.height / 2 + 5;
     }
 
-    function endArcadeGame(won, failureReason = 'aircraft') {
+    function endArcadeGame(won) {
         arcadeActive = false;
         stopCriticalAlert();
         pressedKeys.clear();
         mouseFiring = false;
         window.cancelAnimationFrame(arcadeAnimationFrame);
-        showMissionEnd(won, failureReason);
+        showMissionEnd(won);
     }
 
     function spawnEnemyWave(waveNumber) {
@@ -2831,25 +2584,10 @@
             - Number(pressedKeys.has('ArrowLeft') || pressedKeys.has('KeyA'));
         const verticalDirection = Number(pressedKeys.has('ArrowDown') || pressedKeys.has('KeyS'))
             - Number(pressedKeys.has('ArrowUp') || pressedKeys.has('KeyW'));
-        const previousX = playerShip.x;
-        const previousY = playerShip.y;
         playerShip.x += horizontalDirection * 300 * elapsed;
         playerShip.y += verticalDirection * 260 * elapsed;
         playerShip.x = Math.max(playerShip.width / 2 + 8, Math.min(arcadeWidth - playerShip.width / 2 - 8, playerShip.x));
         playerShip.y = Math.max(arcadeHeight * 0.4, Math.min(arcadeHeight - playerShip.height / 2 - 8, playerShip.y));
-        const distanceTraveled = pendingFuelDistance + Math.hypot(
-            playerShip.x - previousX,
-            playerShip.y - previousY
-        );
-        pendingFuelDistance = 0;
-        const forwardDistance = fuelStationScrollSpeed * elapsed;
-        fuelLevel = Math.max(
-            0,
-            fuelLevel
-                - distanceTraveled * fuelBurnPerPixel
-                - forwardDistance * fuelBurnPerForwardPixel
-        );
-        updateFuelMeters();
 
         const isFiring = pressedKeys.has('Space') || mouseFiring;
         if (isFiring && timestamp - lastPlayerShot >= 180) {
@@ -2912,11 +2650,6 @@
         }
 
         sceneryOffset = (sceneryOffset + 70 * elapsed) % (arcadeHeight + 150);
-        updateFuelStations(elapsed);
-        if (fuelLevel <= 0) {
-            endArcadeGame(false, 'fuel');
-            return;
-        }
         scenery.forEach((feature) => {
             feature.y += 70 * elapsed;
             if (
@@ -3055,7 +2788,7 @@
         });
 
         const giantBossAliveInCombat = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
-        if (targetsHit + targetsLost >= enemyTargetCount && !giantBossAliveInCombat) {
+        if (targetsHit + targetsLost >= giantBossSpawnTarget && !giantBossAliveInCombat) {
             enemyShips.push({
                 x: arcadeWidth / 2,
                 y: -180,
@@ -3069,7 +2802,7 @@
                 nextRocketAt: performance.now() + 1100
             });
             showCharacterSpeech('Aeronave inimiga gigante em aproximação! Destrua a nave-mãe antes que ela alcance a linha de combate.');
-            updateStatusMessage('NAVE-MÃE INIMIGA · COMBATE FINAL');
+            updateStatusMessage(`NAVE-MÃE INIMIGA · ONDA ${giantBossSpawnWave + 1}/${totalWaves}`);
         }
 
         if (timestamp >= nextEnemyShot) {
@@ -3213,15 +2946,15 @@
                 lives = 5;
                 stopCriticalAlert();
                 updateCombatStatus();
-                showCharacterSpeech('Reabastecimento concluído! O porta-aviões restaurou as cinco vidas.');
+                showCharacterSpeech('Apoio concluído! O porta-aviões restaurou as cinco vidas.');
                 updateStatusMessage('ESTADO CRÍTICO ENCERRADO · 5 VIDAS RESTAURADAS');
             }
         }
 
         if (!arcadeActive) return;
         const resolvedTargets = targetsHit + targetsLost;
-        const giantBossAlive = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
-        if (resolvedTargets >= enemyTargetCount && !giantBossAlive) {
+        const giantBossAliveAfterMission = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
+        if (resolvedTargets >= enemyTargetCount && !giantBossAliveAfterMission) {
             endArcadeGame(true);
             return;
         }
@@ -3260,11 +2993,6 @@
         sceneryFeaturesRecycled = 0;
         aircraftCarriers = [];
         resizeArcadeCanvas();
-        fuelLevel = fuelCapacity;
-        fuelWarningShown = false;
-        pendingFuelDistance = 0;
-        fuelStations = createFuelStations();
-        updateFuelMeters();
         aircraftCarriers = createAircraftCarriers(performance.now());
         enemyShips = [];
         playerShots = [];
@@ -3301,10 +3029,10 @@
         characterSpeech.hidden = false;
         arcadeCanvas.setAttribute(
             'aria-label',
-            'Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. O combustível diminui conforme a distância percorrida; sobrevoe os postos verdes nas margens para encher o tanque. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar.'
+            'Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar.'
         );
         showCharacterSpeech(
-            'Guie o caça com as setas ou WASD. O combustível diminui conforme a distância percorrida; sobrevoe os postos verdes nas margens do rio para encher o tanque. Segure a barra de espaço ou o botão esquerdo para atirar; clique com o botão direito para ativar um dos três escudos de força, com sete segundos de proteção cada. No celular, arraste para guiar.'
+            'Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo para atirar; clique com o botão direito para ativar um dos três escudos de força, com sete segundos de proteção cada. No celular, arraste para guiar.'
         );
         document.getElementById('routeMessage').textContent = 'COMBATE EM ANDAMENTO';
         document.getElementById('routeMessage').classList.remove('route-message--detour');
@@ -3355,13 +3083,10 @@
 
     function moveShipToPointer(event) {
         const bounds = arcadeCanvas.getBoundingClientRect();
-        const previousX = playerShip.x;
-        const previousY = playerShip.y;
         playerShip.x = (event.clientX - bounds.left) * (arcadeWidth / bounds.width);
         playerShip.y = (event.clientY - bounds.top) * (arcadeHeight / bounds.height);
         playerShip.x = Math.max(playerShip.width / 2 + 8, Math.min(arcadeWidth - playerShip.width / 2 - 8, playerShip.x));
         playerShip.y = Math.max(arcadeHeight * 0.4, Math.min(arcadeHeight - playerShip.height / 2 - 8, playerShip.y));
-        pendingFuelDistance += Math.hypot(playerShip.x - previousX, playerShip.y - previousY);
     }
 
     function updateForceShieldMeters(progress = forceShieldCharges / forceShieldMaxCharges) {
@@ -3476,10 +3201,6 @@
                 const value = Array.isArray(values) ? values[index] : values;
                 gauge.setAttribute('aria-valuenow', String(value));
                 gauge.style.setProperty('--gauge-progress', String(value / 100));
-                if (gauge.classList.contains('credential-gauge--fuel')) {
-                    setFuelGaugeProgress(gauge, value / 100);
-                    gauge.querySelector('.credential-fuel-value').textContent = `${value}%`;
-                }
             });
             updateForceShieldMeters(shieldProgress);
         };
@@ -3557,7 +3278,7 @@
         characterSpeech.hidden = false;
     }
 
-    function showMissionEnd(won, failureReason = 'aircraft') {
+    function showMissionEnd(won) {
         arcadeActive = false;
         document.querySelector('.game-container').classList.remove('is-playing');
         updateMissionObjectives(true);
@@ -3565,13 +3286,11 @@
         endCard.classList.toggle('won', won);
         document.getElementById('endTitle').textContent = won
             ? 'MISSÃO CONCLUÍDA!'
-            : failureReason === 'fuel' ? 'SEM COMBUSTÍVEL' : 'CAÇA DESTRUÍDO';
+            : 'CAÇA DESTRUÍDO';
         const targetSummary = `Alvos acertados: ${targetsHit} · perdidos: ${targetsLost}. Pessoas resgatadas: ${peopleRescued}.`;
         document.getElementById('endMessage').textContent = won
             ? `Você concluiu as oito levas. ${targetSummary}`
-            : failureReason === 'fuel'
-                ? `O tanque esvaziou antes de alcançar um posto. Sobrevoe os postos verdes nas margens do rio para reabastecer. ${targetSummary}`
-                : `O caça perdeu suas cinco vidas. ${targetSummary}`;
+            : `O caça perdeu suas cinco vidas. ${targetSummary}`;
         document.getElementById('restartButton').textContent = '[ JOGAR NOVAMENTE ]';
         endScreen.hidden = false;
     }
