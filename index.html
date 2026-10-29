@@ -2573,6 +2573,7 @@
     }
 
     function drawExplosion(explosion, timestamp) {
+        if (timestamp < explosion.startedAt) return;
         const progress = (timestamp - explosion.startedAt) / 480;
         const radius = 8 + progress * 32;
         arcadeContext.save();
