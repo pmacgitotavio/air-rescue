@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="img/air-rescue-2.jpeg">
     <style>
         :root {
@@ -128,11 +129,86 @@
 
         .game-playing-cards {
             display: grid;
-            grid-template-areas: "radar aircraft shield motor rescued";
-            grid-template-columns: repeat(2, 90px) repeat(3, 70px);
+            width: 100%;
+            grid-template-areas: "score radar aircraft shield laser energy rescued";
+            grid-template-columns: minmax(0, 1fr) repeat(2, 90px) repeat(4, 70px);
             grid-template-rows: 110px;
             align-items: end;
             gap: 8px;
+        }
+
+        .game-score-card {
+            display: flex;
+            min-width: 0;
+            width: 100%;
+            height: 110px;
+            grid-area: score;
+            flex-direction: column;
+            gap: 8px;
+            padding: 9px 10px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background: linear-gradient(160deg, rgba(9, 29, 49, 0.96), rgba(9, 29, 49, 0.8));
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.14);
+            color: #fff;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+        }
+
+        .game-score-header {
+            display: flex;
+            min-width: 0;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .game-score-title {
+            font-size: 0.56rem;
+            letter-spacing: 0.04em;
+        }
+
+        .game-score-total {
+            color: #ffe58a;
+            font-size: 0.62rem;
+            white-space: nowrap;
+        }
+
+        .game-fleet-scores {
+            display: grid;
+            min-height: 0;
+            flex: 1;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 6px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .game-fleet-scores li {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            padding: 4px 6px;
+            border-left: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .game-fleet-name {
+            font-size: 0.4rem;
+            white-space: nowrap;
+        }
+
+        .game-fleet-points {
+            color: #ffe58a;
+            font-size: 0.48rem;
+            white-space: nowrap;
+        }
+
+        .game-fleet-tally {
+            color: #cbd5e1;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.64rem;
         }
 
         .game-playing-cards .credential-radar-card {
@@ -162,6 +238,28 @@
             padding: 8px 4px;
         }
         .game-playing-cards .credential-shield-icon { width: 44px; height: 64px; }
+        .game-playing-cards .credential-gauge--laser {
+            width: 70px;
+            gap: 5px;
+            align-content: center;
+        }
+        .game-playing-cards .credential-laser-icon { width: 66px; height: 76px; }
+        .game-playing-cards .game-laser-status {
+            color: #aab8c5;
+            font-size: 0.38rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .game-playing-cards .credential-gauge--laser.is-ready {
+            border-color: #67f8ff;
+            box-shadow: 0 0 16px rgba(0, 255, 255, 0.52), inset 0 0 12px rgba(0, 255, 255, 0.16);
+        }
+        .game-playing-cards .credential-gauge--laser.is-ready .credential-laser-icon {
+            filter: drop-shadow(0 0 7px #36f8ff);
+        }
+        .game-playing-cards .credential-gauge--laser.is-ready .game-laser-status {
+            color: #67f8ff;
+        }
         .game-playing-cards .credential-gauge-track {
             width: 24px;
             height: 70px;
@@ -198,6 +296,7 @@
             background: #fff;
             box-shadow: none;
         }
+        .game-playing-cards .credential-gauge--energy .energy-bolt-fill { fill: #ef4444; }
         .game-playing-cards .credential-gauge--rescued .credential-gauge-fill {
             background: #fff;
             box-shadow: none;
@@ -400,8 +499,8 @@
             bottom: 50px;
             right: calc(min(480px, 40vw) + 44px);
             display: grid;
-            grid-template-areas: "aircraft radar shield motor";
-            grid-template-columns: repeat(2, 116px) repeat(2, 92px);
+            grid-template-areas: "aircraft radar shield laser energy";
+            grid-template-columns: repeat(2, 116px) repeat(3, 92px);
             grid-template-rows: 140px;
             align-items: end;
             gap: 10px;
@@ -579,7 +678,24 @@
         }
 
         .credential-gauge--shield { grid-area: shield; }
-        .credential-gauge--motor { grid-area: motor; }
+        .credential-gauge--laser { grid-area: laser; }
+        #credentialGauges .credential-gauge--laser {
+            width: 92px;
+            align-content: center;
+            gap: 5px;
+        }
+        #credentialGauges .credential-laser-icon { width: 72px; height: 84px; }
+        .game-laser-status {
+            color: #aab8c5;
+            font-size: 0.38rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .credential-gauge--energy { grid-area: energy; }
+        #credentialGauges .credential-gauge--energy.is-ready .energy-bolt-fill {
+            fill: #fff;
+            filter: none;
+        }
         .credential-gauge--rescued { grid-area: rescued; }
         .credential-gauge--rescued .credential-gauge-fill {
             background: linear-gradient(to top, #c02678, #ff4fa3 70%, #ffc0e0);
@@ -641,6 +757,25 @@
             background: linear-gradient(to top, #00a88d, #00ffcc 70%, #b4fff1);
             box-shadow: 0 0 12px rgba(0, 255, 204, 0.7);
             transition: transform 80ms linear;
+        }
+
+        .energy-bolt-icon {
+            width: 56px;
+            height: 84px;
+            overflow: visible;
+        }
+
+        .energy-bolt-outline {
+            fill: rgba(3, 12, 27, 0.8);
+            stroke: rgba(255, 255, 255, 0.78);
+            stroke-width: 5;
+            stroke-linejoin: round;
+        }
+
+        .energy-bolt-fill {
+            fill: #ef4444;
+            filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.7));
+            transition: y 140ms ease-out, height 140ms ease-out;
         }
 
         .credential-shield-icon {
@@ -893,7 +1028,7 @@
                 right: auto;
                 bottom: 50px;
                 left: 16px;
-                grid-template-columns: repeat(2, 88px) repeat(2, 64px);
+                grid-template-columns: repeat(2, 88px) repeat(3, 64px);
                 grid-template-rows: 120px;
                 gap: 6px;
             }
@@ -912,8 +1047,20 @@
                 gap: 7px;
                 padding: 9px 5px;
             }
+            #credentialGauges .credential-gauge--laser { width: 64px; }
             .credential-gauge-track { height: 78px; }
             .credential-gauge-label { font-size: 0.46rem; letter-spacing: 0; }
+        }
+
+        @media (min-width: 681px) and (max-width: 820px) {
+            .game-score-card { gap: 5px; padding: 8px 6px; }
+            .game-score-title { font-size: 0.42rem; }
+            .game-score-total { font-size: 0.5rem; }
+            .game-fleet-scores { gap: 3px; }
+            .game-fleet-scores li { gap: 4px; padding: 3px; }
+            .game-fleet-name { font-size: 0.28rem; }
+            .game-fleet-points { font-size: clamp(0.32rem, 0.55vw, 0.4rem); }
+            .game-fleet-tally { font-size: 0.54rem; }
         }
 
         @media (max-width: 680px) {
@@ -921,42 +1068,65 @@
                 right: 8px;
                 bottom: 8px;
                 left: 8px;
-                height: 100px;
+                height: 160px;
             }
             .game-playing-cards {
-                grid-template-columns: repeat(2, clamp(42px, 13vw, 60px)) repeat(3, min(52px, calc((100vw - 144px) / 3)));
-                grid-template-rows: 98px;
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+                grid-template-areas:
+                    "score score score score score score"
+                    "radar aircraft shield laser energy rescued";
+                grid-template-rows: 50px 98px;
                 gap: 4px;
             }
+            .game-score-card {
+                height: 50px;
+                gap: 4px;
+                padding: 4px 6px;
+            }
+            .game-score-title { font-size: 0.34rem; }
+            .game-score-total { font-size: 0.4rem; }
+            .game-fleet-scores { gap: 2px; }
+            .game-fleet-scores li { gap: 2px; padding: 2px 3px; }
+            .game-fleet-name { font-size: clamp(0.2rem, 0.55vw, 0.24rem); }
+            .game-fleet-points { font-size: clamp(0.3rem, 1vw, 0.4rem); }
+            .game-fleet-tally { display: none; }
             .game-playing-cards .credential-radar-card {
-                width: clamp(42px, 13vw, 60px);
+                width: 100%;
+                min-width: 0;
                 height: 98px;
                 gap: 2px;
                 padding: 5px 2px;
             }
             .game-playing-cards .credential-radar-scope { width: 38px; height: 58px; }
             .game-playing-cards .credential-aircraft-card {
-                width: clamp(42px, 13vw, 60px);
+                width: 100%;
+                min-width: 0;
                 height: 98px;
             }
             .game-playing-cards .credential-aircraft-card svg { width: 38px; height: 52px; }
             .game-playing-cards .game-aircraft-impact-count { font-size: 0.3rem; letter-spacing: 0; }
             .game-playing-cards .credential-gauge {
-                width: min(52px, calc((100vw - 144px) / 3));
+                width: 100%;
+                min-width: 0;
                 height: 98px;
                 gap: 5px;
                 padding: 7px 3px;
             }
+            .game-playing-cards .credential-gauge--laser { gap: 3px; }
+            .game-playing-cards .credential-gauge--laser { padding-right: 1px; padding-left: 1px; }
+            .game-playing-cards .credential-laser-icon { width: 42px; height: 58px; }
+            .game-playing-cards .game-laser-status { font-size: 0.26rem; }
             .game-playing-cards .credential-gauge-label { font-size: 0.34rem; letter-spacing: 0; }
             .game-playing-cards .credential-gauge-track { width: 21px; height: 60px; }
             .game-playing-cards .credential-shield-icon { width: 30px; height: 46px; }
+            .game-playing-cards .energy-bolt-icon { width: 36px; height: 54px; }
             .credential-gauges {
                 top: 12px;
                 bottom: auto;
                 right: auto;
                 left: 50%;
-                grid-template-areas: "aircraft radar shield motor";
-                grid-template-columns: repeat(2, clamp(50px, 10vw, 72px)) repeat(2, min(60px, calc((100vw - 68px) / 2)));
+                grid-template-areas: "aircraft radar shield laser energy";
+                grid-template-columns: repeat(2, clamp(50px, 10vw, 72px)) repeat(3, min(60px, calc((100vw - 68px) / 3)));
                 grid-template-rows: 120px;
                 gap: 4px;
                 transform: translateX(-50%);
@@ -974,11 +1144,18 @@
             }
             .credential-aircraft-card svg { width: 40px; height: 68px; }
             .credential-gauge {
-                width: min(60px, calc((100vw - 68px) / 2));
+                width: min(60px, calc((100vw - 68px) / 3));
                 height: 120px;
                 gap: 7px;
                 padding: 9px 5px;
             }
+            #credentialGauges .credential-gauge--laser {
+                width: min(60px, calc((100vw - 68px) / 3));
+            }
+            #credentialGauges .credential-gauge--laser { gap: 3px; }
+            #credentialGauges .credential-laser-icon { width: 48px; height: 66px; }
+            #credentialGauges .game-laser-status { font-size: 0.28rem; }
+            #credentialGauges .energy-bolt-icon { width: 40px; height: 54px; }
             .credential-gauge-label,
             .credential-aircraft-ready-status { font-size: 0.42rem; letter-spacing: 0.02em; }
             .credential-gauge-track { width: 25px; height: 78px; }
@@ -1033,7 +1210,7 @@
 <body>
 
 <main class="game-container">
-    <canvas id="arcadeCanvas" class="arcade-canvas" aria-label="Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar." hidden></canvas>
+    <canvas id="arcadeCanvas" class="arcade-canvas" aria-label="Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. A partir da sexta leva, a barra de espaço também dispara os lasers das asas. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar." hidden></canvas>
     <aside id="missionObjectives" class="mission-objectives" aria-labelledby="missionObjectivesTitle" aria-live="polite" hidden>
         <h2 id="missionObjectivesTitle">OBJETIVOS DA MISSÃO</h2>
         <ul>
@@ -1084,6 +1261,34 @@
             </div>
         </section>
         <section class="game-playing-cards" aria-label="Sistemas da aeronave durante a missão">
+            <section class="game-score-card" aria-label="Pontuação por frota">
+                <div class="game-score-header">
+                    <span class="game-score-title">PONTOS POR ABATE</span>
+                    <span class="game-score-total">PTS <output id="missionScore" aria-live="polite">0</output></span>
+                </div>
+                <ul class="game-fleet-scores">
+                    <li>
+                        <span class="game-fleet-name">1ª FROTA</span>
+                        <span class="game-fleet-points">43 PTS</span>
+                        <span id="fleetScore1" class="game-fleet-tally">0 abatidas · 0 pts</span>
+                    </li>
+                    <li>
+                        <span class="game-fleet-name">2ª FROTA</span>
+                        <span class="game-fleet-points">50 PTS</span>
+                        <span id="fleetScore2" class="game-fleet-tally">0 abatidas · 0 pts</span>
+                    </li>
+                    <li>
+                        <span class="game-fleet-name">3ª FROTA</span>
+                        <span class="game-fleet-points">151 PTS</span>
+                        <span id="fleetScore3" class="game-fleet-tally">0 abatidas · 0 pts</span>
+                    </li>
+                    <li>
+                        <span class="game-fleet-name">4ª FROTA</span>
+                        <span class="game-fleet-points">983 PTS</span>
+                        <span id="fleetScore4" class="game-fleet-tally">0 abatidas · 0 pts</span>
+                    </li>
+                </ul>
+            </section>
             <div class="credential-radar-card" aria-label="Radar em tempo real">
                 <span class="credential-gauge-label">RADAR</span>
                 <svg class="credential-radar-scope" viewBox="0 0 100 100" role="img" aria-label="Ponto branco: aeronave; pontos vermelhos: naves inimigas">
@@ -1123,11 +1328,36 @@
                     <rect class="credential-shield-fill" x="0" y="0" width="100" height="110" clip-path="url(#gameShieldClip)"></rect>
                 </svg>
             </div>
-            <div class="credential-gauge credential-gauge--motor" role="meter" aria-label="Motor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-                <span class="credential-gauge-label">MOTOR</span>
-                <div class="credential-gauge-track" aria-hidden="true">
-                    <div class="credential-gauge-fill" style="--gauge-progress: 1"></div>
-                </div>
+            <div class="credential-gauge credential-gauge--laser" role="status" aria-label="Canhões laser da aeronave">
+                <span class="credential-gauge-label">LASER</span>
+                <svg class="credential-laser-icon" viewBox="0 0 100 110" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="laserBeam" x1="0" x2="0" y1="1" y2="0">
+                            <stop offset="0" stop-color="#42f5ff" stop-opacity="0.08"></stop>
+                            <stop offset="1" stop-color="#42f5ff"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path d="M24 13 L29 49 M76 13 L71 49" stroke="url(#laserBeam)" stroke-width="8" stroke-linecap="round"></path>
+                    <path d="M24 15 L29 48 M76 15 L71 48" stroke="#e9ffff" stroke-width="1.5" stroke-linecap="round"></path>
+                    <path d="M50 20 L57 44 L82 60 L80 65 L58 59 L61 78 L69 87 L68 91 L50 85 L32 91 L31 87 L39 78 L42 59 L20 65 L18 60 L43 44 Z" fill="#dce8f0" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"></path>
+                    <path d="M50 28 L53 48 L52 75 L50 81 L48 75 L47 48 Z" fill="#42f5ff"></path>
+                    <path d="M27 62 L42 58 M73 62 L58 58 M35 84 L43 81 M65 84 L57 81" stroke="#607789" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+                <span id="gameLaserStatus" class="game-laser-status">BLOQUEADO</span>
+            </div>
+            <div class="credential-gauge credential-gauge--energy" role="meter" aria-label="Energia da aeronave" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                <span class="credential-gauge-label">ENERGIA</span>
+                <svg class="energy-bolt-icon" viewBox="0 0 100 110" role="img" aria-label="Raio indicando a energia restante">
+                    <defs>
+                        <clipPath id="gameEnergyClip">
+                            <path d="M58 5 L20 61 H43 L35 105 L80 44 H56 Z"></path>
+                        </clipPath>
+                    </defs>
+                    <path class="energy-bolt-outline" d="M58 5 L20 61 H43 L35 105 L80 44 H56 Z"></path>
+                    <g clip-path="url(#gameEnergyClip)">
+                        <rect id="gameEnergyFill" class="energy-bolt-fill" x="0" y="0" width="100" height="110"></rect>
+                    </g>
+                </svg>
             </div>
             <div class="credential-gauge credential-gauge--rescued" role="meter" aria-label="Pessoas resgatadas" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
                 <span class="credential-gauge-label">RESGATADOS</span>
@@ -1194,6 +1424,23 @@
                 <rect class="credential-shield-fill" x="0" y="0" width="100" height="110" clip-path="url(#credentialShieldClip)"></rect>
             </svg>
         </div>
+        <div class="credential-gauge credential-gauge--laser" role="status" aria-label="Canhões laser das asas bloqueados até a sexta leva">
+            <span class="credential-gauge-label">LASER</span>
+            <svg class="credential-laser-icon" viewBox="0 0 100 110" aria-hidden="true">
+                <defs>
+                    <linearGradient id="credentialLaserBeam" x1="0" x2="0" y1="1" y2="0">
+                        <stop offset="0" stop-color="#42f5ff" stop-opacity="0.08"></stop>
+                        <stop offset="1" stop-color="#42f5ff"></stop>
+                    </linearGradient>
+                </defs>
+                <path d="M24 13 L29 49 M76 13 L71 49" stroke="url(#credentialLaserBeam)" stroke-width="8" stroke-linecap="round"></path>
+                <path d="M24 15 L29 48 M76 15 L71 48" stroke="#e9ffff" stroke-width="1.5" stroke-linecap="round"></path>
+                <path d="M50 20 L57 44 L82 60 L80 65 L58 59 L61 78 L69 87 L68 91 L50 85 L32 91 L31 87 L39 78 L42 59 L20 65 L18 60 L43 44 Z" fill="#dce8f0" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"></path>
+                <path d="M50 28 L53 48 L52 75 L50 81 L48 75 L47 48 Z" fill="#42f5ff"></path>
+                <path d="M27 62 L42 58 M73 62 L58 58 M35 84 L43 81 M65 84 L57 81" stroke="#607789" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            <span id="credentialLaserStatus" class="game-laser-status">BLOQUEADO</span>
+        </div>
         <div class="credential-aircraft-card" aria-label="Diagrama da aeronave">
             <span class="credential-gauge-label">AERONAVE</span>
             <svg viewBox="0 0 100 110" role="img" aria-label="Diagrama esquemático do caça">
@@ -1203,11 +1450,19 @@
             </svg>
             <span id="credentialAircraftReadyStatus" class="credential-aircraft-ready-status" hidden>PREPARADA</span>
         </div>
-        <div class="credential-gauge credential-gauge--motor" role="meter" aria-label="Motor" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <span class="credential-gauge-label">MOTOR</span>
-            <div class="credential-gauge-track" aria-hidden="true">
-                <div class="credential-gauge-fill"></div>
-            </div>
+        <div class="credential-gauge credential-gauge--energy" role="meter" aria-label="Energia da aeronave" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span class="credential-gauge-label">ENERGIA</span>
+            <svg class="energy-bolt-icon" viewBox="0 0 100 110" role="img" aria-label="Raio indicando a energia restante">
+                <defs>
+                    <clipPath id="credentialEnergyClip">
+                        <path d="M58 5 L20 61 H43 L35 105 L80 44 H56 Z"></path>
+                    </clipPath>
+                </defs>
+                <path class="energy-bolt-outline" d="M58 5 L20 61 H43 L35 105 L80 44 H56 Z"></path>
+                <g clip-path="url(#credentialEnergyClip)">
+                    <rect id="credentialEnergyFill" class="energy-bolt-fill" x="0" y="0" width="100" height="110"></rect>
+                </g>
+            </svg>
         </div>
     </div>
     <div id="credentialProgress" class="opening-progress" role="progressbar" aria-label="Confirmação das credenciais" aria-valuemin="0" aria-valuemax="100" hidden>
@@ -1299,6 +1554,9 @@
     const arcadeContext = arcadeCanvas.getContext('2d');
     const radarDisplays = [...document.querySelectorAll('.credential-radar-scope')];
     let gameAudioContext = null;
+    let arcadeMusicTimer = 0;
+    let nextArcadeMusicNoteAt = 0;
+    let arcadeMusicStep = 0;
     const dorothyIslandSprite = document.querySelector('.dorothy-sprite');
     const christinaSprite = document.querySelector('.christina-sprite');
     const feiFeiLiSprite = document.querySelector('.fei-fei-li-sprite');
@@ -1350,6 +1608,7 @@
     let playerShip = { x: 0, y: 0, width: 58, height: 62 };
     let enemyShips = [];
     let playerShots = [];
+    let playerLasers = [];
     let playerMissiles = [];
     let enemyShots = [];
     let scenery = [];
@@ -1362,6 +1621,8 @@
     let targetsHit = 0;
     let targetsLost = 0;
     let peopleRescued = 0;
+    let giantBossSpawned = false;
+    let victorySequence = null;
     let christinaSpawned = false;
     let feiFeiLiSpawned = false;
     let featuredCharactersPassed = false;
@@ -1370,15 +1631,20 @@
     let enemiesSpawnedInWave = 0;
     let nextEnemySpawnAt = 0;
     let lastPlayerShot = 0;
+    let lastPlayerLaser = 0;
     let lastPlayerMissile = 0;
     let nextEnemyShot = 0;
     let invulnerableUntil = 0;
     let sceneryOffset = 0;
     const enemyTargetCount = 80;
     const enemiesPerWave = 10;
-    const giantBossSpawnWave = 5;
-    const giantBossSpawnTarget = enemiesPerWave * giantBossSpawnWave;
     const totalWaves = enemyTargetCount / enemiesPerWave;
+    const giantBossSpawnWave = totalWaves;
+    const giantBossSpawnTarget = enemiesPerWave * giantBossSpawnWave;
+    const fleetPoints = [43, 50, 151, 983];
+    let fleetKills = fleetPoints.map(() => 0);
+    let fleetScores = fleetPoints.map(() => 0);
+    let missionScore = 0;
     const rescueTargetCount = 20;
     const regularRescueTargetCount = rescueTargetCount - 3;
     const minimumRockCharacterDistance = 340;
@@ -1436,6 +1702,61 @@
         });
     }
 
+    function scheduleArcadeMusicTone(audio, frequency, startAt, duration, type, volume) {
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, startAt);
+        gain.gain.setValueAtTime(0.0001, startAt);
+        gain.gain.exponentialRampToValueAtTime(volume, startAt + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+        oscillator.start(startAt);
+        oscillator.stop(startAt + duration);
+    }
+
+    function startArcadeMusic() {
+        const audio = getGameAudioContext();
+        if (!audio || arcadeMusicTimer) return;
+
+        const melody = [
+            659, 0, 784, 880, 0, 784, 659, 523,
+            587, 0, 659, 784, 0, 659, 587, 523
+        ];
+        const bass = [131, 175, 196, 156];
+        const stepDuration = 0.2;
+        nextArcadeMusicNoteAt = audio.currentTime + 0.05;
+        arcadeMusicStep = 0;
+
+        arcadeMusicTimer = window.setInterval(() => {
+            if (audio.state !== 'running') return;
+            const now = audio.currentTime;
+            if (nextArcadeMusicNoteAt < now - stepDuration) {
+                nextArcadeMusicNoteAt = now + 0.05;
+            }
+
+            while (nextArcadeMusicNoteAt < now + 0.12) {
+                const note = melody[arcadeMusicStep % melody.length];
+                if (note) {
+                    scheduleArcadeMusicTone(audio, note, nextArcadeMusicNoteAt, 0.16, 'square', 0.025);
+                }
+                if (arcadeMusicStep % 4 === 0) {
+                    const bassNote = bass[Math.floor(arcadeMusicStep / 4) % bass.length];
+                    scheduleArcadeMusicTone(audio, bassNote, nextArcadeMusicNoteAt, 0.32, 'triangle', 0.035);
+                }
+                arcadeMusicStep++;
+                nextArcadeMusicNoteAt += stepDuration;
+            }
+        }, 25);
+    }
+
+    function stopArcadeMusic() {
+        if (!arcadeMusicTimer) return;
+        window.clearInterval(arcadeMusicTimer);
+        arcadeMusicTimer = 0;
+    }
+
     function stopCriticalAlert() {
         if (!criticalAlertInterval) return;
         window.clearInterval(criticalAlertInterval);
@@ -1448,6 +1769,7 @@
 
         const sounds = {
             playerShot: { type: 'square', startFrequency: 880, endFrequency: 260, duration: 0.09, volume: 0.09 },
+            laserShot: { type: 'sawtooth', startFrequency: 1180, endFrequency: 420, duration: 0.15, volume: 0.045 },
             missileLaunch: { type: 'sawtooth', startFrequency: 130, endFrequency: 420, duration: 0.32, volume: 0.06 },
             enemyShot: { type: 'triangle', startFrequency: 520, endFrequency: 170, duration: 0.12, volume: 0.065 }
         };
@@ -1643,7 +1965,31 @@
         });
     }
 
-    function drawAircraft(x, y, isEnemy = false, timestamp = 0) {
+    function drawAircraftEnergyBar(x, y, energy, maxEnergy, height) {
+        const width = 6;
+        const barX = Math.min(x, arcadeWidth - width - 4);
+        const barY = y - height / 2;
+        const progress = Math.max(0, Math.min(1, energy / maxEnergy));
+
+        arcadeContext.fillStyle = 'rgba(10, 15, 25, 0.9)';
+        arcadeContext.fillRect(barX - 2, barY - 2, width + 4, height + 4);
+        arcadeContext.strokeStyle = '#fecaca';
+        arcadeContext.lineWidth = 1;
+        arcadeContext.strokeRect(barX, barY, width, height);
+        arcadeContext.fillStyle = '#ef4444';
+        arcadeContext.fillRect(barX + 1, barY + 1 + (height - 2) * (1 - progress), width - 2, (height - 2) * progress);
+    }
+
+    function drawAircraft(
+        x,
+        y,
+        isEnemy = false,
+        timestamp = 0,
+        energy = 1,
+        maxEnergy = 1,
+        engineFlameScale = 1,
+        hasLaserCannons = false
+    ) {
         arcadeContext.save();
         arcadeContext.translate(x, y);
         if (isEnemy) arcadeContext.rotate(Math.PI);
@@ -1654,16 +2000,16 @@
         arcadeContext.fillStyle = '#ffad3f';
         arcadeContext.beginPath();
         arcadeContext.moveTo(-7, 20);
-        arcadeContext.lineTo(-5, 34 + Math.sin(timestamp / 35) * 5);
-        arcadeContext.lineTo(0, 42 + Math.sin(timestamp / 35) * 6);
-        arcadeContext.lineTo(5, 34 + Math.sin(timestamp / 35) * 5);
+        arcadeContext.lineTo(-5, 20 + (14 + Math.sin(timestamp / 35) * 5) * engineFlameScale);
+        arcadeContext.lineTo(0, 20 + (22 + Math.sin(timestamp / 35) * 6) * engineFlameScale);
+        arcadeContext.lineTo(5, 20 + (14 + Math.sin(timestamp / 35) * 5) * engineFlameScale);
         arcadeContext.lineTo(7, 20);
         arcadeContext.closePath();
         arcadeContext.fill();
         arcadeContext.fillStyle = '#fff1a6';
         arcadeContext.beginPath();
         arcadeContext.moveTo(-3, 24);
-        arcadeContext.lineTo(0, 37 + Math.sin(timestamp / 35) * 4);
+        arcadeContext.lineTo(0, 20 + (17 + Math.sin(timestamp / 35) * 4) * engineFlameScale);
         arcadeContext.lineTo(3, 24);
         arcadeContext.closePath();
         arcadeContext.fill();
@@ -1737,6 +2083,25 @@
             arcadeContext.fillRect(-24, 13, 2, 5);
             arcadeContext.fillRect(22, 13, 2, 5);
         }
+            if (isEnemy) {
+                arcadeContext.fillStyle = '#56242a';
+                arcadeContext.fillRect(-36, -4, 8, 14);
+                arcadeContext.fillRect(28, -4, 8, 14);
+                arcadeContext.fillStyle = '#ff3b72';
+                arcadeContext.fillRect(-34, 7, 4, 6);
+                arcadeContext.fillRect(30, 7, 4, 6);
+            }
+            if (hasLaserCannons) {
+                arcadeContext.fillStyle = '#425563';
+                arcadeContext.fillRect(-34, -9, 8, 15);
+                arcadeContext.fillRect(26, -9, 8, 15);
+                arcadeContext.fillStyle = '#42f5ff';
+                arcadeContext.fillRect(-32, -14, 4, 9);
+                arcadeContext.fillRect(28, -14, 4, 9);
+                arcadeContext.fillStyle = '#d9ffff';
+                arcadeContext.fillRect(-31, -14, 2, 7);
+                arcadeContext.fillRect(29, -14, 2, 7);
+            }
 
         const canopy = arcadeContext.createLinearGradient(-5, -24, 5, -7);
         canopy.addColorStop(0, '#e8fbff');
@@ -1797,6 +2162,7 @@
             arcadeContext.restore();
         }
         arcadeContext.restore();
+        if (!isEnemy) drawAircraftEnergyBar(x + 40, y, energy, maxEnergy, 56);
     }
 
     function drawIsland(x, y, size, seed, rocky = false) {
@@ -2317,6 +2683,7 @@
         arcadeContext.save();
         arcadeContext.translate(enemy.x, enemy.y);
         arcadeContext.rotate(Math.sin(timestamp / 550 + enemy.phase) * 0.05);
+        arcadeContext.scale(2, 2);
 
         // 1. Chamas dos 4 reatores a jato (posicionados na traseira, disparando para cima)
         const turbineX = [-72, -32, 32, 72];
@@ -2413,6 +2780,15 @@
             arcadeContext.fillRect(mx - 3, -12, 6, 28);
             arcadeContext.fillStyle = '#fbbf24';
             arcadeContext.fillRect(mx - 2, 16, 4, 6);
+        });
+
+        [-76, 76].forEach((cannonX) => {
+            arcadeContext.fillStyle = '#292524';
+            arcadeContext.fillRect(cannonX - 6, -10, 12, 28);
+            arcadeContext.fillStyle = '#ffb347';
+            arcadeContext.fillRect(cannonX - 3, 14, 6, 10);
+            arcadeContext.fillStyle = '#fff0bd';
+            arcadeContext.fillRect(cannonX - 1, 16, 2, 8);
         });
 
         // 7. Fuselagem central / espinha dorsal
@@ -2530,6 +2906,13 @@
         arcadeContext.fillText(`AERONAVE INIMIGA [${hp}/${maxHp}]`, 0, barY - 4);
 
         arcadeContext.restore();
+        drawAircraftEnergyBar(
+            Math.min(enemy.x + enemy.width / 2 + 8, arcadeWidth - 10),
+            enemy.y,
+            hp,
+            maxHp,
+            120
+        );
     }
 
     function drawEnemy(enemy, timestamp) {
@@ -2537,7 +2920,7 @@
             drawGiantEnemyAircraft(enemy, timestamp);
             return;
         }
-        drawAircraft(enemy.x, enemy.y, true, timestamp);
+        drawAircraft(enemy.x, enemy.y, true, timestamp, enemy.energy, enemy.maxEnergy);
     }
 
     function updateRadarDisplay() {
@@ -2593,25 +2976,27 @@
     function drawArcadeFrame(timestamp) {
         arcadeContext.clearRect(0, 0, arcadeWidth, arcadeHeight);
         drawScenery();
-        const resolvedTargets = targetsHit + targetsLost;
-        const currentWave = Math.min(wavesSpawned || 1, totalWaves);
-        arcadeContext.font = 'bold 13px "Courier New", monospace';
-        arcadeContext.textAlign = 'left';
-        const combatLabel = `ONDA ${currentWave}/${totalWaves}  ${resolvedTargets}/${enemyTargetCount}  A:${targetsHit} P:${targetsLost}  RES:${peopleRescued}  VIDAS:${lives}/5`;
-        const combatLabelWidth = arcadeContext.measureText(combatLabel).width + 20;
-        arcadeContext.fillStyle = 'rgba(7, 24, 43, 0.75)';
-        arcadeContext.fillRect(12, 10, combatLabelWidth, 28);
-        arcadeContext.fillStyle = '#fff';
-        arcadeContext.fillText(combatLabel, 22, 29);
         enemyShips.forEach((enemy) => {
             if (enemy.alive) drawEnemy(enemy, timestamp);
         });
         explosions.forEach((explosion) => drawExplosion(explosion, timestamp));
         drawForceShield(timestamp);
-        if (timestamp >= invulnerableUntil || Math.floor(timestamp / 100) % 2 === 0) {
-            drawAircraft(playerShip.x, playerShip.y, false, timestamp);
+        if (playerShip.y > -playerShip.height && (timestamp >= invulnerableUntil || Math.floor(timestamp / 100) % 2 === 0)) {
+            const takeoffProgress = victorySequence
+                ? Math.max(0, Math.min(1, (timestamp - victorySequence.takeoffAt) / victorySequence.ascentDuration))
+                : 0;
+            drawAircraft(
+                playerShip.x,
+                playerShip.y,
+                false,
+                timestamp,
+                lives,
+                5,
+                1 + takeoffProgress * 2.5,
+                wavesSpawned >= 6
+            );
         }
-        if (playerFirstName) {
+        if (playerFirstName && !victorySequence) {
             arcadeContext.save();
             arcadeContext.font = 'bold 10px "Courier New", monospace';
             arcadeContext.textAlign = 'center';
@@ -2631,6 +3016,16 @@
             arcadeContext.restore();
         }
         arcadeContext.fillStyle = '#d8fbff';
+        playerLasers.forEach((laser) => {
+            arcadeContext.save();
+            arcadeContext.shadowColor = '#42f5ff';
+            arcadeContext.shadowBlur = 18;
+            arcadeContext.fillStyle = '#42f5ff';
+            arcadeContext.fillRect(laser.x - laser.width / 2, laser.y - laser.height / 2, laser.width, laser.height);
+            arcadeContext.fillStyle = '#e9ffff';
+            arcadeContext.fillRect(laser.x - 1, laser.y - laser.height / 2, 2, laser.height);
+            arcadeContext.restore();
+        });
         playerShots.forEach((shot) => {
             arcadeContext.shadowColor = '#8fffff';
             arcadeContext.shadowBlur = 10;
@@ -2654,8 +3049,21 @@
             arcadeContext.fillRect(-2, 1, 4, 4);
             arcadeContext.restore();
         });
-        arcadeContext.fillStyle = '#ffb24d';
         enemyShots.forEach((shot) => {
+            if (shot.kind === 'laser') {
+                arcadeContext.save();
+                arcadeContext.translate(shot.x, shot.y);
+                arcadeContext.rotate(Math.atan2(shot.velocityY, shot.velocityX) + Math.PI / 2);
+                arcadeContext.shadowColor = shot.color;
+                arcadeContext.shadowBlur = 16;
+                arcadeContext.fillStyle = shot.color;
+                arcadeContext.fillRect(-shot.width / 2, -shot.height / 2, shot.width, shot.height);
+                arcadeContext.fillStyle = '#fff4fa';
+                arcadeContext.fillRect(-1, -shot.height / 2, 2, shot.height);
+                arcadeContext.restore();
+                return;
+            }
+            arcadeContext.fillStyle = '#ffb24d';
             arcadeContext.beginPath();
             arcadeContext.ellipse(shot.x, shot.y, 4, 7, 0, 0, Math.PI * 2);
             arcadeContext.fill();
@@ -2692,6 +3100,7 @@
     function endArcadeGame(won) {
         arcadeActive = false;
         stopCriticalAlert();
+        stopArcadeMusic();
         pressedKeys.clear();
         mouseFiring = false;
         window.cancelAnimationFrame(arcadeAnimationFrame);
@@ -2702,6 +3111,25 @@
         enemiesSpawnedInWave = 0;
         nextEnemySpawnAt = 0;
         wavesSpawned = waveNumber;
+    }
+
+    function advanceVictorySequence(timestamp) {
+        const progress = Math.max(
+            0,
+            Math.min(1, (timestamp - victorySequence.takeoffAt) / victorySequence.ascentDuration)
+        );
+        if (progress > 0) {
+            playerShip.y = victorySequence.startY - (victorySequence.startY + playerShip.height) * progress;
+        }
+        explosions = explosions.filter((explosion) => timestamp - explosion.startedAt < 480);
+        updateRadarDisplay();
+        drawArcadeFrame(timestamp);
+
+        if (progress === 1) {
+            endArcadeGame(true);
+            return;
+        }
+        arcadeAnimationFrame = window.requestAnimationFrame(updateArcade);
     }
 
     function getEnemyShotDelay() {
@@ -2749,9 +3177,39 @@
         enemy.routeTime += elapsed;
     }
 
+    function fireEnemyLaser(enemy, timestamp) {
+        const cannonOffset = enemy.isGiant ? 150 : enemy.width * 0.3;
+        const cannonY = enemy.y + (enemy.isGiant ? 35 : enemy.height * 0.25);
+        const speed = enemy.isGiant ? 300 : 350;
+
+        [-cannonOffset, cannonOffset].forEach((offset) => {
+            const x = enemy.x + offset;
+            const directionX = playerShip.x - x;
+            const directionY = playerShip.y - cannonY;
+            const distance = Math.hypot(directionX, directionY) || 1;
+            enemyShots.push({
+                x,
+                y: cannonY,
+                width: enemy.isGiant ? 10 : 7,
+                height: enemy.isGiant ? 38 : 28,
+                velocityX: (directionX / distance) * speed,
+                velocityY: (directionY / distance) * speed,
+                kind: 'laser',
+                color: enemy.isGiant ? '#ffb347' : '#ff3b72'
+            });
+        });
+        enemy.nextLaserAt = timestamp + 1300 + Math.random() * 1900;
+        playArcadeSound('laserShot');
+    }
+
     function updateArcade(timestamp) {
         const elapsed = Math.min((timestamp - arcadeLastFrame) / 1000, 0.04);
         arcadeLastFrame = timestamp;
+
+        if (victorySequence) {
+            advanceVictorySequence(timestamp);
+            return;
+        }
 
         const horizontalDirection = Number(pressedKeys.has('ArrowRight') || pressedKeys.has('KeyD'))
             - Number(pressedKeys.has('ArrowLeft') || pressedKeys.has('KeyA'));
@@ -2762,7 +3220,8 @@
         playerShip.x = Math.max(playerShip.width / 2 + 8, Math.min(arcadeWidth - playerShip.width / 2 - 8, playerShip.x));
         playerShip.y = Math.max(arcadeHeight * 0.4, Math.min(arcadeHeight - playerShip.height / 2 - 8, playerShip.y));
 
-        const isFiring = pressedKeys.has('Space') || mouseFiring;
+        const spaceFiring = pressedKeys.has('Space');
+        const isFiring = spaceFiring || mouseFiring;
         if (isFiring && timestamp - lastPlayerShot >= 180) {
             playerShots.push(
                 { x: playerShip.x - 10, y: playerShip.y - 20, width: 4, height: 12 },
@@ -2770,6 +3229,15 @@
             );
             playArcadeSound('playerShot');
             lastPlayerShot = timestamp;
+        }
+
+        if (spaceFiring && wavesSpawned >= 6 && timestamp - lastPlayerLaser >= 650) {
+            playerLasers.push(
+                { x: playerShip.x - 29, y: playerShip.y - 28, width: 8, height: 34 },
+                { x: playerShip.x + 29, y: playerShip.y - 28, width: 8, height: 34 }
+            );
+            playArcadeSound('laserShot');
+            lastPlayerLaser = timestamp;
         }
 
         const missilesUnlocked = targetsHit >= enemiesPerWave;
@@ -2806,9 +3274,13 @@
                     : -size.height / 2,
                 ...size,
                 alive: true,
+                wave: wavesSpawned,
+                energy: 1,
+                maxEnergy: 1,
                 phase: Math.random() * Math.PI * 2,
                 descentSpeed: 125 + Math.random() * 70,
                 canShoot: !isFormationWave,
+                nextLaserAt: timestamp + 700 + Math.random() * 2200,
                 formationPhase: isFormationWave ? 'side-descent' : null,
                 phaseElapsed: 0,
                 phaseStartX: 0,
@@ -2920,7 +3392,7 @@
         enemyShips.forEach((enemy) => {
             if (!enemy.alive) return;
             if (enemy.isGiant) {
-                enemy.y += enemy.descentSpeed * elapsed;
+                enemy.y = Math.min(arcadeHeight / 2, enemy.y + enemy.descentSpeed * elapsed);
                 enemy.x += Math.sin(timestamp / 420 + enemy.phase) * 120 * elapsed;
                 enemy.x = Math.max(enemy.width / 2 + 20, Math.min(arcadeWidth - enemy.width / 2 - 20, enemy.x));
                 if (timestamp >= enemy.nextRocketAt) {
@@ -2928,7 +3400,7 @@
                         const angle = (Math.PI * 2 * index) / 12 + Math.PI / 12;
                         const speed = 200 + index * 6;
                         enemyShots.push({
-                            x: enemy.x + Math.cos(angle) * 28,
+                            x: enemy.x + Math.cos(angle) * 56,
                             y: enemy.y + enemy.height / 2,
                             velocityX: Math.cos(angle) * speed,
                             velocityY: Math.sin(angle) * speed + 90,
@@ -2939,11 +3411,6 @@
                     playArcadeSound('missileLaunch');
                     enemy.nextRocketAt = timestamp + 1200;
                 }
-                if (enemy.y - enemy.height / 2 > arcadeHeight + 90) {
-                    enemy.alive = false;
-                    targetsLost++;
-                    updateCombatStatus();
-                }
                 return;
             }
             if (enemy.formationPhase) {
@@ -2953,6 +3420,9 @@
                 enemy.x += Math.sin(timestamp / 520 + enemy.phase) * 46 * elapsed;
                 enemy.x = Math.max(enemy.width / 2 + 8, Math.min(arcadeWidth - enemy.width / 2 - 8, enemy.x));
             }
+            if (enemy.wave >= 5 && enemy.canShoot && enemy.y > 0 && timestamp >= enemy.nextLaserAt) {
+                fireEnemyLaser(enemy, timestamp);
+            }
             if (enemy.y - enemy.height / 2 > arcadeHeight) {
                 enemy.alive = false;
                 targetsLost++;
@@ -2960,21 +3430,29 @@
             }
         });
 
-        const giantBossAliveInCombat = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
-        if (targetsHit + targetsLost >= giantBossSpawnTarget && !giantBossAliveInCombat) {
+        if (
+            targetsHit + targetsLost >= giantBossSpawnTarget
+            && peopleRescued >= rescueTargetCount
+            && !giantBossSpawned
+        ) {
+            giantBossSpawned = true;
             enemyShips.push({
                 x: arcadeWidth / 2,
-                y: -180,
-                width: 230,
-                height: 180,
+                y: -360,
+                width: 460,
+                height: 360,
                 alive: true,
                 isGiant: true,
+                wave: totalWaves,
                 hp: 10,
                 maxHp: 10,
+                shotsTowardNextResistance: 0,
                 lastHitAt: 0,
+                lastContactDamageAt: 0,
                 phase: Math.random() * Math.PI * 2,
                 descentSpeed: 82,
                 canShoot: true,
+                nextLaserAt: timestamp + 1000 + Math.random() * 1800,
                 nextRocketAt: performance.now() + 1100
             });
             showCharacterSpeech('Aeronave inimiga gigante em aproximação! Destrua a nave-mãe antes que ela alcance a linha de combate.');
@@ -2999,6 +3477,7 @@
         }
 
         playerShots.forEach((shot) => { shot.y -= 470 * elapsed; });
+        playerLasers.forEach((laser) => { laser.y -= 700 * elapsed; });
         enemyShots.forEach((shot) => {
             shot.x += shot.velocityX * elapsed;
             shot.y += shot.velocityY * elapsed;
@@ -3018,6 +3497,7 @@
         });
         explosions = explosions.filter((explosion) => timestamp - explosion.startedAt < 480);
         playerShots = playerShots.filter((shot) => shot.y > -12);
+        playerLasers = playerLasers.filter((laser) => laser.y > -laser.height);
         playerMissiles = playerMissiles.filter((missile) =>
             missile.target?.alive && missile.y > -24 && missile.y < arcadeHeight + 24
         );
@@ -3031,15 +3511,33 @@
         const destroyEnemy = (target) => {
             if (!target?.alive) return;
             target.alive = false;
+            const fleetIndex = Math.min(
+                fleetPoints.length - 1,
+                Math.floor(((target.wave ?? wavesSpawned) - 1) / 2)
+            );
+            fleetKills[fleetIndex]++;
+            fleetScores[fleetIndex] += fleetPoints[fleetIndex];
+            missionScore += fleetPoints[fleetIndex];
+            updateFleetScoreCard();
             targetsHit++;
             if (target.isGiant) {
-                showCharacterSpeech('Aeronave gigante inimiga abatida! Missão concluída.');
-                updateStatusMessage('AERONAVE GIGANTE DESTRUÍDA · MISSÃO CONCLUÍDA');
+                updateStatusMessage('AERONAVE GIGANTE DESTRUÍDA · SEQUÊNCIA DE VITÓRIA');
                 for (let i = 0; i < 8; i++) {
                     const ox = (Math.random() - 0.5) * target.width * 0.7;
                     const oy = (Math.random() - 0.5) * target.height * 0.7;
                     explosions.push({ x: target.x + ox, y: target.y + oy, startedAt: timestamp + i * 70 });
                 }
+                victorySequence = {
+                    takeoffAt: timestamp + 1000,
+                    ascentDuration: 1700,
+                    startY: playerShip.y
+                };
+                playerShots = [];
+                playerLasers = [];
+                playerMissiles = [];
+                enemyShots = [];
+                pressedKeys.clear();
+                mouseFiring = false;
             } else {
                 explosions.push({ x: target.x, y: target.y, startedAt: timestamp });
             }
@@ -3049,14 +3547,24 @@
         const damageEnemy = (target, damage = 1, impactX = target.x, impactY = target.y) => {
             if (!target?.alive) return;
             if (target.isGiant) {
-                target.hp = (target.hp ?? 10) - damage;
+                target.shotsTowardNextResistance = (target.shotsTowardNextResistance ?? 0) + damage;
                 target.lastHitAt = timestamp;
                 explosions.push({ x: impactX, y: impactY, startedAt: timestamp });
                 playArcadeSound('enemyExplosion');
+                if (target.shotsTowardNextResistance >= 30) {
+                    target.shotsTowardNextResistance -= 30;
+                    target.hp = (target.hp ?? 10) - 1;
+                }
                 if (target.hp > 0) {
-                    updateStatusMessage(`AERONAVE GIGANTE · RESISTÊNCIA: ${target.hp}/10`);
+                    updateStatusMessage(
+                        `AERONAVE GIGANTE · RESISTÊNCIA: ${target.hp}/10 · TIROS: ${target.shotsTowardNextResistance}/30`
+                    );
                     return;
                 }
+            } else {
+                target.energy = Math.max(0, (target.energy ?? 1) - damage);
+                target.lastHitAt = timestamp;
+                if (target.energy > 0) return;
             }
             destroyEnemy(target);
         };
@@ -3107,6 +3615,17 @@
                 damageEnemy(target, 1, missile.x, missile.y);
             }
         });
+        playerLasers.forEach((laser) => {
+            const target = enemyShips.find((enemy) => enemy.alive && overlaps(laser, enemy));
+            if (!target) return;
+            const impactY = laser.y;
+            laser.y = -laser.height;
+            damageEnemy(target, 1, laser.x, impactY);
+        });
+        if (victorySequence) {
+            advanceVictorySequence(timestamp);
+            return;
+        }
         enemyShots.forEach((shot) => {
             if (overlaps(shot, playerShip)) {
                 const impactX = shot.x;
@@ -3118,7 +3637,10 @@
 
         const collidingEnemy = enemyShips.find((enemy) => enemy.alive && overlaps(enemy, playerShip));
         if (collidingEnemy) {
-            damageEnemy(collidingEnemy, collidingEnemy.isGiant ? 5 : 1, playerShip.x, playerShip.y);
+            if (!collidingEnemy.isGiant && timestamp >= (collidingEnemy.lastContactDamageAt ?? 0)) {
+                collidingEnemy.lastContactDamageAt = timestamp + 1100;
+                damageEnemy(collidingEnemy, 1, playerShip.x, playerShip.y);
+            }
             const impactX = Math.max(
                 playerShip.x - playerShip.width / 2,
                 Math.min(collidingEnemy.x, playerShip.x + playerShip.width / 2)
@@ -3151,7 +3673,7 @@
         if (!arcadeActive) return;
         const resolvedTargets = targetsHit + targetsLost;
         const giantBossAliveAfterMission = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
-        if (resolvedTargets >= enemyTargetCount && !giantBossAliveAfterMission) {
+        if (resolvedTargets >= enemyTargetCount && giantBossSpawned && !giantBossAliveAfterMission) {
             endArcadeGame(true);
             return;
         }
@@ -3179,7 +3701,7 @@
 
     function startArcadeGame() {
         stopCriticalAlert();
-        getGameAudioContext();
+        startArcadeMusic();
         document.querySelector('.game-container').classList.add('is-playing');
         arcadeCanvas.hidden = false;
         playerShip.x = 0;
@@ -3193,9 +3715,11 @@
         aircraftCarriers = createAircraftCarriers(performance.now());
         enemyShips = [];
         playerShots = [];
+        playerLasers = [];
         playerMissiles = [];
         enemyShots = [];
         explosions = [];
+        victorySequence = null;
         pressedKeys.clear();
         mouseFiring = false;
         forceShieldCharges = forceShieldMaxCharges;
@@ -3212,10 +3736,16 @@
         targetsHit = 0;
         targetsLost = 0;
         peopleRescued = 0;
+        fleetKills.fill(0);
+        fleetScores.fill(0);
+        missionScore = 0;
+        updateFleetScoreCard();
+        giantBossSpawned = false;
         damageTaken = false;
         wavesSpawned = 0;
         sceneryOffset = 0;
         lastPlayerShot = 0;
+        lastPlayerLaser = 0;
         lastPlayerMissile = 0;
         nextEnemyShot = performance.now() + 700;
         invulnerableUntil = 0;
@@ -3226,10 +3756,10 @@
         characterSpeech.hidden = false;
         arcadeCanvas.setAttribute(
             'aria-label',
-            'Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar.'
+            'Jogo de combate aéreo: mova a nave com as setas ou WASD e segure a barra de espaço ou o botão esquerdo do mouse para atirar. A partir da sexta leva, a barra de espaço também dispara os lasers das asas. Clique com o botão direito para ativar um dos três escudos de força; cada escudo protege por sete segundos. Em telas sensíveis ao toque, arraste para guiar.'
         );
         showCharacterSpeech(
-            'Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo para atirar; clique com o botão direito para ativar um dos três escudos de força, com sete segundos de proteção cada. No celular, arraste para guiar.'
+            'Guie o caça com as setas ou WASD. Segure a barra de espaço ou o botão esquerdo para atirar; a partir da sexta leva, a barra de espaço também dispara os lasers das asas. Clique com o botão direito para ativar um dos três escudos de força, com sete segundos de proteção cada. No celular, arraste para guiar.'
         );
         document.getElementById('routeMessage').textContent = 'COMBATE EM ANDAMENTO';
         document.getElementById('routeMessage').classList.remove('route-message--detour');
@@ -3310,10 +3840,52 @@
         });
     }
 
+    function updateFleetScoreCard() {
+        const formatScore = (score) => new Intl.NumberFormat('pt-BR').format(score);
+        document.getElementById('missionScore').textContent = formatScore(missionScore);
+        fleetScores.forEach((score, index) => {
+            document.getElementById(`fleetScore${index + 1}`).textContent =
+                `${fleetKills[index]} abatidas · ${formatScore(score)} pts`;
+        });
+    }
+
+    function updateGaugeFill(gauge, progress) {
+        const fill = gauge.querySelector('.credential-gauge-fill');
+        if (fill) {
+            fill.style.setProperty('--gauge-progress', String(progress));
+            return;
+        }
+
+        const boltFill = gauge.querySelector('.energy-bolt-fill');
+        if (!boltFill) return;
+        boltFill.setAttribute('y', String(110 * (1 - progress)));
+        boltFill.setAttribute('height', String(110 * progress));
+    }
+
+    function updateAircraftEnergy() {
+        const energy = Math.max(0, Math.min(100, (lives / 5) * 100));
+        document.querySelectorAll('.credential-gauge--energy').forEach((meter) => {
+            meter.setAttribute('aria-valuenow', String(energy));
+            meter.setAttribute('aria-valuetext', `${energy}% de energia restante`);
+            updateGaugeFill(meter, energy / 100);
+        });
+    }
+
     function updateCombatStatus() {
+        updateAircraftEnergy();
         const currentWave = Math.min(wavesSpawned || 1, totalWaves);
         const resolvedTargets = targetsHit + targetsLost;
         const missilesUnlocked = targetsHit >= enemiesPerWave ? 1 : 0;
+        const laserUnlocked = wavesSpawned >= 6;
+        const laserCard = document.querySelector('.game-playing-cards .credential-gauge--laser');
+        laserCard.classList.toggle('is-ready', laserUnlocked);
+        laserCard.setAttribute(
+            'aria-label',
+            laserUnlocked
+                ? 'Canhões laser das asas ativos; segure a barra de espaço para disparar'
+                : 'Canhões laser das asas bloqueados até a sexta leva'
+        );
+        document.getElementById('gameLaserStatus').textContent = laserUnlocked ? 'ESPAÇO' : 'BLOQUEADO';
         const rescuedGauges = document.querySelectorAll('.credential-gauge--rescued');
         rescuedGauges.forEach((gauge) => {
             gauge.setAttribute('aria-valuenow', String(peopleRescued));
@@ -3376,7 +3948,7 @@
         const readyStatus = document.getElementById('credentialAircraftReadyStatus');
         const radarActiveStatus = document.querySelector('#credentialGauges .credential-radar-active-status');
         const credentialCards = [...document.querySelectorAll(
-            '#credentialGauges .credential-radar-card, #credentialGauges .credential-aircraft-card, #credentialGauges .credential-gauge'
+            '#credentialGauges .credential-radar-card, #credentialGauges .credential-aircraft-card, #credentialGauges .credential-gauge:not(.credential-gauge--laser)'
         )];
         const finishSequence = () => {
             credentialCards.forEach((card) => {
@@ -3392,14 +3964,14 @@
     function animateCredentialGauges() {
         const gaugeContainer = document.getElementById('credentialGauges');
         const gauges = [...gaugeContainer.querySelectorAll(
-            '.credential-gauge:not(.credential-gauge--rescued):not(.credential-gauge--shield)'
+            '.credential-gauge:not(.credential-gauge--rescued):not(.credential-gauge--shield):not(.credential-gauge--laser)'
         )];
 
         const updateGaugeValues = (values, shieldProgress) => {
             gauges.forEach((gauge, index) => {
                 const value = Array.isArray(values) ? values[index] : values;
                 gauge.setAttribute('aria-valuenow', String(value));
-                gauge.style.setProperty('--gauge-progress', String(value / 100));
+                updateGaugeFill(gauge, value / 100);
             });
             updateForceShieldMeters(shieldProgress);
         };
@@ -3492,11 +4064,11 @@
         document.getElementById('missionObjectives').hidden = true;
         endCard.classList.toggle('won', won);
         document.getElementById('endTitle').textContent = won
-            ? 'MISSÃO CONCLUÍDA!'
+            ? 'PARABÉNS PELA CONCLUSÃO DA MISSÃO!'
             : 'CAÇA DESTRUÍDO';
         const targetSummary = `Alvos acertados: ${targetsHit} · perdidos: ${targetsLost}. Pessoas resgatadas: ${peopleRescued}.`;
         document.getElementById('endMessage').textContent = won
-            ? `Você concluiu as oito levas. ${targetSummary}`
+            ? `Parabéns pela conclusão da missão! Você concluiu as oito levas. ${targetSummary}`
             : `O caça perdeu suas cinco vidas. ${targetSummary}`;
         document.getElementById('restartButton').textContent = '[ JOGAR NOVAMENTE ]';
         endScreen.hidden = false;
@@ -3505,6 +4077,7 @@
     document.getElementById('startButton').addEventListener('click', startMission);
     document.getElementById('restartButton').addEventListener('click', () => {
         arcadeActive = false;
+        stopArcadeMusic();
         document.querySelector('.game-container').classList.remove('is-playing');
         window.cancelAnimationFrame(arcadeAnimationFrame);
         pressedKeys.clear();
@@ -3512,6 +4085,7 @@
         document.getElementById('missionObjectives').hidden = true;
         enemyShips = [];
         playerShots = [];
+        playerLasers = [];
         playerMissiles = [];
         enemyShots = [];
         endScreen.hidden = true;
