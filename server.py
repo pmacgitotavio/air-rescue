@@ -101,6 +101,21 @@ def initialize_database():
             )
             connection.execute("DROP TABLE surveys")
             connection.execute("ALTER TABLE surveys_updated RENAME TO surveys")
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS arcade_matches (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                player_id INTEGER NOT NULL REFERENCES surveys(id),
+                won INTEGER NOT NULL CHECK (won IN (0, 1)),
+                targets_hit INTEGER NOT NULL CHECK (targets_hit BETWEEN 0 AND 80),
+                targets_lost INTEGER NOT NULL CHECK (targets_lost BETWEEN 0 AND 80),
+                people_rescued INTEGER NOT NULL CHECK (people_rescued BETWEEN 0 AND 20),
+                mission_score INTEGER NOT NULL CHECK (mission_score >= 0),
+                lives_remaining INTEGER NOT NULL CHECK (lives_remaining BETWEEN 0 AND 5),
+                created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """
+        )
 
 
 class GameRequestHandler(SimpleHTTPRequestHandler):
@@ -126,6 +141,12 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
             if requested_file.parent != image_directory or requested_file.suffix.lower() not in {".png", ".jpg", ".jpeg"}:
                 self.send_error(404)
                 return
+        elif path.startswith("/mp3/"):
+            requested_file = (ROOT / path.lstrip("/")).resolve()
+            audio_directory = (ROOT / "mp3").resolve()
+            if requested_file.parent != audio_directory or requested_file.suffix.lower() != ".mp3":
+                self.send_error(404)
+                return
         elif path != "/index.html":
             self.send_error(404)
             return
@@ -133,7 +154,7 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_OPTIONS(self):
-        if urlsplit(self.path).path != "/api/survey":
+        if urlsplit(self.path).path not in ("/api/survey", "/api/arcade-matches"):
             self.send_error(404)
             return
 
@@ -153,7 +174,7 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         path = urlsplit(self.path).path
-        if path != "/api/survey":
+        if path not in ("/api/survey", "/api/arcade-matches"):
             self.send_error(404)
             return
 
@@ -185,6 +206,10 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
 
         if not isinstance(payload, dict):
             self._send_json(400, {"error": "Os dados do formulário são inválidos."})
+            return
+
+        if path == "/api/arcade-matches":
+            self._save_arcade_match(payload)
             return
 
         text_fields = ("name", "school")
@@ -239,6 +264,64 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
                 "message": "Credencial salva com sucesso.",
             },
         )
+
+    def _save_arcade_match(self, payload):
+        player_id = payload.get("player_id")
+        if isinstance(player_id, bool) or not isinstance(player_id, int) or player_id <= 0:
+            self._send_json(400, {"error": "O cadastro do jogador é inválido."})
+            return
+
+        won = payload.get("won")
+        if not isinstance(won, bool):
+            self._send_json(400, {"error": "O resultado da partida é inválido."})
+            return
+
+        numeric_fields = {
+            "targets_hit": (0, 80),
+            "targets_lost": (0, 80),
+            "people_rescued": (0, 20),
+            "mission_score": (0, 1_000_000),
+            "lives_remaining": (0, 5),
+        }
+        values = {}
+        for field, (minimum, maximum) in numeric_fields.items():
+            value = payload.get(field)
+            if isinstance(value, bool) or not isinstance(value, int) or not minimum <= value <= maximum:
+                self._send_json(400, {"error": "As informações da partida são inválidas."})
+                return
+            values[field] = value
+        if values["targets_hit"] + values["targets_lost"] > 80:
+            self._send_json(400, {"error": "A quantidade de alvos da partida é inválida."})
+            return
+
+        try:
+            with sqlite3.connect(DATABASE) as connection:
+                connection.execute("PRAGMA foreign_keys = ON")
+                if connection.execute("SELECT 1 FROM surveys WHERE id = ?", (player_id,)).fetchone() is None:
+                    self._send_json(404, {"error": "O cadastro do jogador não foi encontrado."})
+                    return
+                cursor = connection.execute(
+                    """
+                    INSERT INTO arcade_matches
+                        (player_id, won, targets_hit, targets_lost, people_rescued, mission_score, lives_remaining)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        player_id,
+                        int(won),
+                        values["targets_hit"],
+                        values["targets_lost"],
+                        values["people_rescued"],
+                        values["mission_score"],
+                        values["lives_remaining"],
+                    ),
+                )
+        except sqlite3.Error:
+            logging.exception("Falha ao salvar o resultado da partida no SQLite.")
+            self._send_json(500, {"error": "Não foi possível salvar as informações da partida. Tente novamente."})
+            return
+
+        self._send_json(201, {"id": cursor.lastrowid, "message": "Partida salva com sucesso."})
 
     @staticmethod
     def _is_local_origin(origin):

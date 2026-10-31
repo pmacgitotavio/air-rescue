@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Air Rescue</title>
+    <title>Sky Rescue</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="preload" as="image" href="img/air-rescue-2.jpeg">
+    <link rel="preload" as="image" href="img/skyrescue2.png">
+    <link rel="preload" as="image" href="img/skyrescue-perdeu.png">
+    <link rel="preload" as="image" href="img/skyrescue-venceu.png">
     <style>
         :root {
             color-scheme: dark;
@@ -48,6 +50,16 @@
             border-radius: 0;
             background: #000;
             box-shadow: 0 0 24px rgba(0, 255, 204, 0.18), inset 0 0 45px rgba(56, 189, 248, 0.05);
+        }
+
+        .game-container.is-defeated {
+            border: 0;
+            box-shadow: none;
+        }
+
+        .game-container.is-victorious {
+            border: 0;
+            box-shadow: none;
         }
 
         .arcade-canvas {
@@ -134,6 +146,7 @@
             grid-template-columns: minmax(0, 1fr) repeat(2, 90px) repeat(4, 70px);
             grid-template-rows: 110px;
             align-items: end;
+            justify-content: space-between;
             gap: 8px;
         }
 
@@ -141,11 +154,13 @@
             display: flex;
             min-width: 0;
             width: 100%;
-            height: 110px;
+            height: 84px;
             grid-area: score;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
-            padding: 9px 10px;
+            padding: 7px 8px;
             border: 2px solid #fff;
             border-radius: 5px;
             background: linear-gradient(160deg, rgba(9, 29, 49, 0.96), rgba(9, 29, 49, 0.8));
@@ -154,61 +169,19 @@
             font-family: 'Press Start 2P', 'Courier New', monospace;
         }
 
-        .game-score-header {
-            display: flex;
-            min-width: 0;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
         .game-score-title {
-            font-size: 0.56rem;
+            font-size: 0.58rem;
             letter-spacing: 0.04em;
+            text-align: center;
         }
 
         .game-score-total {
-            color: #ffe58a;
-            font-size: 0.62rem;
-            white-space: nowrap;
-        }
-
-        .game-fleet-scores {
-            display: grid;
-            min-height: 0;
-            flex: 1;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 6px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .game-fleet-scores li {
             display: flex;
-            min-width: 0;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            padding: 4px 6px;
-            border-left: 1px solid rgba(255, 255, 255, 0.35);
-        }
-
-        .game-fleet-name {
-            font-size: 0.4rem;
-            white-space: nowrap;
-        }
-
-        .game-fleet-points {
+            align-items: baseline;
+            gap: 8px;
             color: #ffe58a;
-            font-size: 0.48rem;
+            font-size: 1.55rem;
             white-space: nowrap;
-        }
-
-        .game-fleet-tally {
-            color: #cbd5e1;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.64rem;
         }
 
         .game-playing-cards .credential-radar-card {
@@ -485,25 +458,176 @@
             position: absolute;
             z-index: 0;
             inset: 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)), url("img/air-rescue.jpeg") center / cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)), url("img/skyrescue.png") center / cover no-repeat;
             content: "";
         }
 
-        .rescue-transition-screen::before {
-            background: linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)), url("img/air-rescue-2.jpeg") center / cover no-repeat;
-        }
-
-        .credential-gauges {
+        .opening-start-card {
             position: absolute;
             z-index: 1;
-            bottom: 50px;
-            right: calc(min(480px, 40vw) + 44px);
-            display: grid;
-            grid-template-areas: "aircraft radar shield laser energy";
-            grid-template-columns: repeat(2, 116px) repeat(3, 92px);
-            grid-template-rows: 140px;
-            align-items: end;
-            gap: 10px;
+            right: 18px;
+            bottom: 18px;
+            width: min(440px, calc(100vw - 36px));
+            padding: 16px 18px;
+            border: 1px solid rgba(125, 232, 245, 0.9);
+            border-radius: 8px;
+            background: linear-gradient(160deg, rgba(9, 29, 49, 0.96), rgba(9, 29, 49, 0.86));
+            box-shadow: 0 0 18px rgba(0, 255, 204, 0.28), inset 0 0 15px rgba(56, 189, 248, 0.14);
+            text-align: left;
+        }
+
+        .opening-start-card p {
+            margin: 0 0 10px;
+            font-size: 0.82rem;
+        }
+
+        .opening-start-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            padding: 9px 16px;
+            border: 1px solid rgba(125, 232, 245, 0.9);
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(8, 92, 119, 0.95), rgba(0, 153, 143, 0.95));
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+            color: #e5ffff;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .opening-start-button:hover {
+            background: linear-gradient(135deg, #0b7898, #00a99b);
+            box-shadow: 0 0 16px rgba(0, 255, 204, 0.45);
+        }
+
+        .opening-start-button:focus-visible {
+            outline: 2px solid #e8ffff;
+            outline-offset: 3px;
+        }
+
+        .rescue-transition-screen::before {
+            background: none;
+        }
+
+        .rescue-transition-background {
+            position: fixed;
+            z-index: 0;
+            inset: 0;
+            width: 100vw;
+            height: 100dvh;
+            object-fit: cover;
+            object-position: center center;
+            filter: brightness(0.76);
+            animation: none !important;
+            transform: none !important;
+            transition: none !important;
+            pointer-events: none;
+        }
+
+        @keyframes credential-card-enter {
+            from {
+                transform: translate3d(100%, 0, 0);
+            }
+            to {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        .end-screen.loss-background {
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 18px;
+            background: linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)), url("img/skyrescue-perdeu.png") center / cover no-repeat;
+            text-align: left;
+        }
+
+        .end-screen.victory-background {
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 18px;
+            background: linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)), url("img/skyrescue-venceu.png") center / cover no-repeat;
+            text-align: left;
+        }
+
+        .end-screen.mission-end-background .end-card {
+            width: min(440px, 100%);
+            padding: 16px 18px;
+            border: 1px solid rgba(125, 232, 245, 0.9);
+            border-radius: 8px;
+            background: linear-gradient(160deg, rgba(9, 29, 49, 0.96), rgba(9, 29, 49, 0.86));
+            box-shadow: 0 0 18px rgba(0, 255, 204, 0.28), inset 0 0 15px rgba(56, 189, 248, 0.14);
+        }
+
+        .end-screen.mission-end-background .end-card h2 {
+            margin-bottom: 8px;
+            color: #7de8f5;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+        }
+
+        .end-screen.mission-end-background .end-card p {
+            margin: 8px 0;
+            font-size: 0.82rem;
+        }
+
+        .end-screen.mission-end-background .end-card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .end-screen.mission-end-background .end-action-progress {
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 12px;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .end-screen.mission-end-background .end-card-actions .btn-restart {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1 1 150px;
+            margin-top: 0;
+            padding: 9px 12px;
+            border: 1px solid rgba(125, 232, 245, 0.9);
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(8, 92, 119, 0.95), rgba(0, 153, 143, 0.95));
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+            color: #e5ffff;
+            font-size: 0.7rem;
+            letter-spacing: 0.02em;
+        }
+
+        .end-screen.mission-end-background .btn-restart::before {
+            content: "↻";
+            font-size: 1.1rem;
+        }
+
+        .end-screen.mission-end-background #newPlayerButton {
+            background: linear-gradient(135deg, rgba(9, 54, 87, 0.95), rgba(16, 104, 132, 0.95));
+        }
+
+        .end-screen.mission-end-background #newPlayerButton::before {
+            content: "+";
+            font-size: 1.1rem;
+        }
+
+        .end-screen.mission-end-background .end-card-actions .btn-restart:hover {
+            background: linear-gradient(135deg, #0b7898, #00a99b);
+            box-shadow: 0 0 16px rgba(0, 255, 204, 0.45);
+        }
+
+        .end-screen.mission-end-background .end-card-actions .btn-restart:focus-visible {
+            outline: 2px solid #e8ffff;
+            outline-offset: 3px;
         }
 
         .credential-aircraft-card {
@@ -524,60 +648,6 @@
             font-weight: 700;
             letter-spacing: 0.04em;
             text-align: center;
-        }
-
-        #credentialGauges .credential-radar-card { grid-area: radar; }
-
-        #credentialGauges .credential-radar-card.is-ready,
-        #credentialGauges .credential-aircraft-card.is-ready {
-            border-color: #fff;
-            color: #fff;
-            box-shadow: 0 0 26px rgba(255, 255, 255, 0.95), inset 0 0 22px rgba(255, 255, 255, 0.32);
-        }
-
-        #credentialGauges .credential-radar-card.is-ready .credential-radar-grid,
-        #credentialGauges .credential-radar-card.is-ready .credential-radar-crosshair {
-            stroke: rgba(255, 255, 255, 0.9);
-        }
-
-        #credentialGauges .credential-radar-card.is-ready .credential-radar-grid {
-            filter: none;
-        }
-
-        #credentialGauges .credential-radar-card.is-ready .credential-radar-crosshair {
-            stroke: rgba(255, 255, 255, 0.3);
-            filter: none;
-        }
-
-        #credentialGauges .credential-radar-card.is-ready .radar-player-marker {
-            fill: #fff;
-            stroke: #fff;
-            filter: none;
-        }
-
-        #credentialGauges .credential-radar-card.is-ready .radar-enemy-marker {
-            filter: none;
-        }
-
-        #credentialGauges .credential-gauge.is-ready {
-            border-color: #fff;
-            color: #fff;
-            box-shadow: 0 0 26px rgba(255, 255, 255, 0.95), inset 0 0 22px rgba(255, 255, 255, 0.32);
-        }
-
-        #credentialGauges .credential-gauge.is-ready .credential-gauge-label {
-            color: #fff;
-            text-shadow: 0 0 6px #fff;
-        }
-
-        #credentialGauges .credential-gauge.is-ready .credential-gauge-track {
-            border-color: #fff;
-            box-shadow: none;
-        }
-
-        #credentialGauges .credential-gauge.is-ready .credential-gauge-fill {
-            background: #fff;
-            box-shadow: none;
         }
 
         .credential-aircraft-card svg {
@@ -679,12 +749,6 @@
 
         .credential-gauge--shield { grid-area: shield; }
         .credential-gauge--laser { grid-area: laser; }
-        #credentialGauges .credential-gauge--laser {
-            width: 92px;
-            align-content: center;
-            gap: 5px;
-        }
-        #credentialGauges .credential-laser-icon { width: 72px; height: 84px; }
         .game-laser-status {
             color: #aab8c5;
             font-size: 0.38rem;
@@ -692,10 +756,6 @@
             line-height: 1.2;
         }
         .credential-gauge--energy { grid-area: energy; }
-        #credentialGauges .credential-gauge--energy.is-ready .energy-bolt-fill {
-            fill: #fff;
-            filter: none;
-        }
         .credential-gauge--rescued { grid-area: rescued; }
         .credential-gauge--rescued .credential-gauge-fill {
             background: linear-gradient(to top, #c02678, #ff4fa3 70%, #ffc0e0);
@@ -724,11 +784,6 @@
             font-size: 0.62rem;
             letter-spacing: 0.08em;
             white-space: nowrap;
-        }
-
-        .rescue-transition-screen .credential-gauge-label {
-            color: #fff;
-            font-weight: 700;
         }
 
         .credential-gauge-track {
@@ -938,6 +993,17 @@
             color: #fff;
             font-weight: 700;
         }
+        .rescue-transition-screen .survey-panel.credential-card-entering {
+            animation: credential-card-enter 3000ms linear both;
+            will-change: transform;
+        }
+        @keyframes credential-card-exit {
+            to { transform: translate3d(100vw, 0, 0); }
+        }
+        .rescue-transition-screen .survey-panel.credential-card-exiting {
+            animation: credential-card-exit 900ms ease-in forwards;
+            will-change: transform;
+        }
         .survey-panel > p { line-height: 1.5; }
         .survey-fields {
             display: grid;
@@ -1008,13 +1074,6 @@
         }
 
         @media (max-width: 980px) {
-            .credential-gauges {
-                top: 12px;
-                right: auto;
-                bottom: auto;
-                left: 50%;
-                transform: translateX(-50%);
-            }
             .rescue-transition-screen .survey-overlay {
                 padding-top: 164px;
             }
@@ -1024,14 +1083,6 @@
         }
 
         @media (min-width: 981px) and (max-width: 1100px) {
-            .credential-gauges {
-                right: auto;
-                bottom: 50px;
-                left: 16px;
-                grid-template-columns: repeat(2, 88px) repeat(3, 64px);
-                grid-template-rows: 120px;
-                gap: 6px;
-            }
             .credential-radar-card {
                 width: 88px;
                 height: 120px;
@@ -1047,20 +1098,31 @@
                 gap: 7px;
                 padding: 9px 5px;
             }
-            #credentialGauges .credential-gauge--laser { width: 64px; }
             .credential-gauge-track { height: 78px; }
             .credential-gauge-label { font-size: 0.46rem; letter-spacing: 0; }
         }
 
-        @media (min-width: 681px) and (max-width: 820px) {
-            .game-score-card { gap: 5px; padding: 8px 6px; }
-            .game-score-title { font-size: 0.42rem; }
-            .game-score-total { font-size: 0.5rem; }
-            .game-fleet-scores { gap: 3px; }
-            .game-fleet-scores li { gap: 4px; padding: 3px; }
-            .game-fleet-name { font-size: 0.28rem; }
-            .game-fleet-points { font-size: clamp(0.32rem, 0.55vw, 0.4rem); }
-            .game-fleet-tally { font-size: 0.54rem; }
+        @media (min-width: 981px) and (max-width: 1200px) {
+            .game-score-total { font-size: clamp(0.5rem, calc((100vw - 568px) / 25), 1.55rem); }
+        }
+
+        @media (min-width: 681px) and (max-width: 980px) {
+            .game-info-layout { height: 166px; }
+            .game-playing-cards {
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+                grid-template-areas:
+                    "score score score score score score"
+                    "radar aircraft shield laser energy rescued";
+                grid-template-rows: 48px 110px;
+                gap: 4px;
+            }
+            .game-score-card {
+                flex-direction: row;
+                justify-content: space-between;
+                height: 48px;
+                gap: 8px;
+            }
+            .game-score-total { font-size: 1.5rem; }
         }
 
         @media (max-width: 680px) {
@@ -1079,17 +1141,15 @@
                 gap: 4px;
             }
             .game-score-card {
-                height: 50px;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                height: 42px;
                 gap: 4px;
-                padding: 4px 6px;
+                padding: 4px 7px;
             }
-            .game-score-title { font-size: 0.34rem; }
-            .game-score-total { font-size: 0.4rem; }
-            .game-fleet-scores { gap: 2px; }
-            .game-fleet-scores li { gap: 2px; padding: 2px 3px; }
-            .game-fleet-name { font-size: clamp(0.2rem, 0.55vw, 0.24rem); }
-            .game-fleet-points { font-size: clamp(0.3rem, 1vw, 0.4rem); }
-            .game-fleet-tally { display: none; }
+            .game-score-title { font-size: 0.3rem; }
+            .game-score-total { gap: 4px; font-size: 0.64rem; flex-shrink: 0; }
             .game-playing-cards .credential-radar-card {
                 width: 100%;
                 min-width: 0;
@@ -1120,17 +1180,6 @@
             .game-playing-cards .credential-gauge-track { width: 21px; height: 60px; }
             .game-playing-cards .credential-shield-icon { width: 30px; height: 46px; }
             .game-playing-cards .energy-bolt-icon { width: 36px; height: 54px; }
-            .credential-gauges {
-                top: 12px;
-                bottom: auto;
-                right: auto;
-                left: 50%;
-                grid-template-areas: "aircraft radar shield laser energy";
-                grid-template-columns: repeat(2, clamp(50px, 10vw, 72px)) repeat(3, min(60px, calc((100vw - 68px) / 3)));
-                grid-template-rows: 120px;
-                gap: 4px;
-                transform: translateX(-50%);
-            }
             .credential-radar-card {
                 width: clamp(50px, 10vw, 72px);
                 height: 120px;
@@ -1149,13 +1198,6 @@
                 gap: 7px;
                 padding: 9px 5px;
             }
-            #credentialGauges .credential-gauge--laser {
-                width: min(60px, calc((100vw - 68px) / 3));
-            }
-            #credentialGauges .credential-gauge--laser { gap: 3px; }
-            #credentialGauges .credential-laser-icon { width: 48px; height: 66px; }
-            #credentialGauges .game-laser-status { font-size: 0.28rem; }
-            #credentialGauges .energy-bolt-icon { width: 40px; height: 54px; }
             .credential-gauge-label,
             .credential-aircraft-ready-status { font-size: 0.42rem; letter-spacing: 0.02em; }
             .credential-gauge-track { width: 25px; height: 78px; }
@@ -1216,7 +1258,7 @@
         <ul>
             <li id="rescueObjective" class="mission-objective">
                 <span class="mission-objective-label">Resgate de pessoas</span>
-                <span id="rescueObjectiveStatus" class="mission-objective-status">0/20</span>
+                <span id="rescueObjectiveStatus" class="mission-objective-status">0/10</span>
             </li>
             <li id="seventyPercentObjective" class="mission-objective">
                 <span class="mission-objective-label">70% das naves inimigas</span>
@@ -1261,33 +1303,9 @@
             </div>
         </section>
         <section class="game-playing-cards" aria-label="Sistemas da aeronave durante a missão">
-            <section class="game-score-card" aria-label="Pontuação por frota">
-                <div class="game-score-header">
-                    <span class="game-score-title">PONTOS POR ABATE</span>
-                    <span class="game-score-total">PTS <output id="missionScore" aria-live="polite">0</output></span>
-                </div>
-                <ul class="game-fleet-scores">
-                    <li>
-                        <span class="game-fleet-name">1ª FROTA</span>
-                        <span class="game-fleet-points">43 PTS</span>
-                        <span id="fleetScore1" class="game-fleet-tally">0 abatidas · 0 pts</span>
-                    </li>
-                    <li>
-                        <span class="game-fleet-name">2ª FROTA</span>
-                        <span class="game-fleet-points">50 PTS</span>
-                        <span id="fleetScore2" class="game-fleet-tally">0 abatidas · 0 pts</span>
-                    </li>
-                    <li>
-                        <span class="game-fleet-name">3ª FROTA</span>
-                        <span class="game-fleet-points">151 PTS</span>
-                        <span id="fleetScore3" class="game-fleet-tally">0 abatidas · 0 pts</span>
-                    </li>
-                    <li>
-                        <span class="game-fleet-name">4ª FROTA</span>
-                        <span class="game-fleet-points">983 PTS</span>
-                        <span id="fleetScore4" class="game-fleet-tally">0 abatidas · 0 pts</span>
-                    </li>
-                </ul>
+            <section class="game-score-card" aria-label="Pontos">
+                <span class="game-score-title">PONTOS</span>
+                <span class="game-score-total"><output id="missionScore" aria-live="polite">0</output> PTS</span>
             </section>
             <div class="credential-radar-card" aria-label="Radar em tempo real">
                 <span class="credential-gauge-label">RADAR</span>
@@ -1359,7 +1377,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="credential-gauge credential-gauge--rescued" role="meter" aria-label="Pessoas resgatadas" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
+            <div class="credential-gauge credential-gauge--rescued" role="meter" aria-label="Pessoas resgatadas" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
                 <span class="credential-gauge-label">RESGATADOS</span>
                 <div class="credential-gauge-track" aria-hidden="true">
                     <div class="credential-gauge-fill" style="--gauge-progress: 0"></div>
@@ -1389,82 +1407,31 @@
         <div id="endCard" class="end-card">
             <h2 id="endTitle"></h2>
             <p id="endMessage"></p>
-            <button id="restartButton" class="btn-restart" type="button">[ VOLTAR AO INÍCIO ]</button>
+            <p id="endActionError" role="alert" hidden></p>
+            <div class="end-card-actions">
+                <button id="restartButton" class="btn-restart" type="button">[ VOLTAR AO INÍCIO ]</button>
+                <button id="newPlayerButton" class="btn-restart" type="button" hidden>NOVO JOGADOR</button>
+            </div>
+        </div>
+        <div id="endActionProgress" class="opening-progress end-action-progress" role="progressbar" aria-label="Processando a resposta" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+            <div class="opening-progress-fill"></div>
         </div>
     </section>
 </main>
 
-<section id="openingScreen" class="opening-screen" aria-label="Carregamento do jogo">
-    <div class="opening-progress" role="progressbar" aria-label="Carregamento do jogo" aria-valuemin="0" aria-valuemax="100">
+<section id="openingScreen" class="opening-screen" aria-label="Tela de abertura">
+    <div class="opening-start-card">
+        <p>Clique em confirmar para iniciar a partida.</p>
+        <p id="openingActionFeedback" role="alert" hidden></p>
+        <button id="confirmOpeningButton" class="opening-start-button" type="button">CONFIRMAR</button>
+    </div>
+    <div id="openingProgress" class="opening-progress" role="progressbar" aria-label="Preparando a partida" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
         <div class="opening-progress-fill"></div>
     </div>
 </section>
 
 <section id="rescueTransitionScreen" class="opening-screen rescue-transition-screen" aria-label="Credenciais do piloto" hidden>
-    <div id="credentialGauges" class="credential-gauges" aria-label="Sistemas da aeronave">
-        <div class="credential-radar-card" aria-label="Radar em tempo real">
-            <span class="credential-gauge-label">RADAR</span>
-            <svg class="credential-radar-scope" viewBox="0 0 100 100" role="img" aria-label="Ponto branco: aeronave; pontos vermelhos: naves inimigas">
-                <circle class="credential-radar-grid" cx="50" cy="50" r="44"></circle>
-                <path class="credential-radar-crosshair" d="M6 50h88 M50 6v88 M19 19l62 62 M81 19L19 81"></path>
-                <circle class="radar-player-marker" cx="50" cy="80" r="3"></circle>
-                <g class="radar-enemy-markers"></g>
-            </svg>
-            <span class="credential-radar-active-status" hidden>ATIVO</span>
-        </div>
-        <div class="credential-gauge credential-gauge--shield" role="meter" aria-label="Escudos de força restantes" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3" aria-valuetext="3 de 3 escudos restantes">
-            <span class="credential-gauge-label">ESCUDO</span>
-            <svg class="credential-shield-icon" viewBox="0 0 100 110" aria-hidden="true">
-                <defs>
-                    <clipPath id="credentialShieldClip">
-                        <path d="M50 5 L91 20 V48 C91 75 73 96 50 106 C27 96 9 75 9 48 V20 Z"></path>
-                    </clipPath>
-                </defs>
-                <path class="credential-shield-outline" d="M50 5 L91 20 V48 C91 75 73 96 50 106 C27 96 9 75 9 48 V20 Z"></path>
-                <rect class="credential-shield-fill" x="0" y="0" width="100" height="110" clip-path="url(#credentialShieldClip)"></rect>
-            </svg>
-        </div>
-        <div class="credential-gauge credential-gauge--laser" role="status" aria-label="Canhões laser das asas bloqueados até a sexta leva">
-            <span class="credential-gauge-label">LASER</span>
-            <svg class="credential-laser-icon" viewBox="0 0 100 110" aria-hidden="true">
-                <defs>
-                    <linearGradient id="credentialLaserBeam" x1="0" x2="0" y1="1" y2="0">
-                        <stop offset="0" stop-color="#42f5ff" stop-opacity="0.08"></stop>
-                        <stop offset="1" stop-color="#42f5ff"></stop>
-                    </linearGradient>
-                </defs>
-                <path d="M24 13 L29 49 M76 13 L71 49" stroke="url(#credentialLaserBeam)" stroke-width="8" stroke-linecap="round"></path>
-                <path d="M24 15 L29 48 M76 15 L71 48" stroke="#e9ffff" stroke-width="1.5" stroke-linecap="round"></path>
-                <path d="M50 20 L57 44 L82 60 L80 65 L58 59 L61 78 L69 87 L68 91 L50 85 L32 91 L31 87 L39 78 L42 59 L20 65 L18 60 L43 44 Z" fill="#dce8f0" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"></path>
-                <path d="M50 28 L53 48 L52 75 L50 81 L48 75 L47 48 Z" fill="#42f5ff"></path>
-                <path d="M27 62 L42 58 M73 62 L58 58 M35 84 L43 81 M65 84 L57 81" stroke="#607789" stroke-width="2" stroke-linecap="round"></path>
-            </svg>
-            <span id="credentialLaserStatus" class="game-laser-status">BLOQUEADO</span>
-        </div>
-        <div class="credential-aircraft-card" aria-label="Diagrama da aeronave">
-            <span class="credential-gauge-label">AERONAVE</span>
-            <svg viewBox="0 0 100 110" role="img" aria-label="Diagrama esquemático do caça">
-                <path class="dashboard-aircraft-shape" d="M50 4 L57 30 L88 51 L88 62 L59 55 L62 79 L72 91 L72 97 L50 91 L28 97 L28 91 L38 79 L41 55 L12 62 L12 51 L43 30 Z"></path>
-                <path class="dashboard-aircraft-detail" d="M50 12 L50 88 M42 43 L58 43 M40 71 L60 71"></path>
-                <g id="credentialAircraftDamageMarkers"></g>
-            </svg>
-            <span id="credentialAircraftReadyStatus" class="credential-aircraft-ready-status" hidden>PREPARADA</span>
-        </div>
-        <div class="credential-gauge credential-gauge--energy" role="meter" aria-label="Energia da aeronave" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <span class="credential-gauge-label">ENERGIA</span>
-            <svg class="energy-bolt-icon" viewBox="0 0 100 110" role="img" aria-label="Raio indicando a energia restante">
-                <defs>
-                    <clipPath id="credentialEnergyClip">
-                        <path d="M58 5 L20 61 H43 L35 105 L80 44 H56 Z"></path>
-                    </clipPath>
-                </defs>
-                <path class="energy-bolt-outline" d="M58 5 L20 61 H43 L35 105 L80 44 H56 Z"></path>
-                <g clip-path="url(#credentialEnergyClip)">
-                    <rect id="credentialEnergyFill" class="energy-bolt-fill" x="0" y="0" width="100" height="110"></rect>
-                </g>
-            </svg>
-        </div>
-    </div>
+    <img id="rescueTransitionBackground" class="rescue-transition-background" src="img/skyrescue2.png" alt="" aria-hidden="true" decoding="sync" fetchpriority="high">
     <div id="credentialProgress" class="opening-progress" role="progressbar" aria-label="Confirmação das credenciais" aria-valuemin="0" aria-valuemax="100" hidden>
         <div class="opening-progress-fill credential-progress-fill"></div>
     </div>
@@ -1530,7 +1497,7 @@
                 </div>
             </fieldset>
         </div>
-        <button id="surveySubmit" class="survey-submit" type="submit">CADASTRAR CREDENCIAL</button>
+        <button id="surveySubmit" class="survey-submit" type="submit">CONFIRMAR</button>
         <p id="surveyError" class="survey-error" role="alert"></p>
     </form>
 </div>
@@ -1539,14 +1506,19 @@
 <script>
     const titleScreen = document.getElementById('titleScreen');
     const openingScreen = document.getElementById('openingScreen');
+    const openingProgress = document.getElementById('openingProgress');
+    const openingProgressFill = openingProgress.querySelector('.opening-progress-fill');
+    const confirmOpeningButton = document.getElementById('confirmOpeningButton');
     const rescueTransitionScreen = document.getElementById('rescueTransitionScreen');
-    const openingProgressFill = openingScreen.querySelector('.opening-progress-fill');
     const registrationModal = document.getElementById('surveyModal');
     const characterSpeech = document.getElementById('characterSpeech');
     const endScreen = document.getElementById('endScreen');
     const endCard = document.getElementById('endCard');
     let playerFirstName = '';
     let registrationSaved = false;
+    let currentSurveyId = null;
+    let savedRegistrationPayload = null;
+    let pendingMissionResult = null;
     const apiBaseUrl = window.location.port === '8000'
         ? window.location.origin
         : 'http://127.0.0.1:8000';
@@ -1554,9 +1526,6 @@
     const arcadeContext = arcadeCanvas.getContext('2d');
     const radarDisplays = [...document.querySelectorAll('.credential-radar-scope')];
     let gameAudioContext = null;
-    let arcadeMusicTimer = 0;
-    let nextArcadeMusicNoteAt = 0;
-    let arcadeMusicStep = 0;
     const dorothyIslandSprite = document.querySelector('.dorothy-sprite');
     const christinaSprite = document.querySelector('.christina-sprite');
     const feiFeiLiSprite = document.querySelector('.fei-fei-li-sprite');
@@ -1642,10 +1611,10 @@
     const giantBossSpawnWave = totalWaves;
     const giantBossSpawnTarget = enemiesPerWave * giantBossSpawnWave;
     const fleetPoints = [43, 50, 151, 983];
-    let fleetKills = fleetPoints.map(() => 0);
-    let fleetScores = fleetPoints.map(() => 0);
+    const giantBossPoints = 100000;
+    const rescuePoints = 12153;
     let missionScore = 0;
-    const rescueTargetCount = 20;
+    const rescueTargetCount = 10;
     const regularRescueTargetCount = rescueTargetCount - 3;
     const minimumRockCharacterDistance = 340;
     const movementKeys = new Set([
@@ -1700,61 +1669,6 @@
         audio.resume().catch((error) => {
             console.error('Não foi possível ativar o áudio do jogo.', error);
         });
-    }
-
-    function scheduleArcadeMusicTone(audio, frequency, startAt, duration, type, volume) {
-        const oscillator = audio.createOscillator();
-        const gain = audio.createGain();
-        oscillator.type = type;
-        oscillator.frequency.setValueAtTime(frequency, startAt);
-        gain.gain.setValueAtTime(0.0001, startAt);
-        gain.gain.exponentialRampToValueAtTime(volume, startAt + 0.012);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
-        oscillator.connect(gain);
-        gain.connect(audio.destination);
-        oscillator.start(startAt);
-        oscillator.stop(startAt + duration);
-    }
-
-    function startArcadeMusic() {
-        const audio = getGameAudioContext();
-        if (!audio || arcadeMusicTimer) return;
-
-        const melody = [
-            659, 0, 784, 880, 0, 784, 659, 523,
-            587, 0, 659, 784, 0, 659, 587, 523
-        ];
-        const bass = [131, 175, 196, 156];
-        const stepDuration = 0.2;
-        nextArcadeMusicNoteAt = audio.currentTime + 0.05;
-        arcadeMusicStep = 0;
-
-        arcadeMusicTimer = window.setInterval(() => {
-            if (audio.state !== 'running') return;
-            const now = audio.currentTime;
-            if (nextArcadeMusicNoteAt < now - stepDuration) {
-                nextArcadeMusicNoteAt = now + 0.05;
-            }
-
-            while (nextArcadeMusicNoteAt < now + 0.12) {
-                const note = melody[arcadeMusicStep % melody.length];
-                if (note) {
-                    scheduleArcadeMusicTone(audio, note, nextArcadeMusicNoteAt, 0.16, 'square', 0.025);
-                }
-                if (arcadeMusicStep % 4 === 0) {
-                    const bassNote = bass[Math.floor(arcadeMusicStep / 4) % bass.length];
-                    scheduleArcadeMusicTone(audio, bassNote, nextArcadeMusicNoteAt, 0.32, 'triangle', 0.035);
-                }
-                arcadeMusicStep++;
-                nextArcadeMusicNoteAt += stepDuration;
-            }
-        }, 25);
-    }
-
-    function stopArcadeMusic() {
-        if (!arcadeMusicTimer) return;
-        window.clearInterval(arcadeMusicTimer);
-        arcadeMusicTimer = 0;
     }
 
     function stopCriticalAlert() {
@@ -3100,7 +3014,6 @@
     function endArcadeGame(won) {
         arcadeActive = false;
         stopCriticalAlert();
-        stopArcadeMusic();
         pressedKeys.clear();
         mouseFiring = false;
         window.cancelAnimationFrame(arcadeAnimationFrame);
@@ -3307,9 +3220,11 @@
                 feature.character.rescued = true;
                 const characterName = featuredCharacters[feature.character.key].name;
                 peopleRescued++;
+                missionScore += rescuePoints;
+                updateMissionScoreCard();
                 updateCombatStatus();
                 showCharacterSpeech(peopleRescued === rescueTargetCount
-                    ? `${characterName} resgatada! Todas as 20 heroínas foram salvas!`
+                    ? `${characterName} resgatada! Todas as ${rescueTargetCount} heroínas foram salvas!`
                     : `${characterName} resgatada!`);
                 updateStatusMessage(`${characterName.toUpperCase()} RESGATADA · HEROÍNAS: ${peopleRescued}/${rescueTargetCount}`);
             }
@@ -3323,6 +3238,8 @@
             ) {
                 feature.rescuee.rescued = true;
                 peopleRescued++;
+                missionScore += rescuePoints;
+                updateMissionScoreCard();
                 updateCombatStatus();
                 showCharacterSpeech(peopleRescued === rescueTargetCount
                     ? 'Todas as heroínas foram resgatadas!'
@@ -3515,10 +3432,8 @@
                 fleetPoints.length - 1,
                 Math.floor(((target.wave ?? wavesSpawned) - 1) / 2)
             );
-            fleetKills[fleetIndex]++;
-            fleetScores[fleetIndex] += fleetPoints[fleetIndex];
-            missionScore += fleetPoints[fleetIndex];
-            updateFleetScoreCard();
+            missionScore += target.isGiant ? giantBossPoints : fleetPoints[fleetIndex];
+            updateMissionScoreCard();
             targetsHit++;
             if (target.isGiant) {
                 updateStatusMessage('AERONAVE GIGANTE DESTRUÍDA · SEQUÊNCIA DE VITÓRIA');
@@ -3701,8 +3616,9 @@
 
     function startArcadeGame() {
         stopCriticalAlert();
-        startArcadeMusic();
-        document.querySelector('.game-container').classList.add('is-playing');
+        const gameContainer = document.querySelector('.game-container');
+        gameContainer.classList.remove('is-defeated', 'is-victorious');
+        gameContainer.classList.add('is-playing');
         arcadeCanvas.hidden = false;
         playerShip.x = 0;
         christinaSpawned = false;
@@ -3736,10 +3652,8 @@
         targetsHit = 0;
         targetsLost = 0;
         peopleRescued = 0;
-        fleetKills.fill(0);
-        fleetScores.fill(0);
         missionScore = 0;
-        updateFleetScoreCard();
+        updateMissionScoreCard();
         giantBossSpawned = false;
         damageTaken = false;
         wavesSpawned = 0;
@@ -3840,13 +3754,9 @@
         });
     }
 
-    function updateFleetScoreCard() {
+    function updateMissionScoreCard() {
         const formatScore = (score) => new Intl.NumberFormat('pt-BR').format(score);
         document.getElementById('missionScore').textContent = formatScore(missionScore);
-        fleetScores.forEach((score, index) => {
-            document.getElementById(`fleetScore${index + 1}`).textContent =
-                `${fleetKills[index]} abatidas · ${formatScore(score)} pts`;
-        });
     }
 
     function updateGaugeFill(gauge, progress) {
@@ -3943,94 +3853,116 @@
         routeMessage.classList.toggle('route-message--detour', isDetour);
     }
 
-    function showAircraftReady() {
-        const aircraftCard = document.querySelector('.credential-aircraft-card');
-        const readyStatus = document.getElementById('credentialAircraftReadyStatus');
-        const radarActiveStatus = document.querySelector('#credentialGauges .credential-radar-active-status');
-        const credentialCards = [...document.querySelectorAll(
-            '#credentialGauges .credential-radar-card, #credentialGauges .credential-aircraft-card, #credentialGauges .credential-gauge:not(.credential-gauge--laser)'
-        )];
-        const finishSequence = () => {
-            credentialCards.forEach((card) => {
-                card.classList.add('is-ready');
-            });
-            readyStatus.hidden = false;
-            radarActiveStatus.hidden = false;
-        };
-
-        finishSequence();
-    }
-
-    function animateCredentialGauges() {
-        const gaugeContainer = document.getElementById('credentialGauges');
-        const gauges = [...gaugeContainer.querySelectorAll(
-            '.credential-gauge:not(.credential-gauge--rescued):not(.credential-gauge--shield):not(.credential-gauge--laser)'
-        )];
-
-        const updateGaugeValues = (values, shieldProgress) => {
-            gauges.forEach((gauge, index) => {
-                const value = Array.isArray(values) ? values[index] : values;
-                gauge.setAttribute('aria-valuenow', String(value));
-                updateGaugeFill(gauge, value / 100);
-            });
-            updateForceShieldMeters(shieldProgress);
-        };
-
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            updateGaugeValues(100);
-            showAircraftReady();
-            return;
-        }
-
-        const startedAt = performance.now();
-        const duration = 2800;
-        const stagger = 250;
-        updateForceShieldMeters(0);
-        const animateValues = (timestamp) => {
-            const values = gauges.map((_, index) =>
-                Math.min(100, Math.floor(Math.max(0, timestamp - startedAt - index * stagger) / duration * 100))
-            );
-            const shieldProgress = Math.min(1, Math.max(0, timestamp - startedAt) / duration);
-            updateGaugeValues(values, shieldProgress);
-            if (values.some((value) => value < 100)) {
-                window.requestAnimationFrame(animateValues);
-            } else {
-                showAircraftReady();
-            }
-        };
-        window.requestAnimationFrame(animateValues);
-    }
-
     let openingTransitionTriggered = false;
-    const showRescueTransitionScreen = () => {
+    let openingProgressAnimationFrame = 0;
+    const revealCredentialPanel = () => {
+        const surveyPanel = document.getElementById('surveyForm');
+        surveyPanel.classList.remove('credential-card-entering', 'credential-card-exiting');
+        registrationModal.hidden = true;
+        registrationModal.setAttribute('aria-hidden', 'true');
+
+        window.setTimeout(() => {
+            if (rescueTransitionScreen.hidden) return;
+            window.requestAnimationFrame(() => {
+                if (rescueTransitionScreen.hidden) return;
+                registrationModal.hidden = false;
+                registrationModal.setAttribute('aria-hidden', 'false');
+                surveyPanel.getBoundingClientRect();
+                surveyPanel.classList.add('credential-card-entering');
+                surveyPanel.addEventListener('animationend', (event) => {
+                    if (event.animationName !== 'credential-card-enter') return;
+                    surveyPanel.classList.remove('credential-card-entering');
+                    const nameInput = surveyPanel.querySelector('[name="name"]');
+                    if (nameInput) nameInput.focus({ preventScroll: true });
+                }, { once: true });
+            });
+        }, 600);
+    };
+
+    const showRescueTransitionScreen = async () => {
         if (openingTransitionTriggered) return;
         openingTransitionTriggered = true;
+        window.cancelAnimationFrame(openingProgressAnimationFrame);
+        openingProgressAnimationFrame = 0;
+
+        const transitionBackground = document.getElementById('rescueTransitionBackground');
+        try {
+            await transitionBackground.decode();
+        } catch (error) {
+            console.error('Não foi possível carregar a imagem da tela de credenciais:', error);
+        }
 
         openingScreen.hidden = true;
         openingScreen.setAttribute('aria-hidden', 'true');
         rescueTransitionScreen.hidden = false;
         rescueTransitionScreen.setAttribute('aria-hidden', 'false');
-        registrationModal.hidden = false;
-        registrationModal.setAttribute('aria-hidden', 'false');
-
-        try {
-            animateCredentialGauges();
-        } catch (error) {
-            console.error('Falha ao animar mostradores na tela de credenciais:', error);
-        }
-
-        const nameInput = document.querySelector('#surveyForm [name="name"]');
-        if (nameInput) nameInput.focus();
+        revealCredentialPanel();
     };
 
-    if (openingProgressFill) {
-        openingProgressFill.addEventListener('animationend', showRescueTransitionScreen, { once: true });
-    }
-    window.setTimeout(() => {
-        if (!openingTransitionTriggered) {
+    function advanceOpeningProgress(startedAt, timestamp) {
+        const progress = Math.min((timestamp - startedAt) / 4000, 1);
+        openingProgressFill.style.transform = `scaleX(${progress})`;
+        openingProgress.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
+
+        if (progress === 1) {
             showRescueTransitionScreen();
+            return;
         }
-    }, 4000);
+        openingProgressAnimationFrame = window.requestAnimationFrame((nextTimestamp) =>
+            advanceOpeningProgress(startedAt, nextTimestamp)
+        );
+    }
+
+    function showOpeningSequence() {
+        openingTransitionTriggered = false;
+        rescueTransitionScreen.hidden = true;
+        rescueTransitionScreen.setAttribute('aria-hidden', 'true');
+        registrationModal.hidden = true;
+        registrationModal.setAttribute('aria-hidden', 'true');
+        openingScreen.hidden = false;
+        openingScreen.setAttribute('aria-hidden', 'false');
+        openingProgress.hidden = true;
+        openingProgress.setAttribute('aria-valuenow', '0');
+        openingProgressFill.style.animation = 'none';
+        openingProgressFill.style.transform = 'scaleX(0)';
+        confirmOpeningButton.disabled = false;
+    }
+
+    confirmOpeningButton.addEventListener('click', () => {
+        confirmOpeningButton.disabled = true;
+        openingProgress.hidden = false;
+        openingProgress.setAttribute('aria-valuenow', '0');
+        openingProgressFill.style.animation = 'none';
+        openingProgressFill.getBoundingClientRect();
+        openingProgressFill.style.transform = 'scaleX(0)';
+        openingProgressAnimationFrame = window.requestAnimationFrame((startedAt) =>
+            advanceOpeningProgress(startedAt, startedAt)
+        );
+    });
+
+    async function postApiJson(endpoint, payload, failureMessage) {
+        const response = await fetch(`${apiBaseUrl}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const responseText = await response.text();
+        let result;
+        if (responseText) {
+            try {
+                result = JSON.parse(responseText);
+            } catch {
+                throw new Error('Resposta inválida do servidor. Confirme que python3 server.py está executando na porta 8000.');
+            }
+        }
+        if (!response.ok) {
+            throw new Error(result?.error || `${failureMessage} (HTTP ${response.status}).`);
+        }
+        if (!result || typeof result !== 'object' || !result.id) {
+            throw new Error(`O servidor não confirmou a operação. ${failureMessage}`);
+        }
+        return result;
+    }
 
     function startMission() {
         const registrationGateMessage = document.getElementById('registrationGateMessage');
@@ -4038,10 +3970,7 @@
             registrationGateMessage.textContent = 'Cadastre suas credenciais antes de iniciar a missão.';
             rescueTransitionScreen.hidden = false;
             rescueTransitionScreen.setAttribute('aria-hidden', 'false');
-            registrationModal.hidden = false;
-            registrationModal.setAttribute('aria-hidden', 'false');
-            const nameInput = document.querySelector('#surveyForm [name="name"]');
-            if (nameInput) nameInput.focus();
+            revealCredentialPanel();
             return;
         }
 
@@ -4059,39 +3988,148 @@
 
     function showMissionEnd(won) {
         arcadeActive = false;
-        document.querySelector('.game-container').classList.remove('is-playing');
+        const gameContainer = document.querySelector('.game-container');
+        gameContainer.classList.remove('is-playing');
         updateMissionObjectives(true);
         document.getElementById('missionObjectives').hidden = true;
         endCard.classList.toggle('won', won);
         document.getElementById('endTitle').textContent = won
-            ? 'PARABÉNS PELA CONCLUSÃO DA MISSÃO!'
+            ? 'MISSÃO BEM SUCEDIDA'
             : 'CAÇA DESTRUÍDO';
         const targetSummary = `Alvos acertados: ${targetsHit} · perdidos: ${targetsLost}. Pessoas resgatadas: ${peopleRescued}.`;
         document.getElementById('endMessage').textContent = won
-            ? `Parabéns pela conclusão da missão! Você concluiu as oito levas. ${targetSummary}`
+            ? `Você derrotou o caça vermelho gigante e concluiu as oito levas. ${targetSummary}`
             : `O caça perdeu suas cinco vidas. ${targetSummary}`;
-        document.getElementById('restartButton').textContent = '[ JOGAR NOVAMENTE ]';
+        document.getElementById('endActionError').hidden = true;
+        pendingMissionResult = {
+            won,
+            targets_hit: targetsHit,
+            targets_lost: targetsLost,
+            people_rescued: peopleRescued,
+            mission_score: missionScore,
+            lives_remaining: lives
+        };
+        document.getElementById('restartButton').textContent = 'JOGAR NOVAMENTE';
+        document.getElementById('newPlayerButton').hidden = false;
+        endScreen.classList.add('mission-end-background');
+        endScreen.classList.toggle('loss-background', !won);
+        endScreen.classList.toggle('victory-background', won);
+        gameContainer.classList.toggle('is-victorious', won);
+        if (won) {
+            gameContainer.classList.remove('is-defeated');
+            endScreen.hidden = false;
+            return;
+        }
+
+        gameContainer.classList.add('is-defeated');
+        endScreen.classList.add('loss-background');
         endScreen.hidden = false;
     }
 
     document.getElementById('startButton').addEventListener('click', startMission);
+    async function savePendingMissionResult() {
+        if (!pendingMissionResult) return;
+        if (!currentSurveyId) {
+            throw new Error('Não foi possível identificar o cadastro deste jogador para salvar a partida.');
+        }
+
+        await postApiJson(
+            '/api/arcade-matches',
+            { player_id: currentSurveyId, ...pendingMissionResult },
+            'Não foi possível salvar as informações da partida.'
+        );
+        pendingMissionResult = null;
+    }
+
+    async function runEndCardAction(action) {
+        const restartButton = document.getElementById('restartButton');
+        const newPlayerButton = document.getElementById('newPlayerButton');
+        const errorMessage = document.getElementById('endActionError');
+        const progress = document.getElementById('endActionProgress');
+        restartButton.disabled = true;
+        newPlayerButton.disabled = true;
+        errorMessage.hidden = true;
+        showEndActionProgress();
+
+        const saveResult = savePendingMissionResult().then(
+            () => null,
+            (error) => error
+        );
+        try {
+            await action();
+            const saveError = await saveResult;
+            if (saveError) {
+                const detail = saveError instanceof TypeError
+                    ? 'Não foi possível conectar ao servidor. Verifique se python3 server.py está executando.'
+                    : saveError.message;
+                const feedback = `Não foi possível salvar o resultado anterior: ${detail}`;
+                if (!openingScreen.hidden) {
+                    const openingFeedback = document.getElementById('openingActionFeedback');
+                    openingFeedback.textContent = feedback;
+                    openingFeedback.hidden = false;
+                } else if (document.querySelector('.game-container').classList.contains('is-playing')) {
+                    showCharacterSpeech(`${feedback} A nova partida foi iniciada.`);
+                } else {
+                    errorMessage.textContent = feedback;
+                    errorMessage.hidden = false;
+                }
+            }
+        } catch (error) {
+            errorMessage.textContent = error instanceof TypeError
+                ? 'Não foi possível conectar ao servidor. Verifique se python3 server.py está executando.'
+                : error.message;
+            errorMessage.hidden = false;
+        } finally {
+            progress.hidden = true;
+            progress.querySelector('.opening-progress-fill').style.animation = 'none';
+            restartButton.disabled = false;
+            newPlayerButton.disabled = false;
+        }
+    }
+
+    function showEndActionProgress() {
+        const progress = document.getElementById('endActionProgress');
+        const fill = progress.querySelector('.opening-progress-fill');
+        progress.hidden = false;
+        progress.setAttribute('aria-valuenow', '0');
+        fill.style.animation = 'none';
+        fill.getBoundingClientRect();
+        fill.style.animation = '';
+    }
+
     document.getElementById('restartButton').addEventListener('click', () => {
-        arcadeActive = false;
-        stopArcadeMusic();
-        document.querySelector('.game-container').classList.remove('is-playing');
-        window.cancelAnimationFrame(arcadeAnimationFrame);
-        pressedKeys.clear();
-        arcadeCanvas.hidden = true;
-        document.getElementById('missionObjectives').hidden = true;
-        enemyShips = [];
-        playerShots = [];
-        playerLasers = [];
-        playerMissiles = [];
-        enemyShots = [];
-        endScreen.hidden = true;
-        characterSpeech.hidden = true;
-        titleScreen.hidden = false;
-        updateStatusMessage('MISSÃO PRONTA');
+        void runEndCardAction(async () => {
+            if (!registrationSaved || !currentSurveyId || !savedRegistrationPayload) {
+                throw new Error('Não foi possível recuperar o cadastro para iniciar novamente.');
+            }
+
+            playerFirstName = savedRegistrationPayload.name.trim().split(/\s+/)[0];
+            endScreen.hidden = true;
+            startMission();
+        });
+    });
+
+    document.getElementById('newPlayerButton').addEventListener('click', () => {
+        void runEndCardAction(async () => {
+            const surveyForm = document.getElementById('surveyForm');
+            const gameContainer = document.querySelector('.game-container');
+
+            arcadeActive = false;
+            window.cancelAnimationFrame(arcadeAnimationFrame);
+            gameContainer.classList.remove('is-playing', 'is-defeated', 'is-victorious');
+            endScreen.hidden = true;
+            registrationSaved = false;
+            currentSurveyId = null;
+            savedRegistrationPayload = null;
+            playerFirstName = '';
+            surveyForm.reset();
+            document.getElementById('fundamentalYears').disabled = true;
+            document.getElementById('highSchoolYears').disabled = true;
+            document.getElementById('surveyError').textContent = '';
+            arcadeCanvas.hidden = true;
+            characterSpeech.hidden = true;
+            showOpeningSequence();
+        });
     });
 
     document.querySelectorAll('#surveyForm input[name="name"]').forEach((input) => {
@@ -4175,16 +4213,43 @@
             }
 
             registrationSaved = true;
+            currentSurveyId = result.id;
+            savedRegistrationPayload = { ...payload };
             playerFirstName = payload.name.trim().split(/\s+/)[0];
             const surveyModal = document.getElementById('surveyModal');
             const rescueTransitionScreen = document.getElementById('rescueTransitionScreen');
             const credentialProgress = document.getElementById('credentialProgress');
+            const credentialProgressFill = credentialProgress.querySelector('.credential-progress-fill');
             surveyModal.setAttribute('aria-busy', 'true');
-            rescueTransitionScreen.classList.add('credential-confirmation-progress');
+            await new Promise((resolve) => {
+                const finishExit = (animationEvent) => {
+                    if (
+                        animationEvent.target !== form
+                        || animationEvent.animationName !== 'credential-card-exit'
+                    ) {
+                        return;
+                    }
+                    form.removeEventListener('animationend', finishExit);
+                    resolve();
+                };
+                form.addEventListener('animationend', finishExit);
+                form.getBoundingClientRect();
+                form.classList.add('credential-card-exiting');
+            });
+
+            surveyModal.hidden = true;
+            surveyModal.setAttribute('aria-hidden', 'true');
+            surveyModal.setAttribute('aria-busy', 'false');
+            credentialProgress.setAttribute('aria-valuenow', '0');
+            credentialProgressFill.style.animation = 'none';
+            credentialProgressFill.style.transform = 'scaleX(0)';
+            credentialProgressFill.getBoundingClientRect();
+            credentialProgressFill.style.animation = '';
             credentialProgress.hidden = false;
+            rescueTransitionScreen.classList.add('credential-confirmation-progress');
             const progressDelay = new Promise((resolve) => window.setTimeout(resolve, 2000));
             await progressDelay;
-            surveyModal.setAttribute('aria-busy', 'false');
+            credentialProgress.setAttribute('aria-valuenow', '100');
             rescueTransitionScreen.hidden = true;
             credentialProgress.hidden = true;
             rescueTransitionScreen.classList.remove('credential-confirmation-progress');
