@@ -11,6 +11,7 @@ DATABASE = ROOT / "db" / "pesquisa.db"
 HOST = "127.0.0.1"
 PORT = 8000
 MAX_REQUEST_BYTES = 16_384
+MAX_ENEMY_TARGETS = 160
 AGE_GROUPS = (
     "7 a 8 anos",
     "9 a 11 anos",
@@ -26,16 +27,21 @@ EDUCATION_LEVELS = {
 def initialize_database():
     DATABASE.parent.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(DATABASE) as connection:
+        connection.execute("PRAGMA foreign_keys = OFF")
         connection.execute(
             """
             CREATE TABLE IF NOT EXISTS surveys (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                school TEXT NOT NULL,
-                grade TEXT NOT NULL,
+                school TEXT,
+                grade TEXT,
                 education_level TEXT CHECK (education_level IN ('Ensino Fundamental', 'Ensino Médio')),
                 grade_year TEXT CHECK (grade_year IN ('Ano 1', 'Ano 2', 'Ano 3', 'Ano 4', 'Ano 5', 'Ano 6', 'Ano 7', 'Ano 8', 'Ano 9')),
-                idade TEXT NOT NULL CHECK (idade IN ('7 a 8 anos', '9 a 11 anos', '12 a 14 anos', '15 a 17 anos', '18 ou mais')),
+                idade TEXT CHECK (idade IN ('7 a 8 anos', '9 a 11 anos', '12 a 14 anos', '15 a 17 anos', '18 ou mais')),
+                liked_game TEXT CHECK (liked_game IN ('S', 'N')),
+                expo_xp_rating INTEGER CHECK (expo_xp_rating BETWEEN 0 AND 10),
+                pontos INTEGER NOT NULL DEFAULT 0 CHECK (pontos BETWEEN 0 AND 999),
+                is_student INTEGER NOT NULL DEFAULT 1 CHECK (is_student IN (0, 1)),
                 created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
             )
             """
@@ -59,6 +65,8 @@ def initialize_database():
         for survey_id, grade in connection.execute(
             "SELECT id, grade FROM surveys WHERE education_level IS NULL OR grade_year IS NULL"
         ):
+            if not isinstance(grade, str):
+                continue
             education_level, separator, grade_year = grade.partition(" - ")
             if separator and grade_year in EDUCATION_LEVELS.get(education_level, ()):
                 connection.execute(
@@ -69,46 +77,77 @@ def initialize_database():
             column[1]: column
             for column in connection.execute("PRAGMA table_info(surveys)").fetchall()
         }
-        if any(
-            survey_columns.get(column) and survey_columns[column][3]
-            for column in ("liked_game", "expo_xp_rating")
+        nullable_columns = ("school", "grade", "idade")
+        if (
+            "is_student" not in survey_columns
+            or any(survey_columns[column][3] for column in nullable_columns)
+            or any(
+                survey_columns.get(column) and survey_columns[column][3]
+                for column in ("liked_game", "expo_xp_rating")
+            )
         ):
-            connection.execute("PRAGMA foreign_keys = OFF")
             connection.execute(
                 """
                 CREATE TABLE surveys_updated (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
-                    school TEXT NOT NULL,
-                    grade TEXT NOT NULL,
-                    idade TEXT NOT NULL CHECK (idade IN ('7 a 8 anos', '9 a 11 anos', '12 a 14 anos', '15 a 17 anos', '18 ou mais')),
+                    school TEXT,
+                    grade TEXT,
+                    idade TEXT CHECK (idade IN ('7 a 8 anos', '9 a 11 anos', '12 a 14 anos', '15 a 17 anos', '18 ou mais')),
                     liked_game TEXT CHECK (liked_game IN ('S', 'N')),
                     expo_xp_rating INTEGER CHECK (expo_xp_rating BETWEEN 0 AND 10),
                     pontos INTEGER NOT NULL DEFAULT 0 CHECK (pontos BETWEEN 0 AND 999),
                     created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
                     education_level TEXT CHECK (education_level IN ('Ensino Fundamental', 'Ensino Médio')),
-                    grade_year TEXT CHECK (grade_year IN ('Ano 1', 'Ano 2', 'Ano 3', 'Ano 4', 'Ano 5', 'Ano 6', 'Ano 7', 'Ano 8', 'Ano 9'))
+                    grade_year TEXT CHECK (grade_year IN ('Ano 1', 'Ano 2', 'Ano 3', 'Ano 4', 'Ano 5', 'Ano 6', 'Ano 7', 'Ano 8', 'Ano 9')),
+                    is_student INTEGER NOT NULL DEFAULT 1 CHECK (is_student IN (0, 1))
                 )
                 """
             )
+            target_columns = (
+                "id",
+                "name",
+                "school",
+                "grade",
+                "idade",
+                "liked_game",
+                "expo_xp_rating",
+                "pontos",
+                "created_at",
+                "education_level",
+                "grade_year",
+                "is_student",
+            )
+            defaults = {
+                "liked_game": "NULL",
+                "expo_xp_rating": "NULL",
+                "pontos": "0",
+                "created_at": "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')",
+                "education_level": "NULL",
+                "grade_year": "NULL",
+                "is_student": "1",
+            }
+            source_columns = [
+                column if column in survey_columns else defaults[column]
+                for column in target_columns
+            ]
             connection.execute(
-                """
-                INSERT INTO surveys_updated
-                    (id, name, school, grade, idade, liked_game, expo_xp_rating, pontos, created_at, education_level, grade_year)
-                SELECT id, name, school, grade, idade, liked_game, expo_xp_rating, pontos, created_at, education_level, grade_year
+                f"""
+                INSERT INTO surveys_updated ({", ".join(target_columns)})
+                SELECT {", ".join(source_columns)}
                 FROM surveys
                 """
             )
             connection.execute("DROP TABLE surveys")
             connection.execute("ALTER TABLE surveys_updated RENAME TO surveys")
         connection.execute(
-            """
+            f"""
             CREATE TABLE IF NOT EXISTS arcade_matches (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 player_id INTEGER NOT NULL REFERENCES surveys(id),
                 won INTEGER NOT NULL CHECK (won IN (0, 1)),
-                targets_hit INTEGER NOT NULL CHECK (targets_hit BETWEEN 0 AND 80),
-                targets_lost INTEGER NOT NULL CHECK (targets_lost BETWEEN 0 AND 80),
+                targets_hit INTEGER NOT NULL CHECK (targets_hit BETWEEN 0 AND {MAX_ENEMY_TARGETS}),
+                targets_lost INTEGER NOT NULL CHECK (targets_lost BETWEEN 0 AND {MAX_ENEMY_TARGETS}),
                 people_rescued INTEGER NOT NULL CHECK (people_rescued BETWEEN 0 AND 20),
                 mission_score INTEGER NOT NULL CHECK (mission_score >= 0),
                 lives_remaining INTEGER NOT NULL CHECK (lives_remaining BETWEEN 0 AND 5),
@@ -116,6 +155,35 @@ def initialize_database():
             )
             """
         )
+        arcade_matches_schema = connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'arcade_matches'"
+        ).fetchone()[0]
+        if f"BETWEEN 0 AND {MAX_ENEMY_TARGETS}" not in arcade_matches_schema:
+            connection.execute(
+                f"""
+                CREATE TABLE arcade_matches_updated (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    player_id INTEGER NOT NULL REFERENCES surveys(id),
+                    won INTEGER NOT NULL CHECK (won IN (0, 1)),
+                    targets_hit INTEGER NOT NULL CHECK (targets_hit BETWEEN 0 AND {MAX_ENEMY_TARGETS}),
+                    targets_lost INTEGER NOT NULL CHECK (targets_lost BETWEEN 0 AND {MAX_ENEMY_TARGETS}),
+                    people_rescued INTEGER NOT NULL CHECK (people_rescued BETWEEN 0 AND 20),
+                    mission_score INTEGER NOT NULL CHECK (mission_score >= 0),
+                    lives_remaining INTEGER NOT NULL CHECK (lives_remaining BETWEEN 0 AND 5),
+                    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+                )
+                """
+            )
+            connection.execute(
+                """
+                INSERT INTO arcade_matches_updated
+                    (id, player_id, won, targets_hit, targets_lost, people_rescued, mission_score, lives_remaining, created_at)
+                SELECT id, player_id, won, targets_hit, targets_lost, people_rescued, mission_score, lives_remaining, created_at
+                FROM arcade_matches
+                """
+            )
+            connection.execute("DROP TABLE arcade_matches")
+            connection.execute("ALTER TABLE arcade_matches_updated RENAME TO arcade_matches")
 
 
 class GameRequestHandler(SimpleHTTPRequestHandler):
@@ -212,44 +280,60 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
             self._save_arcade_match(payload)
             return
 
-        text_fields = ("name", "school")
-        values = {}
-        for field in text_fields:
-            value = payload.get(field)
-            if not isinstance(value, str) or not value.strip() or len(value.strip()) > 120:
-                self._send_json(400, {"error": "Preencha nome e escola (até 120 caracteres)."})
+        name = payload.get("name")
+        if not isinstance(name, str) or not name.strip() or len(name.strip()) > 120:
+            self._send_json(400, {"error": "Preencha o nome (até 120 caracteres)."})
+            return
+
+        is_student = payload.get("is_student", True)
+        if not isinstance(is_student, bool):
+            self._send_json(400, {"error": "Informe se o piloto é aluno."})
+            return
+
+        if is_student:
+            school = payload.get("school")
+            if not isinstance(school, str) or not school.strip() or len(school.strip()) > 120:
+                self._send_json(400, {"error": "Preencha a escola (até 120 caracteres)."})
                 return
-            values[field] = value.strip()
 
-        education_level = payload.get("education_level")
-        grade_year = payload.get("grade_year")
-        if (
-            not isinstance(education_level, str)
-            or not isinstance(grade_year, str)
-            or grade_year not in EDUCATION_LEVELS.get(education_level, ())
-        ):
-            self._send_json(400, {"error": "Selecione um nível de ensino e ano válidos."})
-            return
+            education_level = payload.get("education_level")
+            grade_year = payload.get("grade_year")
+            if (
+                not isinstance(education_level, str)
+                or not isinstance(grade_year, str)
+                or grade_year not in EDUCATION_LEVELS.get(education_level, ())
+            ):
+                self._send_json(400, {"error": "Selecione um nível de ensino e ano válidos."})
+                return
 
-        age = payload.get("idade")
-        if age not in AGE_GROUPS:
-            self._send_json(400, {"error": "Selecione uma faixa etária válida."})
-            return
+            age = payload.get("idade")
+            if age not in AGE_GROUPS:
+                self._send_json(400, {"error": "Selecione uma faixa etária válida."})
+                return
+            grade = f"{education_level} - {grade_year}"
+        else:
+            school = None
+            education_level = None
+            grade_year = None
+            age = None
+            grade = None
 
         try:
             with sqlite3.connect(DATABASE) as connection:
                 cursor = connection.execute(
                     """
-                    INSERT INTO surveys (name, school, grade, education_level, grade_year, idade)
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    INSERT INTO surveys
+                        (name, school, grade, education_level, grade_year, idade, is_student)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
-                        values["name"],
-                        values["school"],
-                        f"{education_level} - {grade_year}",
+                        name.strip(),
+                        school.strip() if school else None,
+                        grade,
                         education_level,
                         grade_year,
                         age,
+                        int(is_student),
                     ),
                 )
         except sqlite3.Error:
@@ -277,8 +361,8 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
             return
 
         numeric_fields = {
-            "targets_hit": (0, 80),
-            "targets_lost": (0, 80),
+            "targets_hit": (0, MAX_ENEMY_TARGETS),
+            "targets_lost": (0, MAX_ENEMY_TARGETS),
             "people_rescued": (0, 20),
             "mission_score": (0, 1_000_000),
             "lives_remaining": (0, 5),
@@ -290,7 +374,7 @@ class GameRequestHandler(SimpleHTTPRequestHandler):
                 self._send_json(400, {"error": "As informações da partida são inválidas."})
                 return
             values[field] = value
-        if values["targets_hit"] + values["targets_lost"] > 80:
+        if values["targets_hit"] + values["targets_lost"] > MAX_ENEMY_TARGETS:
             self._send_json(400, {"error": "A quantidade de alvos da partida é inválida."})
             return
 

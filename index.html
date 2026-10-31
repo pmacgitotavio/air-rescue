@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="img/skyrescue2.png">
     <link rel="preload" as="image" href="img/skyrescue-perdeu.png">
     <link rel="preload" as="image" href="img/skyrescue-venceu.png">
@@ -127,23 +128,24 @@
         .game-info-layout {
             position: absolute;
             z-index: 8;
-            right: 16px;
-            bottom: 10px;
-            left: 16px;
-            height: 140px;
+            inset: 0;
             display: none;
-            place-items: center;
+            pointer-events: none;
         }
 
-        .game-container.is-playing .game-info-layout { display: grid; }
+        .game-container.is-playing .game-info-layout { display: block; }
 
         .aircraft-dashboard { display: none; }
 
         .game-playing-cards {
+            position: absolute;
+            right: 16px;
+            bottom: 10px;
+            left: 16px;
             display: grid;
-            width: 100%;
-            grid-template-areas: "score radar aircraft shield laser energy rescued";
-            grid-template-columns: minmax(0, 1fr) repeat(2, 90px) repeat(4, 70px);
+            width: auto;
+            grid-template-areas: "radar aircraft shield laser energy rescued";
+            grid-template-columns: repeat(2, 90px) repeat(4, 70px);
             grid-template-rows: 110px;
             align-items: end;
             justify-content: space-between;
@@ -151,37 +153,37 @@
         }
 
         .game-score-card {
+            position: absolute;
+            top: 0;
+            left: 0;
             display: flex;
-            min-width: 0;
             width: 100%;
-            height: 84px;
-            grid-area: score;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 7px 8px;
-            border: 2px solid #fff;
-            border-radius: 5px;
-            background: linear-gradient(160deg, rgba(9, 29, 49, 0.96), rgba(9, 29, 49, 0.8));
-            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.14);
+            padding: 8px 0;
+            border: 0;
+            background: rgba(5, 14, 26, 0.62);
+            box-shadow: none;
             color: #fff;
             font-family: 'Press Start 2P', 'Courier New', monospace;
         }
 
-        .game-score-title {
-            font-size: 0.58rem;
-            letter-spacing: 0.04em;
-            text-align: center;
-        }
-
         .game-score-total {
             display: flex;
+            min-width: 16ch;
             align-items: baseline;
-            gap: 8px;
-            color: #ffe58a;
-            font-size: 1.55rem;
+            justify-content: center;
+            gap: 1ch;
+            color: #fff;
+            font-size: clamp(0.9rem, 3vw, 2rem);
             white-space: nowrap;
+        }
+
+        .game-score-total output {
+            color: #fff;
+            font-family: 'Orbitron', 'Courier New', monospace;
+            font-weight: 800;
         }
 
         .game-playing-cards .credential-radar-card {
@@ -994,15 +996,43 @@
             font-weight: 700;
         }
         .rescue-transition-screen .survey-panel.credential-card-entering {
-            animation: credential-card-enter 3000ms linear both;
+            animation: credential-card-enter 2500ms linear both;
             will-change: transform;
         }
         @keyframes credential-card-exit {
-            to { transform: translate3d(100vw, 0, 0); }
+            to { transform: translate3d(100%, 0, 0); }
         }
         .rescue-transition-screen .survey-panel.credential-card-exiting {
-            animation: credential-card-exit 900ms ease-in forwards;
+            animation: credential-card-exit 2500ms linear forwards;
             will-change: transform;
+        }
+        .rescue-transition-screen .survey-panel.credential-card-confirmed {
+            border-color: #fff;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.18), 0 0 22px rgba(255, 255, 255, 0.75);
+            color: #fff;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
+        }
+        .rescue-transition-screen .credential-card-confirmed h2 {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+        }
+        .rescue-transition-screen .credential-card-confirmed .survey-field input,
+        .rescue-transition-screen .credential-card-confirmed .survey-field select,
+        .rescue-transition-screen .credential-card-confirmed .survey-fieldset {
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
+        }
+        .rescue-transition-screen .credential-card-confirmed .survey-field input,
+        .rescue-transition-screen .credential-card-confirmed .survey-field select {
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+        .rescue-transition-screen .credential-card-confirmed #surveySubmit {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.75);
+            color: #fff;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
         }
         .survey-panel > p { line-height: 1.5; }
         .survey-fields {
@@ -1028,6 +1058,7 @@
             border: 1px solid rgba(0, 255, 128, 0.3);
             border-radius: 6px;
         }
+        .student-status-fieldset { grid-column: 1 / -1; }
         .survey-fieldset legend { padding: 0 3px; }
         .survey-radio-options {
             display: flex;
@@ -1048,6 +1079,7 @@
         .survey-radio-option:has(input:checked) { color: #fff; }
         .survey-field select:valid, .survey-field select option:checked { color: #fff; }
         .survey-fieldset:disabled { opacity: 0.45; }
+        .survey-field:has(select:disabled) { opacity: 0.45; }
         .survey-field input:focus, .survey-field select:focus {
             border-color: #43ff9a;
             outline: 2px solid #43ff9a;
@@ -1102,54 +1134,27 @@
             .credential-gauge-label { font-size: 0.46rem; letter-spacing: 0; }
         }
 
-        @media (min-width: 981px) and (max-width: 1200px) {
-            .game-score-total { font-size: clamp(0.5rem, calc((100vw - 568px) / 25), 1.55rem); }
-        }
-
         @media (min-width: 681px) and (max-width: 980px) {
-            .game-info-layout { height: 166px; }
             .game-playing-cards {
                 grid-template-columns: repeat(6, minmax(0, 1fr));
                 grid-template-areas:
-                    "score score score score score score"
                     "radar aircraft shield laser energy rescued";
-                grid-template-rows: 48px 110px;
+                grid-template-rows: 110px;
                 gap: 4px;
             }
-            .game-score-card {
-                flex-direction: row;
-                justify-content: space-between;
-                height: 48px;
-                gap: 8px;
-            }
-            .game-score-total { font-size: 1.5rem; }
         }
 
         @media (max-width: 680px) {
-            .game-info-layout {
+            .game-playing-cards {
                 right: 8px;
                 bottom: 8px;
                 left: 8px;
-                height: 160px;
-            }
-            .game-playing-cards {
                 grid-template-columns: repeat(6, minmax(0, 1fr));
                 grid-template-areas:
-                    "score score score score score score"
                     "radar aircraft shield laser energy rescued";
-                grid-template-rows: 50px 98px;
+                grid-template-rows: 98px;
                 gap: 4px;
             }
-            .game-score-card {
-                flex-direction: row;
-                justify-content: space-between;
-                width: 100%;
-                height: 42px;
-                gap: 4px;
-                padding: 4px 7px;
-            }
-            .game-score-title { font-size: 0.3rem; }
-            .game-score-total { gap: 4px; font-size: 0.64rem; flex-shrink: 0; }
             .game-playing-cards .credential-radar-card {
                 width: 100%;
                 min-width: 0;
@@ -1221,9 +1226,6 @@
             .mission-objective-status { font-size: 0.52rem; }
             .game-container {
                 background: #000;
-            }
-            .game-info-layout {
-                top: auto;
             }
             .dorothy-sprite {
                 left: 2%;
@@ -1303,10 +1305,6 @@
             </div>
         </section>
         <section class="game-playing-cards" aria-label="Sistemas da aeronave durante a missão">
-            <section class="game-score-card" aria-label="Pontos">
-                <span class="game-score-title">PONTOS</span>
-                <span class="game-score-total"><output id="missionScore" aria-live="polite">0</output> PTS</span>
-            </section>
             <div class="credential-radar-card" aria-label="Radar em tempo real">
                 <span class="credential-gauge-label">RADAR</span>
                 <svg class="credential-radar-scope" viewBox="0 0 100 100" role="img" aria-label="Ponto branco: aeronave; pontos vermelhos: naves inimigas">
@@ -1384,6 +1382,9 @@
                 </div>
             </div>
         </section>
+        <section class="game-score-card" aria-label="Pontuação">
+            <span class="game-score-total"><output id="missionScore" aria-live="polite">0</output> PTS</span>
+        </section>
     </div>
 
     <img class="dorothy-sprite" src="img/dorothyvaughan.png" alt="Dorothy Vaughan">
@@ -1439,11 +1440,18 @@
     <form id="surveyForm" class="survey-panel">
         <h2 id="surveyTitle">CREDENCIAIS DO PILOTO</h2>
         <div class="survey-fields">
+            <fieldset class="survey-fieldset student-status-fieldset">
+                <legend>Vínculo escolar:</legend>
+                <div class="survey-radio-options">
+                    <label class="survey-radio-option"><input type="radio" name="is_student" value="true" checked required>Sou aluno</label>
+                    <label class="survey-radio-option"><input type="radio" name="is_student" value="false" required>Não sou aluno</label>
+                </div>
+            </fieldset>
             <label class="survey-field">
                 <span>Nome:</span>
                 <input name="name" type="text" maxlength="120" autocomplete="name" pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+" title="Digite apenas letras e espaços." required>
             </label>
-            <label class="survey-field">
+            <label id="schoolField" class="survey-field">
                 <span>Escola:</span>
                 <select name="school" required>
                     <option value="">Selecione a escola</option>
@@ -1457,7 +1465,7 @@
                     <option value="E.M. SOTERO TEIXEIRA DE SOUZA">E.M. SOTERO TEIXEIRA DE SOUZA</option>
                 </select>
             </label>
-            <fieldset class="survey-fieldset survey-fieldset--age">
+            <fieldset id="ageFieldset" class="survey-fieldset survey-fieldset--age">
                 <legend>Faixa de Idade:</legend>
                 <div class="survey-radio-options">
                     <label class="survey-radio-option"><input type="radio" name="idade" value="7 a 8 anos" required>7 - 8 anos</label>
@@ -1467,7 +1475,7 @@
                     <label class="survey-radio-option"><input type="radio" name="idade" value="18 ou mais" required>18 ou mais</label>
                 </div>
             </fieldset>
-            <fieldset class="survey-fieldset">
+            <fieldset id="educationLevelFieldset" class="survey-fieldset">
                 <legend>Ensino:</legend>
                 <div class="survey-radio-options">
                     <label class="survey-radio-option"><input type="radio" name="educationLevel" value="Ensino Fundamental" required>Ensino Fundamental</label>
@@ -1568,6 +1576,8 @@
     let arcadeActive = false;
     let mouseFiring = false;
     const forceShieldMaxCharges = 3;
+    const aircraftCarrierSpeed = 70;
+    const aircraftCarrierSpawnInterval = 27000;
     let forceShieldCharges = forceShieldMaxCharges;
     let forceShieldUntil = 0;
     let arcadeAnimationFrame = 0;
@@ -1590,11 +1600,18 @@
     let targetsHit = 0;
     let targetsLost = 0;
     let peopleRescued = 0;
+    let regularPeopleRescued = 0;
+    let regularRescueesDisplayed = 0;
+    let finalBossSequenceStarted = false;
+    let carrierBossSpawnAt = null;
+    let carrierBossSpawned = false;
+    let carrierBossDefeated = false;
+    let postBossSupportCarriers = [];
+    let nextPostBossSupportCarrierAt = null;
     let giantBossSpawned = false;
     let victorySequence = null;
     let christinaSpawned = false;
     let feiFeiLiSpawned = false;
-    let featuredCharactersPassed = false;
     let damageTaken = false;
     let wavesSpawned = 0;
     let enemiesSpawnedInWave = 0;
@@ -1605,45 +1622,78 @@
     let nextEnemyShot = 0;
     let invulnerableUntil = 0;
     let sceneryOffset = 0;
-    const enemyTargetCount = 80;
+    const enemyTargetCount = 160;
     const enemiesPerWave = 10;
     const totalWaves = enemyTargetCount / enemiesPerWave;
-    const giantBossSpawnWave = totalWaves;
-    const giantBossSpawnTarget = enemiesPerWave * giantBossSpawnWave;
+    const postBossSupportCarrierCount = 3;
+    const enemyFleetColors = [
+        { body: '#facc15', underside: '#854d0e', trim: '#ca8a04', canopy: '#fef08a' },
+        { body: '#fb923c', underside: '#7c2d12', trim: '#c2410c', canopy: '#fed7aa' },
+        { body: '#fde047', underside: '#713f12', trim: '#a16207', canopy: '#fef9c3' },
+        { body: '#8b5cf6', underside: '#4c1d95', trim: '#6d28d9', canopy: '#c4b5fd' },
+        { body: '#c084fc', underside: '#6b21a8', trim: '#9333ea', canopy: '#e9d5ff' },
+        { body: '#e879f9', underside: '#701a75', trim: '#a21caf', canopy: '#f5d0fe' },
+        { body: '#f472b6', underside: '#831843', trim: '#be185d', canopy: '#fbcfe8' },
+        { body: '#d946ef', underside: '#701a75', trim: '#a21caf', canopy: '#f0abfc' }
+    ];
     const fleetPoints = [43, 50, 151, 983];
+    const carrierBossPoints = 50000;
     const giantBossPoints = 100000;
     const rescuePoints = 12153;
     let missionScore = 0;
     const rescueTargetCount = 10;
-    const regularRescueTargetCount = rescueTargetCount - 3;
+    const regularRescueTargetCount = rescueTargetCount;
     const minimumRockCharacterDistance = 340;
     const movementKeys = new Set([
         'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
         'KeyA', 'KeyD', 'KeyW', 'KeyS', 'Space'
     ]);
 
-    function regularRescueLimit() {
-        const featuredCharacterStillNeedsRescue = !feiFeiLiSpawned || scenery.some((feature) =>
-            feature.character && !feature.character.rescued
-        );
-        return featuredCharacterStillNeedsRescue ? regularRescueTargetCount : rescueTargetCount;
-    }
-
     function addRandomRescuee(feature) {
         if (
-            !featuredCharactersPassed
-            || feature.kind !== 'island'
+            feature.kind !== 'island'
             || feature.character
-            || peopleRescued >= regularRescueLimit()
+            || regularPeopleRescued >= regularRescueTargetCount
+            || regularRescueesDisplayed >= regularRescueTargetCount
         ) {
             feature.rescuee = null;
             return;
         }
+        regularRescueesDisplayed++;
         feature.rescuee = {
             x: (Math.random() - 0.5) * 58,
             y: (Math.random() - 0.5) * 30,
-            rescued: false
+            rescued: false,
+            displayNumber: regularRescueesDisplayed
         };
+    }
+
+    function startFinalBossSequence() {
+        if (finalBossSequenceStarted) return;
+        finalBossSequenceStarted = true;
+        carrierBossSpawnAt = performance.now() + aircraftCarrierSpawnInterval;
+        spawnSupportCarrier();
+        showCharacterSpeech('Porta-aviões de apoio à frente! Sobrevoe-o para recarregar a energia antes do combate final.');
+        updateStatusMessage('PORTA-AVIÕES DE APOIO · SOBREVOE PARA RECARGA');
+    }
+
+    function spawnSupportCarrier(isPostBoss = false) {
+        const width = Math.min(arcadeWidth * 0.23, 148);
+        const length = width * 2.7;
+        const carrier = {
+            x: arcadeWidth / 2,
+            y: -length / 2,
+            width,
+            length,
+            spawned: true,
+            recovered: false,
+            expired: false,
+            isPostBoss
+        };
+        carrier.x = getAircraftCarrierRiverX(carrier, playerShip.x);
+        aircraftCarriers.push(carrier);
+        if (isPostBoss) postBossSupportCarriers.push(carrier);
+        return carrier;
     }
 
     function getGameAudioContext() {
@@ -1902,14 +1952,15 @@
         energy = 1,
         maxEnergy = 1,
         engineFlameScale = 1,
-        hasLaserCannons = false
+        hasLaserCannons = false,
+        enemyColors = null
     ) {
         arcadeContext.save();
         arcadeContext.translate(x, y);
         if (isEnemy) arcadeContext.rotate(Math.PI);
-        const body = isEnemy ? '#f04438' : '#e8eff0';
-        const underside = isEnemy ? '#a91f2b' : '#718493';
-        const trim = isEnemy ? '#851d2a' : '#d83e36';
+        const body = isEnemy ? enemyColors.body : '#e8eff0';
+        const underside = isEnemy ? enemyColors.underside : '#718493';
+        const trim = isEnemy ? enemyColors.trim : '#d83e36';
 
         arcadeContext.fillStyle = '#ffad3f';
         arcadeContext.beginPath();
@@ -1993,15 +2044,15 @@
             arcadeContext.fillStyle = '#596c7a';
             arcadeContext.fillRect(-26, 3, 6, 13);
             arcadeContext.fillRect(20, 3, 6, 13);
-            arcadeContext.fillStyle = '#d74837';
+            arcadeContext.fillStyle = isEnemy ? enemyColors.trim : '#d74837';
             arcadeContext.fillRect(-24, 13, 2, 5);
             arcadeContext.fillRect(22, 13, 2, 5);
         }
             if (isEnemy) {
-                arcadeContext.fillStyle = '#56242a';
+            arcadeContext.fillStyle = underside;
                 arcadeContext.fillRect(-36, -4, 8, 14);
                 arcadeContext.fillRect(28, -4, 8, 14);
-                arcadeContext.fillStyle = '#ff3b72';
+                arcadeContext.fillStyle = enemyColors.trim;
                 arcadeContext.fillRect(-34, 7, 4, 6);
                 arcadeContext.fillRect(30, 7, 4, 6);
             }
@@ -2019,7 +2070,7 @@
 
         const canopy = arcadeContext.createLinearGradient(-5, -24, 5, -7);
         canopy.addColorStop(0, '#e8fbff');
-        canopy.addColorStop(0.35, isEnemy ? '#f6b4a7' : '#55c8e4');
+        canopy.addColorStop(0.35, isEnemy ? enemyColors.canopy : '#55c8e4');
         canopy.addColorStop(1, '#173c62');
         arcadeContext.fillStyle = canopy;
         arcadeContext.beginPath();
@@ -2162,7 +2213,11 @@
     }
 
     function drawRescuee(feature) {
-        if (!feature.rescuee || feature.rescuee.rescued) return;
+        if (
+            !feature.rescuee
+            || feature.rescuee.rescued
+            || regularPeopleRescued >= regularRescueTargetCount
+        ) return;
         arcadeContext.save();
         arcadeContext.translate(feature.x, feature.y);
         arcadeContext.scale(feature.size, feature.size);
@@ -2344,7 +2399,7 @@
         arcadeContext.save();
         arcadeContext.translate(carrier.x, carrier.y);
 
-        arcadeContext.fillStyle = '#273744';
+        arcadeContext.fillStyle = carrier.isBoss ? '#4a1018' : '#273744';
         arcadeContext.strokeStyle = '#d7e1e5';
         arcadeContext.lineWidth = 2;
         arcadeContext.beginPath();
@@ -2359,7 +2414,7 @@
         arcadeContext.fill();
         arcadeContext.stroke();
 
-        arcadeContext.fillStyle = '#687984';
+        arcadeContext.fillStyle = carrier.isBoss ? '#b91c1c' : '#687984';
         arcadeContext.beginPath();
         arcadeContext.moveTo(0, -length * 0.47);
         arcadeContext.lineTo(width * 0.36, -length * 0.36);
@@ -2380,20 +2435,26 @@
         arcadeContext.stroke();
         arcadeContext.setLineDash([]);
 
-        arcadeContext.fillStyle = '#f6d46b';
+        arcadeContext.fillStyle = carrier.isBoss ? '#ff7373' : '#f6d46b';
         arcadeContext.fillRect(-width * 0.21, -length * 0.31, width * 0.42, 3);
         arcadeContext.fillRect(-width * 0.21, length * 0.3, width * 0.42, 3);
 
-        arcadeContext.fillStyle = '#d8e0e3';
+        arcadeContext.fillStyle = carrier.isBoss ? '#fca5a5' : '#d8e0e3';
         arcadeContext.fillRect(width * 0.13, -length * 0.12, width * 0.22, length * 0.2);
-        arcadeContext.fillStyle = '#263843';
+        arcadeContext.fillStyle = carrier.isBoss ? '#50131b' : '#263843';
         arcadeContext.fillRect(width * 0.17, -length * 0.08, width * 0.14, length * 0.12);
-        arcadeContext.fillStyle = '#e34b3f';
+        arcadeContext.fillStyle = carrier.isBoss ? '#ff3030' : '#e34b3f';
         arcadeContext.fillRect(width * 0.13, -length * 0.12, width * 0.22, 4);
-        arcadeContext.fillStyle = carrier.recovered ? '#7dff74' : '#ffe58a';
-        arcadeContext.font = `bold ${Math.max(7, width * 0.09)}px "Courier New", monospace`;
+        arcadeContext.fillStyle = carrier.isBoss ? '#ff8b67' : carrier.recovered ? '#7dff74' : '#ffe58a';
+        arcadeContext.font = carrier.isBoss
+            ? `bold ${Math.max(11, Math.min(20, width * 0.045))}px "Courier New", monospace`
+            : `bold ${Math.max(7, width * 0.09)}px "Courier New", monospace`;
         arcadeContext.textAlign = 'center';
-        arcadeContext.fillText(carrier.recovered ? 'APOIO USADO' : 'APOIO', 0, length * 0.4);
+        arcadeContext.fillText(
+            carrier.isBoss ? 'PORTA-AVIÕES GIGANTE' : carrier.recovered ? 'APOIO USADO' : 'APOIO',
+            0,
+            length * 0.4
+        );
 
         const planeYPositions = [-0.24, -0.02, 0.2];
         planeYPositions.forEach((position) => {
@@ -2412,24 +2473,41 @@
             arcadeContext.fill();
         });
 
-        arcadeContext.restore();
-    }
+        if (carrier.isBoss) {
+            [-0.32, 0.32].forEach((xPosition) => {
+                [-0.31, 0.28].forEach((yPosition) => {
+                    const turretX = width * xPosition;
+                    const turretY = length * yPosition;
+                    arcadeContext.fillStyle = '#303d46';
+                    arcadeContext.beginPath();
+                    arcadeContext.arc(turretX, turretY, 12, 0, Math.PI * 2);
+                    arcadeContext.fill();
+                    arcadeContext.strokeStyle = '#f2b84b';
+                    arcadeContext.lineWidth = 2;
+                    arcadeContext.stroke();
+                    arcadeContext.fillStyle = '#131d24';
+                    arcadeContext.fillRect(turretX - 3, turretY - 17, 6, 21);
+                    arcadeContext.fillStyle = '#ffe08a';
+                    arcadeContext.fillRect(turretX - 1, turretY - 18, 2, 15);
+                });
+            });
 
-    function createAircraftCarriers(gameStartedAt) {
-        const width = Math.min(arcadeWidth * 0.23, 148);
-        const length = width * 2.7;
-        const firstCarrierDelay = 20000;
-        const carrierSpawnInterval = 27000;
-        return [0.45, 0.55, 0.5].map((riverPosition, index) => ({
-            x: arcadeWidth * riverPosition,
-            y: -length / 2,
-            width,
-            length,
-            spawnAt: gameStartedAt + firstCarrierDelay + carrierSpawnInterval * index,
-            spawned: false,
-            recovered: false,
-            expired: false
-        }));
+            const hp = Math.max(0, carrier.hp);
+            const maxHp = carrier.maxHp;
+            const barWidth = width * 0.72;
+            const barY = -length / 2 - 20;
+            arcadeContext.fillStyle = 'rgba(10, 15, 25, 0.9)';
+            arcadeContext.fillRect(-barWidth / 2 - 3, barY - 3, barWidth + 6, 15);
+            arcadeContext.fillStyle = '#351719';
+            arcadeContext.fillRect(-barWidth / 2, barY, barWidth, 9);
+            arcadeContext.fillStyle = hp / maxHp > 0.5 ? '#22c55e' : hp / maxHp > 0.25 ? '#eab308' : '#ef4444';
+            arcadeContext.fillRect(-barWidth / 2, barY, barWidth * (hp / maxHp), 9);
+            arcadeContext.strokeStyle = '#fff';
+            arcadeContext.lineWidth = 1;
+            arcadeContext.strokeRect(-barWidth / 2, barY, barWidth, 9);
+        }
+
+        arcadeContext.restore();
     }
 
     function getShorelineX(y, isLeft) {
@@ -2440,6 +2518,18 @@
                 + Math.sin(y / 87 + (isLeft ? 1 : 4)) * arcadeWidth * 0.014
             );
         return coast;
+    }
+
+    function getAircraftCarrierRiverX(carrier, preferredX) {
+        const margin = 47 + carrier.width / 2 + 12;
+        let minX = margin;
+        let maxX = arcadeWidth - margin;
+        for (let y = -carrier.length / 2; y <= arcadeHeight + carrier.length / 2; y += 16) {
+            minX = Math.max(minX, getShorelineX(y, true) + margin);
+            maxX = Math.min(maxX, getShorelineX(y, false) - margin);
+        }
+        if (minX > maxX) return arcadeWidth / 2;
+        return Math.max(minX, Math.min(maxX, preferredX));
     }
 
     function isAircraftCarrierClear(carrier, y = carrier.y) {
@@ -2830,11 +2920,30 @@
     }
 
     function drawEnemy(enemy, timestamp) {
+        if (enemy.isCarrierBoss) {
+            drawAircraftCarrier({
+                ...enemy,
+                length: enemy.height,
+                isBoss: true
+            });
+            return;
+        }
         if (enemy.isGiant) {
             drawGiantEnemyAircraft(enemy, timestamp);
             return;
         }
-        drawAircraft(enemy.x, enemy.y, true, timestamp, enemy.energy, enemy.maxEnergy);
+        const fleetIndex = Math.floor((enemy.wave - 1) / 2);
+        drawAircraft(
+            enemy.x,
+            enemy.y,
+            true,
+            timestamp,
+            enemy.energy,
+            enemy.maxEnergy,
+            1,
+            false,
+            enemyFleetColors[fleetIndex]
+        );
     }
 
     function updateRadarDisplay() {
@@ -2848,7 +2957,7 @@
                 enemyMarkers.replaceChildren(...enemyShips.map((enemy) => {
                     const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                     marker.setAttribute('class', 'radar-enemy-marker');
-                    marker.setAttribute('r', enemy.isGiant ? '5.5' : '2.5');
+                    marker.setAttribute('r', enemy.isGiant || enemy.isCarrierBoss ? '5.5' : '2.5');
                     return marker;
                 }));
             }
@@ -2862,7 +2971,7 @@
                     && enemy.y <= arcadeHeight;
                 marker.toggleAttribute('hidden', !isVisible);
                 if (!isVisible) return;
-                marker.setAttribute('r', enemy.isGiant ? '5.5' : '2.5');
+                marker.setAttribute('r', enemy.isGiant || enemy.isCarrierBoss ? '5.5' : '2.5');
                 marker.setAttribute('cx', String(6 + (enemy.x / arcadeWidth) * 88));
                 marker.setAttribute('cy', String(6 + (enemy.y / arcadeHeight) * 88));
             });
@@ -2977,7 +3086,7 @@
                 arcadeContext.restore();
                 return;
             }
-            arcadeContext.fillStyle = '#ffb24d';
+            arcadeContext.fillStyle = shot.color || '#ffb24d';
             arcadeContext.beginPath();
             arcadeContext.ellipse(shot.x, shot.y, 4, 7, 0, 0, Math.PI * 2);
             arcadeContext.fill();
@@ -3115,6 +3224,51 @@
         playArcadeSound('laserShot');
     }
 
+    function fireCarrierBossCannons(enemy, timestamp) {
+        [-0.32, 0.32].forEach((xPosition) => {
+            const x = enemy.x + enemy.width * xPosition;
+            const y = enemy.y + enemy.height * 0.12;
+            const directionX = playerShip.x - x;
+            const directionY = playerShip.y - y;
+            const distance = Math.hypot(directionX, directionY) || 1;
+            const speed = 310;
+            enemyShots.push({
+                x,
+                y,
+                width: 9,
+                height: 18,
+                velocityX: (directionX / distance) * speed,
+                velocityY: (directionY / distance) * speed,
+                kind: 'cannon',
+                color: '#ff9d38'
+            });
+        });
+        enemy.nextCannonAt = timestamp + 850;
+        playArcadeSound('enemyShot');
+    }
+
+    function fireCarrierBossLaserBarrage(enemy, timestamp) {
+        const laserCount = 12;
+        const angleOffset = (enemy.laserVolleyIndex % 2) * Math.PI / laserCount;
+        for (let index = 0; index < laserCount; index++) {
+            const angle = angleOffset + (Math.PI * 2 * index) / laserCount;
+            const speed = 235;
+            enemyShots.push({
+                x: enemy.x,
+                y: enemy.y + enemy.height * 0.12,
+                width: 8,
+                height: 28,
+                velocityX: Math.cos(angle) * speed,
+                velocityY: Math.sin(angle) * speed,
+                kind: 'laser',
+                color: '#53e6ff'
+            });
+        }
+        enemy.laserVolleyIndex++;
+        enemy.nextLaserBarrageAt = timestamp + 1900;
+        playArcadeSound('laserShot');
+    }
+
     function updateArcade(timestamp) {
         const elapsed = Math.min((timestamp - arcadeLastFrame) / 1000, 0.04);
         arcadeLastFrame = timestamp;
@@ -3210,12 +3364,13 @@
         sceneryOffset = (sceneryOffset + 70 * elapsed) % (arcadeHeight + 150);
         scenery.forEach((feature) => {
             feature.y += 70 * elapsed;
+            const playerHorizontalReach = playerShip.width / 2;
+            const playerVerticalReach = playerShip.height / 2;
             if (
                 feature.character
                 && !feature.character.rescued
-                && peopleRescued < rescueTargetCount
-                && Math.abs(playerShip.x - feature.x) < 42 * feature.size
-                && Math.abs(playerShip.y - (feature.y - 10 * feature.size)) < 44 * feature.size
+                && Math.abs(playerShip.x - feature.x) < playerHorizontalReach + 42 * feature.size
+                && Math.abs(playerShip.y - (feature.y - 38 * feature.size)) < playerVerticalReach + 42 * feature.size
             ) {
                 feature.character.rescued = true;
                 const characterName = featuredCharacters[feature.character.key].name;
@@ -3223,8 +3378,8 @@
                 missionScore += rescuePoints;
                 updateMissionScoreCard();
                 updateCombatStatus();
-                showCharacterSpeech(peopleRescued === rescueTargetCount
-                    ? `${characterName} resgatada! Todas as ${rescueTargetCount} heroínas foram salvas!`
+                showCharacterSpeech(peopleRescued >= rescueTargetCount
+                    ? `${characterName} resgatada! Meta de ${rescueTargetCount} resgates atingida.`
                     : `${characterName} resgatada!`);
                 updateStatusMessage(`${characterName.toUpperCase()} RESGATADA · HEROÍNAS: ${peopleRescued}/${rescueTargetCount}`);
             }
@@ -3232,27 +3387,28 @@
                 feature.kind === 'island'
                 && feature.rescuee
                 && !feature.rescuee.rescued
-                && peopleRescued < regularRescueLimit()
-                && Math.abs(playerShip.x - (feature.x + feature.rescuee.x * feature.size)) < 30
-                && Math.abs(playerShip.y - (feature.y + feature.rescuee.y * feature.size)) < 30
+                && regularPeopleRescued < regularRescueTargetCount
+                && Math.abs(playerShip.x - (feature.x + feature.rescuee.x * feature.size)) < playerHorizontalReach + 16
+                && Math.abs(playerShip.y - (feature.y + feature.rescuee.y * feature.size)) < playerVerticalReach + 22
             ) {
                 feature.rescuee.rescued = true;
                 peopleRescued++;
+                regularPeopleRescued++;
                 missionScore += rescuePoints;
                 updateMissionScoreCard();
                 updateCombatStatus();
-                showCharacterSpeech(peopleRescued === rescueTargetCount
-                    ? 'Todas as heroínas foram resgatadas!'
+                showCharacterSpeech(peopleRescued >= rescueTargetCount
+                    ? `Meta de ${rescueTargetCount} resgates atingida!`
                     : 'Heroína resgatada! Continue voando para encontrar outras.');
                 updateStatusMessage(`HEROÍNAS RESGATADAS: ${peopleRescued}/${rescueTargetCount}`);
             }
             if (feature.y > arcadeHeight + 80) {
+                if (feature.rescuee?.displayNumber === regularRescueTargetCount) {
+                    startFinalBossSequence();
+                }
                 feature.y = -80;
                 const previousCharacter = feature.character;
                 feature.character = null;
-                if (previousCharacter?.key === 'feiFeiLi') {
-                    featuredCharactersPassed = true;
-                }
                 if (previousCharacter?.key === 'dorothy' && !christinaSpawned) {
                     feature.character = { key: 'christina', rescued: false };
                     christinaSpawned = true;
@@ -3290,24 +3446,38 @@
             }
         });
         aircraftCarriers.forEach((carrier) => {
-            if (carrier.expired || timestamp < carrier.spawnAt) return;
-            carrier.spawned = true;
-            const nextY = carrier.y + 70 * elapsed;
-            const steps = Math.max(1, Math.ceil(Math.abs(nextY - carrier.y) / 8));
-            let clearPath = true;
-            for (let step = 1; step <= steps; step++) {
-                const testY = carrier.y + (nextY - carrier.y) * (step / steps);
-                if (!isAircraftCarrierClear(carrier, testY)) {
-                    clearPath = false;
-                    break;
-                }
+            if (carrier.expired) return;
+            carrier.x = getAircraftCarrierRiverX(carrier, carrier.x);
+            carrier.y += aircraftCarrierSpeed * elapsed;
+            if (carrier.y - carrier.length / 2 > arcadeHeight) {
+                carrier.expired = true;
             }
-            if (clearPath) carrier.y = nextY;
-            if (carrier.y - carrier.length / 2 > arcadeHeight) carrier.expired = true;
         });
 
         enemyShips.forEach((enemy) => {
             if (!enemy.alive) return;
+            if (enemy.isCarrierBoss) {
+                enemy.y += enemy.descentSpeed * elapsed;
+                enemy.x = Math.max(
+                    enemy.width / 2 + 8,
+                    Math.min(
+                        arcadeWidth - enemy.width / 2 - 8,
+                        arcadeWidth / 2 + Math.sin(timestamp / 900 + enemy.phase) * arcadeWidth * 0.12
+                    )
+                );
+                if (timestamp >= enemy.nextCannonAt) fireCarrierBossCannons(enemy, timestamp);
+                if (timestamp >= enemy.nextLaserBarrageAt) fireCarrierBossLaserBarrage(enemy, timestamp);
+                if (enemy.y - enemy.height / 2 > arcadeHeight) {
+                    enemy.alive = false;
+                    carrierBossDefeated = true;
+                    missionScore += carrierBossPoints;
+                    updateMissionScoreCard();
+                    nextPostBossSupportCarrierAt = timestamp;
+                    showCharacterSpeech('O porta-aviões gigante cruzou o cenário. Continue a missão; a aeronave gigante aparecerá no confronto final.');
+                    updateStatusMessage('PORTA-AVIÕES GIGANTE ULTRAPASSADO · MISSÃO EM ANDAMENTO');
+                }
+                return;
+            }
             if (enemy.isGiant) {
                 enemy.y = Math.min(arcadeHeight / 2, enemy.y + enemy.descentSpeed * elapsed);
                 enemy.x += Math.sin(timestamp / 420 + enemy.phase) * 120 * elapsed;
@@ -3347,11 +3517,44 @@
             }
         });
 
-        if (
-            targetsHit + targetsLost >= giantBossSpawnTarget
-            && peopleRescued >= rescueTargetCount
-            && !giantBossSpawned
-        ) {
+        const resolvedTargets = targetsHit + targetsLost;
+        if (carrierBossDefeated
+            && postBossSupportCarriers.length < postBossSupportCarrierCount
+            && nextPostBossSupportCarrierAt !== null
+            && timestamp >= nextPostBossSupportCarrierAt) {
+            spawnSupportCarrier(true);
+            nextPostBossSupportCarrierAt = postBossSupportCarriers.length < postBossSupportCarrierCount
+                ? timestamp + aircraftCarrierSpawnInterval
+                : null;
+        }
+
+        if (finalBossSequenceStarted && carrierBossSpawnAt !== null
+            && timestamp >= carrierBossSpawnAt && !carrierBossSpawned) {
+            carrierBossSpawned = true;
+            const width = Math.min(arcadeWidth * 0.86, 460, arcadeHeight * 0.55);
+            const height = width * 1.35;
+            enemyShips.push({
+                x: arcadeWidth / 2,
+                y: -height / 2,
+                width,
+                height,
+                alive: true,
+                isCarrierBoss: true,
+                phase: Math.random() * Math.PI * 2,
+                descentSpeed: 145,
+                nextCannonAt: timestamp + 900,
+                nextLaserBarrageAt: timestamp + 1500,
+                laserVolleyIndex: 0
+            });
+            showCharacterSpeech('Porta-aviões gigante à frente! Desvie dos disparos e dos lasers em todas as direções enquanto ele cruza o cenário.');
+            updateStatusMessage('PORTA-AVIÕES GIGANTE VERMELHO · ATRAVESSANDO O CENÁRIO');
+        }
+
+        if (carrierBossDefeated
+            && postBossSupportCarriers.length === postBossSupportCarrierCount
+            && postBossSupportCarriers.every((carrier) => carrier.expired)
+            && resolvedTargets >= enemyTargetCount
+            && !giantBossSpawned) {
             giantBossSpawned = true;
             enemyShips.push({
                 x: arcadeWidth / 2,
@@ -3432,9 +3635,11 @@
                 fleetPoints.length - 1,
                 Math.floor(((target.wave ?? wavesSpawned) - 1) / 2)
             );
-            missionScore += target.isGiant ? giantBossPoints : fleetPoints[fleetIndex];
+            missionScore += target.isGiant
+                ? giantBossPoints
+                : fleetPoints[fleetIndex];
             updateMissionScoreCard();
-            targetsHit++;
+            if (!target.isCarrierBoss) targetsHit++;
             if (target.isGiant) {
                 updateStatusMessage('AERONAVE GIGANTE DESTRUÍDA · SEQUÊNCIA DE VITÓRIA');
                 for (let i = 0; i < 8; i++) {
@@ -3476,6 +3681,11 @@
                     );
                     return;
                 }
+            } else if (target.isCarrierBoss) {
+                explosions.push({ x: impactX, y: impactY, startedAt: timestamp });
+                playArcadeSound('enemyExplosion');
+                updateStatusMessage('PORTA-AVIÕES GIGANTE · ATRAVESSANDO O CENÁRIO');
+                return;
             } else {
                 target.energy = Math.max(0, (target.energy ?? 1) - damage);
                 target.lastHitAt = timestamp;
@@ -3567,7 +3777,7 @@
             hitPlayer(impactX, impactY);
         }
 
-        if (arcadeActive && lives <= 2) {
+        if (arcadeActive && lives < 5) {
             const carrier = aircraftCarriers.find((candidate) =>
                 candidate.spawned
                 && !candidate.expired
@@ -3580,15 +3790,17 @@
                 lives = 5;
                 stopCriticalAlert();
                 updateCombatStatus();
-                showCharacterSpeech('Apoio concluído! O porta-aviões restaurou as cinco vidas.');
-                updateStatusMessage('ESTADO CRÍTICO ENCERRADO · 5 VIDAS RESTAURADAS');
+                showCharacterSpeech('Recarga concluída! O porta-aviões restaurou a energia total da aeronave.');
+                updateStatusMessage('ENERGIA DA AERONAVE RESTAURADA · 100%');
             }
         }
-
         if (!arcadeActive) return;
-        const resolvedTargets = targetsHit + targetsLost;
+        if (!arcadeActive) return;
         const giantBossAliveAfterMission = enemyShips.some((enemy) => enemy.alive && enemy.isGiant);
-        if (resolvedTargets >= enemyTargetCount && giantBossSpawned && !giantBossAliveAfterMission) {
+        if (resolvedTargets >= enemyTargetCount
+            && carrierBossDefeated
+            && giantBossSpawned
+            && !giantBossAliveAfterMission) {
             endArcadeGame(true);
             return;
         }
@@ -3623,12 +3835,18 @@
         playerShip.x = 0;
         christinaSpawned = false;
         feiFeiLiSpawned = false;
-        featuredCharactersPassed = false;
+        regularRescueesDisplayed = 0;
+        finalBossSequenceStarted = false;
+        carrierBossSpawnAt = null;
+        carrierBossSpawned = false;
+        carrierBossDefeated = false;
+        postBossSupportCarriers = [];
+        nextPostBossSupportCarrierAt = null;
+        giantBossSpawned = false;
         scenery = [];
         sceneryFeaturesRecycled = 0;
         aircraftCarriers = [];
         resizeArcadeCanvas();
-        aircraftCarriers = createAircraftCarriers(performance.now());
         enemyShips = [];
         playerShots = [];
         playerLasers = [];
@@ -3652,9 +3870,9 @@
         targetsHit = 0;
         targetsLost = 0;
         peopleRescued = 0;
+        regularPeopleRescued = 0;
         missionScore = 0;
         updateMissionScoreCard();
-        giantBossSpawned = false;
         damageTaken = false;
         wavesSpawned = 0;
         sceneryOffset = 0;
@@ -3755,7 +3973,10 @@
     }
 
     function updateMissionScoreCard() {
-        const formatScore = (score) => new Intl.NumberFormat('pt-BR').format(score);
+        const formatScore = (score) => new Intl.NumberFormat('pt-BR', {
+            useGrouping: true,
+            maximumFractionDigits: 0
+        }).format(score);
         document.getElementById('missionScore').textContent = formatScore(missionScore);
     }
 
@@ -3798,11 +4019,12 @@
         document.getElementById('gameLaserStatus').textContent = laserUnlocked ? 'ESPAÇO' : 'BLOQUEADO';
         const rescuedGauges = document.querySelectorAll('.credential-gauge--rescued');
         rescuedGauges.forEach((gauge) => {
-            gauge.setAttribute('aria-valuenow', String(peopleRescued));
-            gauge.setAttribute('aria-valuetext', `${peopleRescued} de ${rescueTargetCount} pessoas resgatadas`);
+            const rescueProgress = Math.min(peopleRescued, rescueTargetCount);
+            gauge.setAttribute('aria-valuenow', String(rescueProgress));
+            gauge.setAttribute('aria-valuetext', `${peopleRescued} pessoas resgatadas; meta de ${rescueTargetCount}`);
             gauge.querySelector('.credential-gauge-fill').style.setProperty(
                 '--gauge-progress',
-                String(peopleRescued / rescueTargetCount)
+                String(rescueProgress / rescueTargetCount)
             );
         });
         document.getElementById('scoreStatus').textContent =
@@ -3855,9 +4077,53 @@
 
     let openingTransitionTriggered = false;
     let openingProgressAnimationFrame = 0;
+    function updateStudentCredentialFields() {
+        const surveyForm = document.getElementById('surveyForm');
+        const isStudent = surveyForm.querySelector('input[name="is_student"]:checked')?.value === 'true';
+        const schoolField = document.querySelector('#schoolField select');
+        const ageFieldset = document.getElementById('ageFieldset');
+        const educationLevelFieldset = document.getElementById('educationLevelFieldset');
+        const fundamentalYears = document.getElementById('fundamentalYears');
+        const highSchoolYears = document.getElementById('highSchoolYears');
+
+        schoolField.disabled = !isStudent;
+        ageFieldset.disabled = !isStudent;
+        educationLevelFieldset.disabled = !isStudent;
+
+        if (!isStudent) {
+            schoolField.value = '';
+            surveyForm.querySelectorAll('input[type="radio"]:not([name="is_student"])').forEach((input) => {
+                input.checked = false;
+            });
+        }
+
+        const educationLevel = isStudent
+            ? surveyForm.querySelector('input[name="educationLevel"]:checked')?.value
+            : null;
+        fundamentalYears.disabled = educationLevel !== 'Ensino Fundamental';
+        highSchoolYears.disabled = educationLevel !== 'Ensino Médio';
+    }
+
+    function clearPilotCredentials() {
+        const surveyForm = document.getElementById('surveyForm');
+        surveyForm.reset();
+        updateStudentCredentialFields();
+        document.getElementById('surveyError').textContent = '';
+        document.getElementById('surveySubmit').disabled = false;
+        registrationModal.setAttribute('aria-busy', 'false');
+        registrationSaved = false;
+        currentSurveyId = null;
+        savedRegistrationPayload = null;
+        playerFirstName = '';
+    }
+
     const revealCredentialPanel = () => {
         const surveyPanel = document.getElementById('surveyForm');
-        surveyPanel.classList.remove('credential-card-entering', 'credential-card-exiting');
+        surveyPanel.classList.remove(
+            'credential-card-entering',
+            'credential-card-exiting',
+            'credential-card-confirmed'
+        );
         registrationModal.hidden = true;
         registrationModal.setAttribute('aria-hidden', 'true');
 
@@ -3894,6 +4160,7 @@
 
         openingScreen.hidden = true;
         openingScreen.setAttribute('aria-hidden', 'true');
+        clearPilotCredentials();
         rescueTransitionScreen.hidden = false;
         rescueTransitionScreen.setAttribute('aria-hidden', 'false');
         revealCredentialPanel();
@@ -3968,6 +4235,7 @@
         const registrationGateMessage = document.getElementById('registrationGateMessage');
         if (!registrationSaved) {
             registrationGateMessage.textContent = 'Cadastre suas credenciais antes de iniciar a missão.';
+            clearPilotCredentials();
             rescueTransitionScreen.hidden = false;
             rescueTransitionScreen.setAttribute('aria-hidden', 'false');
             revealCredentialPanel();
@@ -3998,7 +4266,7 @@
             : 'CAÇA DESTRUÍDO';
         const targetSummary = `Alvos acertados: ${targetsHit} · perdidos: ${targetsLost}. Pessoas resgatadas: ${peopleRescued}.`;
         document.getElementById('endMessage').textContent = won
-            ? `Você derrotou o caça vermelho gigante e concluiu as oito levas. ${targetSummary}`
+            ? `Você destruiu o porta-aviões gigante e derrotou o caça vermelho gigante. ${targetSummary}`
             : `O caça perdeu suas cinco vidas. ${targetSummary}`;
         document.getElementById('endActionError').hidden = true;
         pendingMissionResult = {
@@ -4123,8 +4391,7 @@
             savedRegistrationPayload = null;
             playerFirstName = '';
             surveyForm.reset();
-            document.getElementById('fundamentalYears').disabled = true;
-            document.getElementById('highSchoolYears').disabled = true;
+            updateStudentCredentialFields();
             document.getElementById('surveyError').textContent = '';
             arcadeCanvas.hidden = true;
             characterSpeech.hidden = true;
@@ -4156,11 +4423,13 @@
         });
     });
 
+    document.querySelectorAll('#surveyForm input[name="is_student"]').forEach((input) => {
+        input.addEventListener('change', updateStudentCredentialFields);
+    });
+
     document.querySelectorAll('#surveyForm input[name="educationLevel"]').forEach((input) => {
         input.addEventListener('change', () => {
-            const fundamentalSelected = input.value === 'Ensino Fundamental';
-            document.getElementById('fundamentalYears').disabled = !fundamentalSelected;
-            document.getElementById('highSchoolYears').disabled = fundamentalSelected;
+            updateStudentCredentialFields();
         });
     });
 
@@ -4170,14 +4439,18 @@
         const submitButton = document.getElementById('surveySubmit');
         const errorMessage = document.getElementById('surveyError');
         const formData = new FormData(form);
-        const educationLevel = formData.get('educationLevel');
-        const gradeYear = formData.get(educationLevel === 'Ensino Fundamental' ? 'fundamentalGrade' : 'highschoolGrade');
+        const isStudent = formData.get('is_student') === 'true';
+        const educationLevel = isStudent ? formData.get('educationLevel') : null;
+        const gradeYear = isStudent
+            ? formData.get(educationLevel === 'Ensino Fundamental' ? 'fundamentalGrade' : 'highschoolGrade')
+            : null;
         const payload = {
             name: formData.get('name'),
-            school: formData.get('school'),
+            is_student: isStudent,
+            school: isStudent ? formData.get('school') : null,
             education_level: educationLevel,
             grade_year: gradeYear,
-            idade: formData.get('idade')
+            idade: isStudent ? formData.get('idade') : null
         };
 
         submitButton.disabled = true;
@@ -4221,6 +4494,8 @@
             const credentialProgress = document.getElementById('credentialProgress');
             const credentialProgressFill = credentialProgress.querySelector('.credential-progress-fill');
             surveyModal.setAttribute('aria-busy', 'true');
+            form.classList.add('credential-card-confirmed');
+            await new Promise((resolve) => window.setTimeout(resolve, 2000));
             await new Promise((resolve) => {
                 const finishExit = (animationEvent) => {
                     if (
